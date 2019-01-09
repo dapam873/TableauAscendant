@@ -1,5 +1,0 @@
-Ce logiciel est fourni «tel quel», sans aucune garantie expresse ou implicite. Les auteurs ne pourront en aucun cas être tenus responsables des dommages résultant de l'utilisation de ce logiciel.
-La permission est donnée à quiconque d'utiliser ce logiciel à des fins personnelles, de le redistribuer librement. Il n'est pas permis de faire un usage commercial, et de ne pas le modifier sous réserve des restrictions suivantes:
-1. L'origine de ce logiciel ne doit pas être déformée; vous ne devez pas prétendre avoir écrit le logiciel original.
-Si vous utilisez ce logiciel dans un produit, un accusé de réception dans la documentation du produit serait apprécié, mais n'est pas requis.
-2. Cet avis ne peut être retiré ou modifié d'aucune distribution.
