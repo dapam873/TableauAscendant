@@ -55,7 +55,7 @@ namespace TableauAscendant
         private void AideFm_Load(object sender, EventArgs e)
 
         {
-            if (File.Exists("01log.txt"))
+             if (File.Exists("01log.txt"))
             {
                 File.Delete("01log.txt");
             }
@@ -211,7 +211,7 @@ namespace TableauAscendant
             groupNote_lb.Location = new Point(col2, y);
             y = y + 20;
             hauteur = 160;
-            textNote_lb.Text = "Deux notes peuvent être écrites sur chaque page. Ils sont placés au-dessus et en dessous de la boite du premier sosa.\r\n\nSi dans chaque section de note, le texte ne parait pas au complet, il faudra raccourcir le texte ou le partager entre les deux sections.\r\n\nSi le texte concerne une des personnes de cette page, commencez la phrase par  «Sosa x », Le x représente le numéro du sosa de la personne.";
+            textNote_lb.Text = "Deux sections dont disponibles pour écrire des notes sur chaque page. Elle sont placées au-dessus et en dessous de la boite du premier sosa.\r\n\nSi dans chaque section de note, le texte ne parait pas au complet, il faudra raccourcir le texte ou le partager entre les deux sections.\r\n\nSi le texte concerne une des personnes de cette page, commencez la phrase par  «Sosa x », Le x représente le numéro du sosa de la personne.";
             textNote_lb.Location = new Point(col3, y);
             textNote_lb.Height = hauteur;
 

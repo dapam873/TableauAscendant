@@ -28,7 +28,7 @@ namespace WindowsFormsApp1
     /// Gets the answer
     ///</Summary>
     public partial class TableauAscendant : Form
-    {
+    { 
         public const int SOSA =              0;
         public const int PAGE =              1;
         public const int GENERATION =        2;
@@ -2891,29 +2891,26 @@ namespace WindowsFormsApp1
                 grille[f][SOSA].TrimStart(" ".ToCharArray());
             }
         }
-        public string[] ValiderDate( string date)
+        private bool    ValiderDate( string date)
         {
-            string[] s = new string[2];
+            if(date == "")
+            { 
+                return true;
+            }
             date = date.ToLower();
             if (date.Contains("et")  || date.Contains("entre") || date.Contains("vers") || date.Contains("après") || date.Contains("avant") || date.Contains("autour"))
             {
-                s[0] = "T";
-                s[1] = date;
-                return s;
+                return true;
             }
             if (date.Length == 4)
             {
                 if (int.TryParse(date, out int i))
                 {
-                    s[0] = "T";
-                    s[1] = date;
-                    return s;
+                    return true;
                 }
                 else
                 {
-                    s[0] = "F";
-                    s[1] = date;
-                    return s;
+                    return true;
                 }
             }
             if (date.Length == 7)
@@ -2922,45 +2919,26 @@ namespace WindowsFormsApp1
                 DateTime.TryParseExact(str2, "yyyy-MM-dd", null, System.Globalization.DateTimeStyles.None, out DateTime a);
                 if (a == DateTime.MinValue)
                 {
-                    s[0] = "F";
-                    s[1] = date;
+                    return false;
                 }
                 else
                 {
-                    s[0] = "T";
-                    s[1] = date;
+                    return true;
                 }
-                if (s[1] == "")
-                {
-                    s[0] = "T";
-                    s[1] = "";
-                }
-                return s;
             }
             if (date.Length == 10)
             {
                 DateTime.TryParseExact(date, "yyyy-MM-dd", null, System.Globalization.DateTimeStyles.None, out DateTime a);
                 if (a == DateTime.MinValue)
                 {
-                    s[0] = "F";
-                    s[1] = date;
+                    return false;
                 }
                 else
                 {
-                    s[0] = "T";
-                    s[1] = date;
+                    return true;
                 }
-                return s;
             }
-            if (date == "")
-            {
-                s[0] = "T";
-                s[1] = "";
-                return s;
-            }
-            s[0] = "F";
-            s[1] = date;
-            return s;
+            return false;
         }
         //  Function ************************************************************************************************************************** Fin
         public TableauAscendant(string a)
@@ -3095,14 +3073,8 @@ namespace WindowsFormsApp1
             grille[sosaCourant][NELE] = Sosa1NeTextBox.Text;
             Modifier = true;
             this.Text = NomPrograme + "   *" + FichierCourant;
-            string[] s;
-            s = ValiderDate(Sosa1NeTextBox.Text);
-
-            if (s[0] == "F")
-            {
-                Sosa1NeTextBox.BackColor = Color.LightCoral;
-            }
-            else
+            bool rep  = ValiderDate(Sosa1NeTextBox.Text);
+            if (rep)
             {
                 Sosa1NeTextBox.BackColor = Color.White;
                 if (!LongeurTextOk(grille[sosaCourant][NELE]))
@@ -3114,7 +3086,10 @@ namespace WindowsFormsApp1
                     Sosa1NeTextBox.BackColor = couleurChamp;
                 }
             }
-            Sosa1NeTextBox.Text = s[1];
+            else
+            {
+                Sosa1NeTextBox.BackColor = Color.LightCoral;
+            }
         }
         private void    Sosa1NeEndroitTextBox_TextChanged(object sender, EventArgs e)
         {
@@ -3133,13 +3108,8 @@ namespace WindowsFormsApp1
             grille[sosaCourant][DELE] = Sosa1DeTextBox.Text;
             Modifier = true;
             this.Text = NomPrograme + "   *" + FichierCourant;
-            string[] s;
-            s = ValiderDate(Sosa1DeTextBox.Text);
-            if (s[0] == "F")
-            {
-                Sosa1DeTextBox.BackColor = Color.LightCoral;
-            }
-            else
+            bool rep = ValiderDate(Sosa1DeTextBox.Text);
+            if (rep)
             {
                 Sosa1DeTextBox.BackColor = Color.White;
                 if (!LongeurTextOk(grille[sosaCourant][DELE]))
@@ -3151,7 +3121,10 @@ namespace WindowsFormsApp1
                     Sosa1DeTextBox.BackColor = couleurChamp;
                 }
             }
-            Sosa1DeTextBox.Text = s[1];
+            else
+            {
+                Sosa1DeTextBox.BackColor = Color.LightCoral;
+            }
         }
         private void Sosa1DeEndroitTextBox_TextChanged(object sender, EventArgs e)
         {
@@ -3167,47 +3140,6 @@ namespace WindowsFormsApp1
                 Sosa1DeEndroitTextBox.BackColor = couleurChamp;
             }
         }
-        /*private void    Sosa1MaTextBox_TextChanged(object sender, EventArgs e)
-        {
-            grille[sosaCourant][MALE] = Sosa1MaLeTextBox.Text;
-            Modifier = true;
-            this.Text = NomPrograme + "   *" + FichierCourant;
-            string[] s;
-            s = ValiderDate(Sosa1MaLeTextBox.Text);
-            if (s[0] == "F")
-            {
-                Sosa1MaLeTextBox.BackColor = Color.LightCoral;
-            }
-            else
-            {
-                Sosa1MaLeTextBox.BackColor = Color.White;
-                if (!LongeurTextOk(grille[sosaCourant][MALE]))
-                {
-                    Sosa1MaLeTextBox.BackColor = couleurTextTropLong;
-                }
-                else
-                {
-                    Sosa1MaLeTextBox.BackColor = couleurChamp;
-                }
-
-            }
-            Sosa1MaLeTextBox.Text = s[1];
-        }
-        */
-        /*private void Sosa1MaEndroitTextBox_TextChanged(object sender, EventArgs e)
-        {
-            grille[sosaCourant][MALIEU] = Sosa1MaEndroitTextBox.Text;
-            Modifier = true;
-            this.Text = NomPrograme + "   *" + FichierCourant;
-            if (!LongeurTextOk(Sosa1MaEndroitTextBox.Text))
-            {
-                Sosa1MaEndroitTextBox.BackColor = couleurTextTropLong;
-            }
-            else
-            {
-                Sosa1MaEndroitTextBox.BackColor = couleurChamp;
-            }
-        }*/
         private void Sosa2NomTextBox_TextChanged(object sender, EventArgs e)
         {
             grille[sosaCourant * 2][NOM] = Sosa2NomTextBox.Text;
@@ -3228,10 +3160,8 @@ namespace WindowsFormsApp1
             grille[sosaCourant * 2][NELE] = Sosa2NeTextBox.Text;
             Modifier = true;
             this.Text = NomPrograme + "   *" + FichierCourant;
-            string[] s;
-            s = ValiderDate(Sosa2NeTextBox.Text);
-
-            if (s[0] == "F")
+            bool rep = ValiderDate(Sosa2NeTextBox.Text);
+            if (rep)
             {
                 Sosa2NeTextBox.BackColor = Color.LightCoral;
             }
@@ -3247,7 +3177,6 @@ namespace WindowsFormsApp1
                     Sosa2NeTextBox.BackColor = couleurChamp;
                 }
             }
-            Sosa2NeTextBox.Text = s[1];
         }
         private void Sosa2NeEndroitTextBox_TextChanged(object sender, EventArgs e)
         {
@@ -3268,13 +3197,8 @@ namespace WindowsFormsApp1
             grille[sosaCourant * 2][DELE] = Sosa2DeTextBox.Text;
             Modifier = true;
             this.Text = NomPrograme + "   *" + FichierCourant;
-            string[] s;
-            s = ValiderDate(Sosa2DeTextBox.Text);
-            if (s[0] == "F")
-            {
-                Sosa2DeTextBox.BackColor = Color.LightCoral;
-            }
-            else
+            bool rep = ValiderDate(Sosa2DeTextBox.Text);
+            if (rep)
             {
                 Sosa2DeTextBox.BackColor = Color.White;
                 if (!LongeurTextOk(grille[sosaCourant][DELE]))
@@ -3286,7 +3210,10 @@ namespace WindowsFormsApp1
                     Sosa2DeTextBox.BackColor = couleurChamp;
                 }
             }
-            Sosa2DeTextBox.Text = s[1];
+            else
+            {
+                Sosa2DeTextBox.BackColor = Color.LightCoral;
+            }
         }
         private void Sosa2DeEndroitTextBox_TextChanged(object sender, EventArgs e)
         {
@@ -3307,13 +3234,8 @@ namespace WindowsFormsApp1
             grille[sosaCourant * 2][MALE] = Sosa23MaTextBox.Text;
             Modifier = true;
             this.Text = NomPrograme + "   *" + FichierCourant;
-            string[] s;
-            s = ValiderDate(Sosa23MaTextBox.Text);
-            if (s[0] == "F")
-            {
-                Sosa23MaTextBox.BackColor = Color.LightCoral;
-            }
-            else
+            bool rep = ValiderDate(Sosa23MaTextBox.Text);
+            if (rep)
             {
                 Sosa23MaTextBox.BackColor = Color.White;
                 if (!LongeurTextOk(grille[sosaCourant * 2][MALE]))
@@ -3325,8 +3247,10 @@ namespace WindowsFormsApp1
                     Sosa23MaTextBox.BackColor = couleurChamp;
                 }
             }
-            Sosa23MaTextBox.Text = s[1];
-            //Sosa23MaTextBox.SelectionStart = Sosa23MaTextBox.Text.Length + 1;
+            else
+            {
+                Sosa23MaTextBox.BackColor = Color.LightCoral;
+            }
         }
         private void Sosa23MaEndroitTextBox_TextChanged(object sender, EventArgs e)
         {
@@ -3361,13 +3285,8 @@ namespace WindowsFormsApp1
             grille[sosaCourant * 2 + 1][NELE] = Sosa3NeTextBox.Text;
             Modifier = true;
             this.Text = NomPrograme + "   *" + FichierCourant;
-            string[] s;
-            s = ValiderDate(Sosa3NeTextBox.Text);
-            if (s[0] == "F")
-            {
-                Sosa3NeTextBox.BackColor = Color.LightCoral;
-            }
-            else
+            bool rep = ValiderDate(Sosa3NeTextBox.Text);
+            if (rep)
             {
                 Sosa3NeTextBox.BackColor = Color.White;
                 if (!LongeurTextOk(grille[sosaCourant * 2 + 1][NELE]))
@@ -3379,8 +3298,10 @@ namespace WindowsFormsApp1
                     Sosa3NeTextBox.BackColor = couleurChamp;
                 }
             }
-            Sosa3NeTextBox.Text = s[1];
-            //Sosa3NeTextBox.SelectionStart = Sosa3NeTextBox.Text.Length + 1;
+            else
+            {
+                Sosa3NeTextBox.BackColor = Color.LightCoral;
+            }
         }
         private void Sosa3NeEndroitTextBox_TextChanged(object sender, EventArgs e)
         {
@@ -3401,13 +3322,8 @@ namespace WindowsFormsApp1
             grille[sosaCourant * 2 + 1][DELE] = Sosa3DeTextBox.Text;
             Modifier = true;
             this.Text = NomPrograme + "   *" + FichierCourant;
-            string[] s;
-            s = ValiderDate(Sosa3DeTextBox.Text);
-            if (s[0] == "F")
-            {
-                Sosa3DeTextBox.BackColor = Color.LightCoral;
-            }
-            else
+            bool rep = ValiderDate(Sosa3DeTextBox.Text);
+            if (rep)
             {
                 Sosa3DeTextBox.BackColor = Color.White;
                 if (!LongeurTextOk(grille[sosaCourant * 2 + 1][DELE]))
@@ -3419,8 +3335,10 @@ namespace WindowsFormsApp1
                     Sosa3DeTextBox.BackColor = couleurChamp;
                 }
             }
-            Sosa3DeTextBox.Text = s[1];
-            //Sosa3DeTextBox.SelectionStart = Sosa3DeTextBox.Text.Length + 1;
+            else
+            {
+                Sosa3DeTextBox.BackColor = Color.LightCoral;
+            }
         }
         private void Sosa3DeEndroitTextBox_TextChanged(object sender, EventArgs e)
         {
@@ -3455,13 +3373,8 @@ namespace WindowsFormsApp1
             grille[sosaCourant * 4][NELE] = Sosa4NeTextBox.Text;
             Modifier = true;
             this.Text = NomPrograme + "   *" + FichierCourant;
-            string[] s;
-            s = ValiderDate(Sosa4NeTextBox.Text);
-            if (s[0] == "F")
-            {
-                Sosa4NeTextBox.BackColor = Color.LightCoral;
-            }
-            else
+            bool rep = ValiderDate(Sosa4NeTextBox.Text);
+            if (rep)
             {
                 Sosa4NeTextBox.BackColor = Color.White;
                 if (!LongeurTextOk(grille[sosaCourant * 4][NELE]))
@@ -3473,8 +3386,10 @@ namespace WindowsFormsApp1
                     Sosa4NeTextBox.BackColor = couleurChamp;
                 }
             }
-            Sosa4NeTextBox.Text = s[1];
-            //Sosa4NeTextBox.SelectionStart = Sosa4NeTextBox.Text.Length + 1;
+            else
+            {
+                Sosa4NeTextBox.BackColor = Color.LightCoral;
+            }
         }
         private void Sosa4NeEndroitTextBox_TextChanged(object sender, EventArgs e)
         {
@@ -3495,13 +3410,8 @@ namespace WindowsFormsApp1
             grille[sosaCourant * 4][DELE] = Sosa4DeTextBox.Text;
             Modifier = true;
             this.Text = NomPrograme + "   *" + FichierCourant;
-            string[] s;
-            s = ValiderDate(Sosa4DeTextBox.Text);
-            if (s[0] == "F")
-            {
-                Sosa4DeTextBox.BackColor = Color.LightCoral;
-            }
-            else
+            bool rep = ValiderDate(Sosa4DeTextBox.Text);
+            if (rep)
             {
                 Sosa4DeTextBox.BackColor = Color.White;
                 if (!LongeurTextOk(grille[sosaCourant * 4][DELE]))
@@ -3513,8 +3423,10 @@ namespace WindowsFormsApp1
                     Sosa4DeTextBox.BackColor = couleurChamp;
                 }
             }
-            Sosa4DeTextBox.Text = s[1];
-            //Sosa4DeTextBox.SelectionStart = Sosa4DeTextBox.Text.Length + 1;
+            else
+            {
+                Sosa4DeTextBox.BackColor = Color.LightCoral;
+            }
         }
         private void Sosa4DeEndroitTextBox_TextChanged(object sender, EventArgs e)
         {
@@ -3535,13 +3447,8 @@ namespace WindowsFormsApp1
             grille[sosaCourant * 4][MALE] = Sosa45MaTextBox.Text;
             Modifier = true;
             this.Text = NomPrograme + "   *" + FichierCourant;
-            string[] s;
-            s = ValiderDate(Sosa45MaTextBox.Text);
-            if (s[0] == "F")
-            {
-                Sosa45MaTextBox.BackColor = Color.LightCoral;
-            }
-            else
+            bool rep = ValiderDate(Sosa45MaTextBox.Text);
+            if (rep)
             {
                 Sosa45MaTextBox.BackColor = Color.White;
                 if (!LongeurTextOk(grille[sosaCourant * 4][MALE]))
@@ -3553,8 +3460,10 @@ namespace WindowsFormsApp1
                     Sosa45MaTextBox.BackColor = couleurChamp;
                 }
             }
-            Sosa45MaTextBox.Text = s[1];
-            //Sosa45MaTextBox.SelectionStart = Sosa23MaTextBox.Text.Length + 1;
+            else
+            {
+                Sosa45MaTextBox.BackColor = Color.LightCoral;
+            }
         }
         private void Sosa45MaEndroitTextBox_TextChanged(object sender, EventArgs e)
         {
@@ -3589,13 +3498,8 @@ namespace WindowsFormsApp1
             grille[sosaCourant * 4 + 1][NELE] = Sosa5NeTextBox.Text;
             Modifier = true;
             this.Text = NomPrograme + "   *" + FichierCourant;
-            string[] s;
-            s = ValiderDate(Sosa5NeTextBox.Text);
-            if (s[0] == "F")
-            {
-                Sosa5NeTextBox.BackColor = Color.LightCoral;
-            }
-            else
+            bool rep = ValiderDate(Sosa5NeTextBox.Text);
+            if (rep)
             {
                 Sosa5NeTextBox.BackColor = Color.White;
                 if (!LongeurTextOk(grille[sosaCourant * 4 + 1][NELE]))
@@ -3607,8 +3511,10 @@ namespace WindowsFormsApp1
                     Sosa5DeTextBox.BackColor = couleurChamp;
                 }
             }
-            Sosa5NeTextBox.Text = s[1];
-            //Sosa5NeTextBox.SelectionStart = Sosa5NeTextBox.Text.Length + 1;
+            else
+            {
+                Sosa5NeTextBox.BackColor = Color.LightCoral;
+            }
         }
         private void Sosa5NeEndroitTextBox_TextChanged(object sender, EventArgs e)
         {
@@ -3630,13 +3536,8 @@ namespace WindowsFormsApp1
                 grille[sosaCourant * 4 + 1][DELE] = Sosa5DeTextBox.Text;
                 Modifier = true;
                 this.Text = NomPrograme + "   *" + FichierCourant;
-                string[] s;
-                s = ValiderDate(Sosa5DeTextBox.Text);
-                if (s[0] == "F")
-                {
-                    Sosa5DeTextBox.BackColor = Color.LightCoral;
-                }
-                else
+                bool rep = ValiderDate(Sosa5DeTextBox.Text);
+                if (rep)
                 {
                     Sosa5DeTextBox.BackColor = Color.White;
                     if (!LongeurTextOk(grille[sosaCourant * 4 + 1][DELE]))
@@ -3648,8 +3549,10 @@ namespace WindowsFormsApp1
                         Sosa5DeTextBox.BackColor = couleurChamp;
                     }
                 }
-                Sosa5DeTextBox.Text = s[1];
-                //Sosa5DeTextBox.SelectionStart = Sosa5DeTextBox.Text.Length + 1;
+                else
+                {
+                    Sosa5DeTextBox.BackColor = Color.LightCoral;
+                }
             }
         }
         private void Sosa5DeEndroitTextBox_TextChanged(object sender, EventArgs e)
@@ -3685,13 +3588,8 @@ namespace WindowsFormsApp1
             grille[sosaCourant * 4 + 2][NELE] = Sosa6NeTextBox.Text;
             Modifier = true;
             this.Text = NomPrograme + "   *" + FichierCourant;
-            string[] s;
-            s = ValiderDate(Sosa6NeTextBox.Text);
-            if (s[0] == "F")
-            {
-                Sosa6NeTextBox.BackColor = Color.LightCoral;
-            }
-            else
+            bool rep = ValiderDate(Sosa6NeTextBox.Text);
+            if (rep)
             {
                 Sosa6NeTextBox.BackColor = Color.White;
                 if (!LongeurTextOk(grille[sosaCourant * 4 + 2][NELE]))
@@ -3703,8 +3601,10 @@ namespace WindowsFormsApp1
                     Sosa6NeTextBox.BackColor = couleurChamp;
                 }
             }
-            Sosa6NeTextBox.Text = s[1];
-           // Sosa6NeTextBox.SelectionStart = Sosa6NeTextBox.Text.Length + 1;
+            else
+            {
+                Sosa6NeTextBox.BackColor = Color.LightCoral;
+            }
         }
         private void Sosa6NeEndroitTextBox_TextChanged(object sender, EventArgs e)
         {
@@ -3725,13 +3625,8 @@ namespace WindowsFormsApp1
             grille[sosaCourant * 4 + 2][DELE] = Sosa6DeTextBox.Text;
             Modifier = true;
             this.Text = NomPrograme + "   *" + FichierCourant;
-            string[] s;
-            s = ValiderDate(Sosa6DeTextBox.Text);
-            if (s[0] == "F")
-            {
-                Sosa6DeTextBox.BackColor = Color.LightCoral;
-            }
-            else
+            bool rep = ValiderDate(Sosa6DeTextBox.Text);
+            if (rep)
             {
                 Sosa6DeTextBox.BackColor = Color.White;
                 if (!LongeurTextOk(grille[sosaCourant * 4 + 2][DELE]))
@@ -3743,8 +3638,10 @@ namespace WindowsFormsApp1
                     Sosa6DeTextBox.BackColor = couleurChamp;
                 }
             }
-            Sosa6DeTextBox.Text = s[1];
-            //Sosa6DeTextBox.SelectionStart = Sosa1DeTextBox.Text.Length + 1;
+            else
+            {
+                Sosa6DeTextBox.BackColor = Color.LightCoral;
+            }
         }
         private void Sosa6DeEndroitTextBox_TextChanged(object sender, EventArgs e)
         {
@@ -3765,24 +3662,23 @@ namespace WindowsFormsApp1
             grille[sosaCourant * 4 + 2][MALE] = Sosa67MaTextBox.Text;
             Modifier = true;
             this.Text = NomPrograme + "   *" + FichierCourant;
-            string[] s;
-            s = ValiderDate(Sosa67MaTextBox.Text);
-            if (s[0] == "F")
+            bool rep = ValiderDate(Sosa67MaTextBox.Text);
+            if (rep)
+            {
+                Sosa67MaTextBox.BackColor = Color.White;
+                if (!LongeurTextOk(grille[sosaCourant * 2][MALE]))
+                {
+                    Sosa67MaTextBox.BackColor = couleurTextTropLong;
+                }
+                else
+                {
+                    Sosa67MaTextBox.BackColor = couleurChamp;
+                }
+            }
+            else
             {
                 Sosa67MaTextBox.BackColor = Color.LightCoral;
             }
-            else
-                Sosa67MaTextBox.BackColor = Color.White;
-            if (!LongeurTextOk(grille[sosaCourant * 4 + 2][MALE]))
-            {
-                Sosa67MaTextBox.BackColor = couleurTextTropLong;
-            }
-            else
-            {
-                Sosa67MaTextBox.BackColor = couleurChamp;
-            }
-            Sosa67MaTextBox.Text = s[1];
-            //Sosa67MaTextBox.SelectionStart = Sosa67MaTextBox.Text.Length + 1;
         }
         private void Sosa67MaEndroitTextBox_TextChanged(object sender, EventArgs e)
         {
@@ -3817,9 +3713,8 @@ namespace WindowsFormsApp1
             grille[sosaCourant * 4 + 3][NELE] = Sosa7NeTextBox.Text;
             Modifier = true;
             this.Text = NomPrograme + "   *" + FichierCourant;
-            string[] s;
-            s = ValiderDate(Sosa7NeTextBox.Text);
-            if (s[0] == "F")
+            bool rep = ValiderDate(Sosa7NeTextBox.Text);
+            if (rep)
             {
                 Sosa7NeTextBox.BackColor = Color.LightCoral;
             }
@@ -3835,8 +3730,6 @@ namespace WindowsFormsApp1
                     Sosa7NeTextBox.BackColor = couleurChamp;
                 }
             }
-            Sosa7NeTextBox.Text = s[1];
-            //Sosa7NeTextBox.SelectionStart = Sosa7NeTextBox.Text.Length + 1;
         }
         private void Sosa7NeEndroitTextBox_TextChanged(object sender, EventArgs e)
         {
@@ -3857,13 +3750,8 @@ namespace WindowsFormsApp1
             grille[sosaCourant * 4 + 3][DELE] = Sosa7DeTextBox.Text;
             Modifier = true;
             this.Text = NomPrograme + "   *" + FichierCourant;
-            string[] s;
-            s = ValiderDate(Sosa7DeTextBox.Text);
-            if (s[0] == "F")
-            {
-                Sosa7DeTextBox.BackColor = Color.LightCoral;
-            }
-            else
+            bool rep = ValiderDate(Sosa7DeTextBox.Text);
+            if (rep)
             {
                 Sosa7DeTextBox.BackColor = Color.White;
                 if (!LongeurTextOk(grille[sosaCourant * 4 + 3][DELE]))
@@ -3875,8 +3763,10 @@ namespace WindowsFormsApp1
                     Sosa7DeTextBox.BackColor = couleurChamp;
                 }
             }
-            Sosa7DeTextBox.Text = s[1];
-            //Sosa7DeTextBox.SelectionStart = Sosa7DeTextBox.Text.Length + 1;
+            else
+            {
+                Sosa7DeTextBox.BackColor = Color.LightCoral;
+            }
         }
         private void Sosa7DeEndroitTextBox_TextChanged(object sender, EventArgs e)
         {
@@ -4571,7 +4461,7 @@ namespace WindowsFormsApp1
             }
         }
 
-         private void FlecheGaucheRechercheButton_Click(object sender, EventArgs e)
+        private void FlecheGaucheRechercheButton_Click(object sender, EventArgs e)
         {
             DummyButton.Focus();
             if (rechercheListe[0] == 0) return;
