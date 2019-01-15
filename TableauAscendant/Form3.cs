@@ -24,6 +24,9 @@ using System.Runtime.CompilerServices;
 
 namespace TableauAscendant
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public partial class AideFm : Form
     {
         static void ZXCV(string message, [CallerLineNumber] int lineNumber = 0, [CallerMemberName] string caller = null)
@@ -42,6 +45,9 @@ namespace TableauAscendant
 
 
         }
+        /// <summary>
+        /// Formulaire d'aide
+        /// </summary>
         public AideFm()
         {
             InitializeComponent();

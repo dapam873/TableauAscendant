@@ -12,8 +12,10 @@ namespace TableauAscendant
 {
     public partial class Form2 : Form
     {
-      
 
+        /// <summary>
+        /// 
+        /// </summary>
         public Form2()
         {
             InitializeComponent();

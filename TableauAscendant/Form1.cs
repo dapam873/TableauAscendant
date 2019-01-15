@@ -1,5 +1,6 @@
-﻿using System; 
-//using System.ComponentModel;
+﻿// compile with: -doc:Form1.xml 
+using System; 
+
 using System.Collections.Generic;
 using System.Data;
 using System.Windows.Forms;
@@ -28,35 +29,107 @@ namespace WindowsFormsApp1
     /// Gets the answer
     ///</Summary>
     public partial class TableauAscendant : Form
-    { 
+    {
+        /// <summary>
+        /// position de la colonne SOSA dans le tableau grille
+        /// </summary>
         public const int SOSA =              0;
+        /// <summary>
+        /// position de la colonne PAGE dans le tableau grille
+        /// </summary>
         public const int PAGE =              1;
+        /// <summary>
+        /// position de la colonne GENERATION dans le tableau grille
+        /// </summary>
         public const int GENERATION =        2;
+        /// <summary>
+        /// position de la colonne TABLEAU dans le tableau grille
+        /// </summary>
         public const int TABLEAU =           3;
+        /// <summary>
+        /// position de la colonne NOM dans le tableau grille
+        /// </summary>
         public const int NOM =               4;
+        /// <summary>
+        /// position de la colonne NELE dans le tableau grille
+        /// </summary>
         public const int NELE =              5;
+        /// <summary>
+        /// position de la colonne NELIEU dans le tableau grille
+        /// </summary>
         public const int NELIEU =            6;
+        /// <summary>
+        /// position de la colonne DELE dans le tableau grille
+        /// </summary>
         public const int DELE =              7;
+        /// <summary>
+        /// position de la colonne DELIEU dans le tableau grille
+        /// </summary>
         public const int DELIEU =            8;
+        /// <summary>
+        /// position de la colonne MALE dans le tableau grille
+        /// </summary>
         public const int MALE =              9;
+        /// <summary>
+        /// position de la colonne MALIEU dans le tableau grille
+        /// </summary>
         public const int MALIEU =           10;
+        /// <summary>
+        /// position de la colonne IDg dans le tableau grille
+        /// </summary>
         public const int IDg =              11;
+        /// <summary>
+        /// position de la colonne IDFAMILLEENFANT dans le tableau grille
+        /// </summary>
         public const int IDFAMILLEENFANT =  12;
+        /// <summary>
+        /// position de la colonne NOTE1 dans le tableau grille
+        /// </summary>
         public const int NOTE1 =            13;
+        /// <summary>
+        /// position de la colonne Note2 dans le tableau grille
+        /// </summary>
         public const int NOTE2 =            14;
-
+        /// <summary>
+        /// Nom du programme
+        /// </summary>
         public const string NomPrograme = "TableauAscendant";
+        /// <summary>
+        /// largeur maximun de nom dans fiche
+        /// </summary>
         public const int LARGEURNOMFICHE = 144;
+        /// <summary>
+        /// largeur maximun du texte dans fiche
+        /// </summary>
         public const int LARGEURTEXTEFICHE = 138;
+        /// <summary>
+        /// numero du SOSA courantlargeur maximun de nom dans fiche
+        /// </summary>
         public int sosaCourant = 0;
+        /// <summary>
+        /// grille qui contient toutes les informations pour généré les tableaux
+        /// </summary>
         public string[][] grille = new string[512][]; // 512 lignes
-        
+        /// <summary>
+        /// Vrai si la grille à été modifier
+        /// </summary>
         public Boolean Modifier = false;
+        /// <summary>
+        /// liste de recherche
+        /// </summary>
         public int[] rechercheListe = new int[512]; // 512 lignes
 
-        
+        /// <summary>
+        /// Nom du fichier courant
+        /// </summary>
         public string FichierCourant ="";
+        /// <summary>
+        /// nom du fichier GEDCOM
+        /// </summary>
         public string FichierGEDCOM = "";
+        /// <summary>
+        /// 
+        /// </summary>
         public string argument = "";
 
 
@@ -67,7 +140,13 @@ namespace WindowsFormsApp1
         XFont font6 = new XFont("Arial", 6, XFontStyle.Regular);
         XFont font5 = new XFont("Arial", 5, XFontStyle.Regular);
         XFont font8B = new XFont("Arial", 8, XFontStyle.Bold);
+        /// <summary>
+        /// nom du dossier où seront enregistrer les fichiers PDF
+        /// </summary>
         public string DossierPDF = "";
+        /// <summary>
+        /// valeur pour un pouce
+        /// </summary>
         public XUnit POUCE = XUnit.FromInch(1);
 
         //couleur
@@ -384,7 +463,6 @@ namespace WindowsFormsApp1
                     return;
                 }
             }
-            ///int[] listePage = new int[] { 0, 1, 4, 5, 6, 7, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 64, 65, 66, 67, 68, 69,70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100,   101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127 };
             int[] listePage = new int[] { 0, 1, 8, 9, 10, 11, 12, 13, 14, 15, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127 };
 
             int Page;
@@ -2891,9 +2969,21 @@ namespace WindowsFormsApp1
                 grille[f][SOSA].TrimStart(" ".ToCharArray());
             }
         }
+        /// <summary>
+        /// Valide les champde date
+        /// </summary>
+
+        /// <param name="date">
+        /// Date du champ à vérifier 
+        /// </param>
+
+        /// <returns>
+        /// Retourne Vrai si date valide ou contien l'un de ces mot et entre vers après avant autour
+        /// </returns> 
         private bool    ValiderDate( string date)
         {
-            if(date == "")
+ 
+            if (date == "")
             { 
                 return true;
             }
@@ -2941,6 +3031,9 @@ namespace WindowsFormsApp1
             return false;
         }
         //  Function ************************************************************************************************************************** Fin
+        /// <summary>
+        /// 
+        /// </summary>
         public TableauAscendant(string a)
         {
             argument = a;
