@@ -6,10 +6,10 @@ using System.Data;
 using System.Windows.Forms;
 using System.Diagnostics;
 using System.IO;
-//using System.Linq;
+using System.Linq;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-
+using System.Text;
 using System.Runtime.CompilerServices;
 using System.Media;
 using System.Reflection;
@@ -26,7 +26,7 @@ using TableauAscendant;
 namespace WindowsFormsApp1
 {
     ///<Summary>
-    /// Gets the answer
+    /// 
     ///</Summary>
     public partial class TableauAscendant : Form
     {
@@ -173,12 +173,14 @@ namespace WindowsFormsApp1
                 Sosa1NeEndroitTextBox.Visible = false;
                 Sosa1DeTextBox.Visible = false;
                 Sosa1DeEndroitTextBox.Visible = false;
-                /*Sosa1MaLeTextBox.Visible = false;
+                Sosa1MaTextBox.Visible = false;
                 Sosa1MaEndroitTextBox.Visible = false;
-                Sosa1MaleLabel.Visible = false;
-                Sosa1MaEndroitLabel.Visible = false;
-                Sosa1MaAvecTextBox.Visible = false;
-                Sosa1MaAvecLabel.Visible = false;*/
+                Sosa1MaTextBox.Visible = false;
+                Sosa1MaEndroitTextBox.Visible = false;
+                sosa1LigneVertical.Visible = true;
+                RectangleSosaConjoint1.Visible = true;
+                Sosa1MaEtiquettetBox.Visible = true;
+                Sosa1LieuEtiquettetBox.Visible = true;
                 Note1.Visible = false;
                 Note2.Visible = false;
                 NoteDuHautLb.Visible = false;
@@ -255,6 +257,25 @@ namespace WindowsFormsApp1
                 Sosa1NeEndroitTextBox.Visible = true;
                 Sosa1DeTextBox.Visible = true;
                 Sosa1DeEndroitTextBox.Visible = true;
+                if ((sosaCourant > 1) &&  (sosaCourant % 2 == 0) )
+                {
+                    Sosa1MaTextBox.Visible = true;
+                    Sosa1MaEndroitTextBox.Visible = true;
+                    sosa1LigneVertical.Visible = true;
+                    SosaConjoint1Label.Visible = true;
+                    RectangleSosaConjoint1.Visible = true;
+                    Sosa1MaEtiquettetBox.Visible = true;
+                    Sosa1LieuEtiquettetBox.Visible = true;
+                } else
+                {
+                    Sosa1MaTextBox.Visible = false;
+                    Sosa1MaEndroitTextBox.Visible = false;
+                    sosa1LigneVertical.Visible = false;
+                    SosaConjoint1Label.Visible = false;
+                    RectangleSosaConjoint1.Visible = false;
+                    Sosa1MaEtiquettetBox.Visible = false;
+                    Sosa1LieuEtiquettetBox.Visible = false;
+                }
                 Note1.Visible = true;
                 Note2.Visible = true;
                 NoteDuHautLb.Visible = true;
@@ -331,6 +352,22 @@ namespace WindowsFormsApp1
             {
                 goSosa1Btn.Visible = false;
             }
+            if (sosaCourant != 0)
+            {
+                if (sosaCourant % 2 == 0)
+                {
+                    GoSosaConjoint1Btn.Visible = true;
+                    GoSosaConjoint1Btn.Text = Convert.ToString(sosaCourant + 1);
+                }
+                else
+                {
+                    GoSosaConjoint1Btn.Visible = false;
+                }
+            }
+            if (sosaCourant == 0)
+            {
+                GoSosaConjoint1Btn.Visible = false;
+            }
 
             int Sosa4 = (sosaCourant * 4) * 2;
             int Sosa5 = (sosaCourant * 4 + 1) *2;
@@ -371,7 +408,7 @@ namespace WindowsFormsApp1
             {
                 GoSosa7Btn.Visible = false;
             }
-
+            ChoixSosaComboBox.Focus();
         }
         private void    AvoirDossierrapport()
         {
@@ -388,7 +425,7 @@ namespace WindowsFormsApp1
         }
         private void    ChangerCouleurBloc(Color rgb)
         {
-
+            SosaConjoint1Label.BackColor = rgb;
             Sosa2Label.BackColor = rgb;
             Sosa3Label.BackColor = rgb;
             Sosa4Label.BackColor = rgb;
@@ -405,15 +442,17 @@ namespace WindowsFormsApp1
             Generation1lb.BackColor = rgb;
             Generation2lb.BackColor = rgb;
             Generation3lb.BackColor = rgb;
+
             RectangleSosa1.FillColor = rgb;
+            RectangleSosaConjoint1.FillColor = rgb;
+            SosaConjoint1NomTextBox.BackColor = rgb;
             RectangleSosa2.FillColor = rgb;
             RectangleSosa3.FillColor = rgb;
             RectangleSosa4.FillColor = rgb;
             RectangleSosa5.FillColor = rgb;
             RectangleSosa6.FillColor = rgb;
             RectangleSosa7.FillColor = rgb;
-
-
+          
             Nele1Lbl.BackColor = rgb;
             Nele2Lbl.BackColor = rgb;
             Nele3Lbl.BackColor = rgb;
@@ -445,7 +484,6 @@ namespace WindowsFormsApp1
             DeEndroit5Lbl.BackColor = rgb;
             DeEndroit6Lbl.BackColor = rgb;
             DeEndroit7Lbl.BackColor = rgb;
-
 
         }
         private void    ChoixChanger()
@@ -673,7 +711,7 @@ namespace WindowsFormsApp1
             //int ID = Int32.Parse(id);
             grille[1][IDg] = ID;
 
-            string nom = GEDCOM.AvoirNom(ID) + " " + GEDCOM.AvoirPrenom(ID);
+            string nom = GEDCOM.AvoirPrenom(ID) + " " + GEDCOM.AvoirNom(ID);
             grille[1][NOM] = nom;
 
             string dateN = ConvertirDate(GEDCOM.AvoirDateNaissance(ID));
@@ -696,7 +734,7 @@ namespace WindowsFormsApp1
             grille[1][IDg] = ID.ToString();
             string IDFamilleEnfant = GEDCOM.AvoirFamilleEnfant(ID);
             grille[1][IDFAMILLEENFANT] = GEDCOM.AvoirFamilleEnfant(ID);
-            grille[0][NOM] = GEDCOM.AvoirNom(IDConjoint) + " " + GEDCOM.AvoirPrenom(IDConjoint);
+            grille[0][NOM] = GEDCOM.AvoirPrenom(IDConjoint) + " " + GEDCOM.AvoirNom(IDConjoint);
             for (int f = 2; f < 510; f += 2)
             {
                 int a = f / 2;
@@ -718,7 +756,7 @@ namespace WindowsFormsApp1
                 string n = GEDCOM.AvoirNom(ID);
                 string p = GEDCOM.AvoirPrenom(ID);
                 string np = "";
-                if (n != "" && p != "") np = GEDCOM.AvoirNom(ID) + " " + GEDCOM.AvoirPrenom(ID);
+                if (n != "" && p != "") np = GEDCOM.AvoirPrenom(ID) + " " + GEDCOM.AvoirNom(ID);
                 if (n != "" && p == "") np = GEDCOM.AvoirNom(ID);
                 if (n == "" && p != "") np = GEDCOM.AvoirPrenom(ID);
                 if (n == "" && p == "") np = "";
@@ -736,7 +774,7 @@ namespace WindowsFormsApp1
                 n = GEDCOM.AvoirNom(ID);
                 p = GEDCOM.AvoirPrenom(ID);
                 np = "";
-                if (n != "" && p != "") np = GEDCOM.AvoirNom(ID) + " " + GEDCOM.AvoirPrenom(ID);
+                if (n != "" && p != "") np = GEDCOM.AvoirPrenom(ID) + " " + GEDCOM.AvoirNom(ID);
                 if (n != "" && p == "") np = GEDCOM.AvoirNom(ID);
                 if (n == "" && p != "") np = GEDCOM.AvoirPrenom(ID);
                 if (n == "" && p == "") np = "";
@@ -806,12 +844,10 @@ namespace WindowsFormsApp1
                     ligne.WriteLine("Ver   =3.0");
                     for (index = 0; index < 512; index++)
                     {
-
                         if ((grille[index][NOM] != "" || grille[index][NELE] != "" || grille[index][NELIEU] != "" || grille[index][DELE] != ""
                              || grille[index][DELIEU] != "" || grille[index][MALE] != "" || grille[index][MALIEU] != "" ||
                              grille[index][NOTE1] != "" || grille[index][NOTE2] != "") && grille[index][SOSA] != "0")
                         {
-
                             ligne.WriteLine("[sosa*]");
                             ligne.WriteLine("No    =" + grille[index][SOSA]);
                             if (grille[index][NOM] != "") ligne.WriteLine("Nom   =" + grille[index][NOM]);
@@ -855,46 +891,7 @@ namespace WindowsFormsApp1
                 return false;
             }
         }
-        private void    EcrireSosaTasxxxx()
-        {
-            int index;
-            string dossier = "C:\\Users\\dapam\\Documents\\TableauAscendant\\";
-            try
-            {
-                if (File.Exists(dossier + "sosa.tas"))
-                {
-                    File.Delete(dossier + "sosa.tas");
-                }
-                //Création du fichier Texte
-                using (StreamWriter ligne = File.CreateText(dossier + "sosa.tas"))
-                {
-                    for (index = 1; index < 512; index++)
-                    {
-                        ligne.WriteLine("[sosa]");
-                        ligne.WriteLine(index.ToString());
-                        ligne.WriteLine("Nom " + index.ToString());
-                        ligne.WriteLine("1980-01-10");
-                        ligne.WriteLine("Ne lieu " + index.ToString());
-                        ligne.WriteLine("1980-01-11");
-                        ligne.WriteLine("De lieu " + index.ToString());
-                        ligne.WriteLine("1980-01-12");
-                        ligne.WriteLine("Ma lieu " + index.ToString());
-                    }
-                    ligne.WriteLine("[par]");
-                    ligne.WriteLine("Le programme");
-                    ligne.Close();
-                    this.Text = NomPrograme + "   " + FichierCourant;
-                    Modifier = false;
-                }
-            }
-            catch (Exception m)
-            {
-                SystemSounds.Beep.Play();
-                MessageBox.Show("Ne peut pas enregister le fichier sosa.tas.\r\n\r\n" + m.Message, "Problème ?",
-                                 MessageBoxButtons.OK,
-                                 MessageBoxIcon.Warning);
-            }
-        }
+        
         private void    EffacerData()
         {
             //SystemSounds.Beep.Play();
@@ -919,11 +916,9 @@ namespace WindowsFormsApp1
                 grille[f][NOTE1] = "";
                 grille[f][NOTE2] = "";
             }
-
             grille[1][GENERATION] = "1";
             grille[2][GENERATION] = "2";
             grille[3][GENERATION] = "3";
-
             for (int f = 4; f < 8; f++)
             {
                 grille[f][GENERATION] = "3";
@@ -1652,8 +1647,8 @@ namespace WindowsFormsApp1
             //int inch = 72 // 72 pointCreatePage
             XUnit pouce = XUnit.FromInch(1);
             XPen pen = new XPen(XColor.FromArgb(0, 0, 0),2);
-            XPen penG = new XPen(XColor.FromArgb(100, 100, 100), 0.5);
-            XPen penB = new XPen(XColor.FromArgb(255, 255, 255), 0.5);
+            XPen penG = new XPen(XColor.FromArgb(100, 100, 100), 1);
+            XPen penB = new XPen(XColor.FromArgb(255, 255, 255), 1);
             XFont fontT = new XFont("Arial", 14, XFontStyle.Regular);
             XFont font8 = new XFont("Arial", 8, XFontStyle.Regular);
             XFont font8B = new XFont("Arial", 8, XFontStyle.Bold);
@@ -1896,6 +1891,9 @@ namespace WindowsFormsApp1
             // dessine boite
             {
                 gfx.DrawRoundedRectangle(pen, CouleurBloc, Col2, Ligne[32] + (pouce * .25 / 2), largeurBoite, hauteurBoite, 10, 10); // Boite sosa 1
+                if(sosa != 1) {
+                    gfx.DrawRoundedRectangle(pen, CouleurBloc, Col2, Ligne[43], largeurBoite, hauteurBoiteMini, 10, 10); //  Boite sosa 1 conjoint
+                }
                 gfx.DrawRoundedRectangle(pen, CouleurBloc, Col4, Ligne[18] + (pouce * .25 / 2), largeurBoite, hauteurBoite, 10, 10); // Boite sosa 2
                 gfx.DrawRoundedRectangle(pen, CouleurBloc, Col4, Ligne[46] + (pouce * .25 / 2), largeurBoite, hauteurBoite, 10, 10); // Boite sosa 3
                 gfx.DrawRoundedRectangle(pen, CouleurBloc, Col6, Ligne[12], largeurBoite, hauteurBoite, 10, 10); // Boite sosa 4
@@ -1928,6 +1926,9 @@ namespace WindowsFormsApp1
                     gfx.DrawLine(pen, Col7, Ligne[28] + (pouce * .25 / 2), Col8 + 8, Ligne[28] + (pouce * .25 / 2)); // Horizontal 5
                     gfx.DrawLine(pen, Col7, Ligne[42] + (pouce * .25 / 2), Col8 + 8, Ligne[42] + (pouce * .25 / 2)); // Horizontal 6
                     gfx.DrawLine(pen, Col7, Ligne[56] + (pouce * .25 / 2), Col8 + 8, Ligne[56] + (pouce * .25 / 2)); // Horizontal 7
+                }
+                if(sosa != 1) {
+                    gfx.DrawLine(pen, Col2 + 8, Ligne[38] + 9, Col2 + 8, Ligne[44] - 9); // vertical sosa 1 conjoint
                 }
                 gfx.DrawLine(pen, Col4 + 8, Ligne[24] + 9, Col4 + 8, Ligne[48] - 9); // vertical 2 3
                 gfx.DrawLine(pen, Col6 + 8, Ligne[18],  Col6 + 8, Ligne[26]); // vertical 4 5
@@ -1978,7 +1979,10 @@ namespace WindowsFormsApp1
                     }
                 }
             }
-
+            if (sosa != 1) {
+                gfx.DrawString("M", font8B, XBrushes.Black, Col2 + 10, Ligne[40] + 6, XStringFormats.Default);  // sosa 1 conjoint
+                gfx.DrawString("L", font8B, XBrushes.Black, Col2 + 10, Ligne[40] + 6 + positionLieu, XStringFormats.Default);  // sosa 1 conjoint
+            }
             gfx.DrawString("M", font8B, XBrushes.Black, Col4 + 10, Ligne[35] + 6, XStringFormats.Default);      // sosa 02-03
             gfx.DrawString("L", font8B, XBrushes.Black, Col4 + 10, Ligne[35] + 6 + positionLieu, XStringFormats.Default);      // sosa 02-03
             gfx.DrawString("M", font8B, XBrushes.Black, Col6 + 10, Ligne[21] + 6, XStringFormats.Default);      // sosa 04-05
@@ -2041,8 +2045,24 @@ namespace WindowsFormsApp1
                 //info des boites
                 int largeurLigne = 142; // 
                 {
+                    if (sosa != 1){
+                        int sosaConjoint;
+                        if (sosa%2 == 0 ) {
+                            sosaConjoint = sosa + 1;
+                        } else {
+                            sosaConjoint = sosa - 1;
+                        }
+                        if (grille[sosaConjoint][NOM] == "")
+                        {
+                            gfx.DrawLine(penG, Col2 + 10, Ligne[60], Col2 + 142, Ligne[60]);
+                        }
+                        string rt = RacoucirNom(grille[sosaConjoint][NOM], ref gfx);
+                        gfx.DrawString(rt, font8B, XBrushes.Black, Col2 + 2, Ligne[43] + 12, XStringFormats.Default);
+
+                    }
                     for (f = 1; f < 8; f++)
                     {
+
                         // Nom
                         if (grille[sosaIndex[f]][NOM] == "")
                         {
@@ -2071,7 +2091,7 @@ namespace WindowsFormsApp1
                         }
                         rt = RacoucirTexte(grille[sosaIndex[f]][DELE], ref gfx);
                         gfx.DrawString(rt, font8, XBrushes.Black, positionBoite[f, 0] + xInfo, positionBoite[f, 1] + 40, XStringFormats.Default);
-                        // Deécédé endroit
+                        // Décédé endroit
                         if (grille[sosaIndex[f]][DELIEU] == "")
                         {
                             gfx.DrawLine(penG, positionBoite[f, 0] + 9, positionBoite[f, 1] + 50, positionBoite[f, 0] + largeurLigne, positionBoite[f, 1] + 50);
@@ -2094,6 +2114,36 @@ namespace WindowsFormsApp1
                     int p = 18;
                     int l = 140;
 
+
+                    // mariage 1 sosa = 1
+                    if (sosa != 1 ) {
+                        if (sosa%2 == 0 ) {
+                        
+                            if (grille[sosa][MALE] == "")
+                            {
+                                gfx.DrawLine(penG, Col2 + p, Ligne[39] + 9 + 6, Col2 + l, Ligne[39] + 9 + 6 );
+                            }
+                            gfx.DrawString(grille[sosa][MALE], font8, XBrushes.Black, Col2 + p, Ligne[40] + 6, XStringFormats.Default);
+                            if (grille[sosa][MALIEU] == "")
+                            {
+                                gfx.DrawLine(penG, Col2 + p, Ligne[42], Col2 + l, Ligne[42]);
+                            }
+                            gfx.DrawString(grille[sosa][MALIEU], font8, XBrushes.Black, Col2 + p, Ligne[40] + 6 + positionLieu, XStringFormats.Default);
+                        } else {
+                            if (grille[sosa-1][MALE] == "") 
+                            {
+                                gfx.DrawLine(penG, Col2 + p, Ligne[39] + 9 + 6, Col2 + l, Ligne[39] + 9 + 6 );
+                            }
+                            gfx.DrawString(grille[sosa-1][MALE], font8, XBrushes.Black, Col2 + p, Ligne[40] + 6, XStringFormats.Default);
+                            if (grille[sosa-1][MALIEU] == "")
+                            {
+                                gfx.DrawLine(penG, Col2 + p, Ligne[42], Col2 + l, Ligne[42]);
+                            }
+                            gfx.DrawString(grille[sosa-1][MALIEU], font8, XBrushes.Black, Col2 + p, Ligne[40] + 6 + positionLieu, XStringFormats.Default);
+                        }
+
+                    }
+
                     // mariage 2 3
                     if (grille[sosa * 2][MALE] == "")
                     {
@@ -2102,7 +2152,7 @@ namespace WindowsFormsApp1
                     gfx.DrawString(grille[sosa * 2][MALE], font8, XBrushes.Black, Col4 + p, Ligne[35] + 6, XStringFormats.Default);
                     if (grille[sosa * 2][MALIEU] == "")
                     {
-                        gfx.DrawLine(penG, Col4 + p, Ligne[37], Col4 + l, Ligne[35] + 6 + positionLieu);
+                        gfx.DrawLine(penG, Col4 + p, Ligne[37], Col4 + l, Ligne[37]);
                     }
                     gfx.DrawString(grille[sosa * 2][MALIEU], font8, XBrushes.Black, Col4 + p, Ligne[35] + 6 + positionLieu, XStringFormats.Default);
 
@@ -2219,16 +2269,18 @@ namespace WindowsFormsApp1
                 }
             }
             // Note 1
-            rect = new XRect(Col1, Ligne[13], Col3 - Col1, Ligne[31]-Ligne[13]);
-            gfx.DrawRectangle(penB, rect);
+            rect = new XRect(Col1, Ligne[13], Col3 - Col1, hauteurLigne  * 18);
+            //gfx.DrawRectangle(penB, rect);
             tf.Alignment = XParagraphAlignment.Justify;
-
             tf.DrawString(grille[sosa][NOTE1], font8, XBrushes.Black, rect, XStringFormats.TopLeft);
-            // Note 2
-            rect = new XRect(Col1, Ligne[41], Col3 - Col1, Ligne[31] - Ligne[13]);
-            gfx.DrawRectangle(penB, rect);
-            tf.Alignment = XParagraphAlignment.Justify;
 
+
+
+
+            // Note 2
+            rect = new XRect(Col1, Ligne[46], Col3 - Col1, hauteurLigne  * 18);
+            //gfx.DrawRectangle(penB, rect);
+            tf.Alignment = XParagraphAlignment.Justify;
             tf.DrawString(grille[sosa][NOTE2], font8, XBrushes.Black, rect, XStringFormats.TopLeft);
             // bas de page
             if (fleche)
@@ -2564,78 +2616,15 @@ namespace WindowsFormsApp1
             } while (textInfo.Width  > LARGEURTEXTEFICHE);
             return "..." + text;
         }
-        private void    RafraichirData()
+        private void RafraichirData()
         {
             sosaCourant = Int32.Parse(ChoixSosaComboBox.Text);
             int index;
             // affiche les informations
             index = sosaCourant;
-            //GenerationAlb.Text = "";
-            //GenerationBlb.Text = "";
-            //GenerationClb.Text = "";
-            if (index > 1)
-            {
-                /*
-                Sosa1MaLeTextBox.Visible = false;
-                Sosa1MaEndroitTextBox.Visible = false;
-                Sosa1MaAvecTextBox.Visible = false;
 
-                Sosa1MaLelb.Visible = false;
-                Sosa1MaEndroitTextlb.Visible = false;
-                Sosa1MaAvecTextlb.Visible = false;*/
-
-                /*
-                if (index % 2 == 0)
-                {
-                    Sosa1MaLeTextBox.Text = grille[index][MALE];
-                    Sosa1MaLeTextBox.Visible = true;
-                    Sosa1MaLelb.Visible = false;
-
-                    Sosa1MaEndroitTextBox.Text = grille[index][MALIEU];
-                    Sosa1MaEndroitTextBox.Visible = true;
-                    Sosa1MaEndroitTextlb.Visible = false;
-
-                    Sosa1MaAvecTextlb.Text = grille[index + 1][NOM];
-                    Sosa1MaAvecTextBox.Visible = false;
-                    Sosa1MaAvecTextlb.Visible = true;
-                }
-                else
-                {
-                    Sosa1MaLelb.Text = grille[index-1][MALE];
-                    Sosa1MaLeTextBox.Visible = false;
-                    Sosa1MaLelb.Visible = true;
-                    Sosa1MaEndroitTextlb.Text = grille[index - 1][MALIEU];
-                    Sosa1MaEndroitTextBox.Visible = false;
-                    Sosa1MaEndroitTextlb.Visible = true;
-
-                    Sosa1MaAvecTextlb.Text = grille[index - 1][NOM];
-                    Sosa1MaAvecTextBox.Visible = false;
-                    Sosa1MaAvecTextlb.Visible = true;
-                }
-                */
-            }
-            /*if (index == 1 )
-            {
-                Sosa1MaLelb.Visible = false;
-                Sosa1MaEndroitTextlb.Visible = false;
-                Sosa1MaAvecTextlb.Visible = false;
-                Sosa1MaLeTextBox.Visible = true;
-                Sosa1MaEndroitTextBox.Visible = true;
-                Sosa1MaAvecTextBox.Visible = true;
-                Sosa1MaLeTextBox.Text = grille[1][MALE];
-                Sosa1MaEndroitTextBox.Text = grille[index][MALIEU];
-                Sosa1MaAvecTextBox.Text = grille[0][NOM];
-
-            }
-            */
             if (index == 0)
             {
-                /*Sosa1MaLeTextBox.Visible = false;
-                Sosa1MaEndroitTextBox.Visible = false;
-                Sosa1MaAvecTextBox.Visible = false;
-                Sosa1MaLelb.Visible = false;
-                Sosa1MaEndroitLabel.Visible = false;
-                Sosa1MaAvecLabel.Visible = false;*/
                 Note1.Visible = false;
                 Note2.Visible = false;
             }
@@ -2644,6 +2633,24 @@ namespace WindowsFormsApp1
             Sosa1NeEndroitTextBox.Text = grille[index][NELIEU];
             Sosa1DeTextBox.Text = grille[index][DELE];
             Sosa1DeEndroitTextBox.Text = grille[index][DELIEU];
+            Sosa1MaTextBox.Text = grille[index][MALE];
+            Sosa1MaEndroitTextBox.Text = grille[index][MALIEU];
+            if (index > 1)
+            {
+                int i = index % 2;
+                if (index % 2 == 0)
+                {
+                    SosaConjoint1NomTextBox.Text = grille[index + 1][NOM];
+                    SosaConjoint1NomTextBox.Visible = true;
+                    SosaConjoint1Label.Text = (index + 1).ToString();
+                    SosaConjoint1Label.Visible = true;
+                }
+                else
+                {
+                    SosaConjoint1NomTextBox.Visible = false;
+                    SosaConjoint1Label.Visible = false;
+                }
+            }
             Note1.Text = grille[index][NOTE1];
             Note2.Text = grille[index][NOTE2];
             GenerationAlb.Text = grille[index][GENERATION];
@@ -2739,13 +2746,6 @@ namespace WindowsFormsApp1
                 grille[index][DELIEU] = Sosa1DeEndroitTextBox.Text;
                 grille[index][NOTE1] = Note1.Text;
                 grille[index][NOTE2] = Note2.Text;
-
-                /*if (sosaCourant == 1)                                                          
-                {
-                    grille[1][MALE] = Sosa1MaLeTextBox.Text;
-                    grille[1][MALIEU] = Sosa1MaEndroitTextBox.Text;
-                    grille[0][NOM] = Sosa1MaAvecTextBox.Text;
-                }*/
 
                 index = sosaCourant * 2;
                 grille[index][SOSA] = index.ToString();
@@ -2982,8 +2982,7 @@ namespace WindowsFormsApp1
         /// </returns> 
         private bool    ValiderDate( string date)
         {
- 
-            if (date == "")
+             if (date == "")
             { 
                 return true;
             }
@@ -3120,37 +3119,10 @@ namespace WindowsFormsApp1
             //flèche droite
 
             Pen arrowPen = new Pen(Color.Black, 2);
-            
-            //Rectangle arrowRectangle4 = new Rectangle(RectangleSosa4.Location.X + 311, RectangleSosa4.Location.Y + 49, 40, 48);
-            //LinearGradientBrush arrowBrush4 = new LinearGradientBrush(arrowRectangle4, Color.Transparent, Color.Transparent, LinearGradientMode.Vertical);
-            //DessineFlecheDroite(e.Graphics, arrowPen, arrowBrush4, arrowRectangle4);
-            
-
-            //Rectangle arrowRectangle5 = new Rectangle(RectangleSosa5.Location.X + 311, RectangleSosa5.Location.Y + 49, 40, 48);
-            //LinearGradientBrush arrowBrush5 = new LinearGradientBrush(arrowRectangle5, Color.Transparent, Color.Transparent, LinearGradientMode.Vertical);
-            //DessineFlecheDroite(e.Graphics, arrowPen, arrowBrush5, arrowRectangle5);
-
-            //Rectangle arrowRectangle6 = new Rectangle(RectangleSosa6.Location.X + 311, RectangleSosa6.Location.Y + 49, 40, 48);
-            //LinearGradientBrush arrowBrush6 = new LinearGradientBrush(arrowRectangle6, Color.Transparent, Color.Transparent, LinearGradientMode.Vertical);
-            //DessineFlecheDroite(e.Graphics, arrowPen, arrowBrush6, arrowRectangle6);
-
-            //Rectangle arrowRectangle7 = new Rectangle(RectangleSosa7.Location.X + 311, RectangleSosa7.Location.Y + 49, 40, 48);
-            //LinearGradientBrush arrowBrush7 = new LinearGradientBrush(arrowRectangle7, Color.Transparent, Color.Transparent, LinearGradientMode.Vertical);
-            //DessineFlecheDroite(e.Graphics, arrowPen, arrowBrush7, arrowRectangle7);
-
-            //Rectangle arrowRectangle1 = new Rectangle(RectangleSosa1.Location.X - 50, RectangleSosa1.Location.Y + 49, 40, 48);
-            //LinearGradientBrush arrowBrush1 = new LinearGradientBrush(arrowRectangle1, Color.Transparent, Color.Transparent, LinearGradientMode.Vertical);
-            //DessineFlecheGauche(e.Graphics, arrowPen, arrowBrush1, arrowRectangle1);
-        }
-        private void    Directive_TextChanged(object sender, EventArgs e)
-        {
-
         }
         private void    Sosa1NomTextBox_TextChanged(object sender, EventArgs e)
         {
             grille[sosaCourant][NOM] = Sosa1NomTextBox.Text;
-            Modifier = true;
-            this.Text = NomPrograme + "   *" + FichierCourant;
             if (!LongeurNomtOk(grille[sosaCourant][NOM]))
             {
                 Sosa1NomTextBox.BackColor = couleurTextTropLong;
@@ -3160,12 +3132,14 @@ namespace WindowsFormsApp1
                 Sosa1NomTextBox.BackColor = couleurChamp;
             }
         }
-        private void    Sosa1NeTextBox_TextChanged(object sender, EventArgs e)
+        private void Sosa1NomTextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
-
-            grille[sosaCourant][NELE] = Sosa1NeTextBox.Text;
             Modifier = true;
             this.Text = NomPrograme + "   *" + FichierCourant;
+        }
+        private void    Sosa1NeTextBox_TextChanged(object sender, EventArgs e)
+        {
+            grille[sosaCourant][NELE] = Sosa1NeTextBox.Text;
             bool rep  = ValiderDate(Sosa1NeTextBox.Text);
             if (rep)
             {
@@ -3181,13 +3155,17 @@ namespace WindowsFormsApp1
             }
             else
             {
-                Sosa1NeTextBox.BackColor = Color.LightCoral;
+                Sosa1NeTextBox.BackColor = Color.Red;
             }
+        }
+        private void Sosa1NeTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            Modifier = true;
+            this.Text = NomPrograme + "   *" + FichierCourant;
         }
         private void    Sosa1NeEndroitTextBox_TextChanged(object sender, EventArgs e)
         {
             grille[sosaCourant][NELIEU] = Sosa1NeEndroitTextBox.Text;
-            Modifier = true;
             if (!LongeurTextOk(grille[sosaCourant][NELIEU]))
             {
                 Sosa1NeEndroitTextBox.BackColor = couleurTextTropLong;
@@ -3196,11 +3174,14 @@ namespace WindowsFormsApp1
                 Sosa1NeEndroitTextBox.BackColor = couleurChamp;
             }
         }
+        private void Sosa1NeEndroitTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            Modifier = true;
+            this.Text = NomPrograme + "   *" + FichierCourant;
+        }
         private void    Sosa1DeTextBox_TextChanged(object sender, EventArgs e)
         {
             grille[sosaCourant][DELE] = Sosa1DeTextBox.Text;
-            Modifier = true;
-            this.Text = NomPrograme + "   *" + FichierCourant;
             bool rep = ValiderDate(Sosa1DeTextBox.Text);
             if (rep)
             {
@@ -3216,14 +3197,17 @@ namespace WindowsFormsApp1
             }
             else
             {
-                Sosa1DeTextBox.BackColor = Color.LightCoral;
+                Sosa1DeTextBox.BackColor = Color.Red;
             }
+        }
+        private void Sosa1DeTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            Modifier = true;
+            this.Text = NomPrograme + "   *" + FichierCourant;
         }
         private void Sosa1DeEndroitTextBox_TextChanged(object sender, EventArgs e)
         {
             grille[sosaCourant][DELIEU] = Sosa1DeEndroitTextBox.Text;
-            Modifier = true;
-            this.Text = NomPrograme + "   *" + FichierCourant;
             if (!LongeurTextOk(grille[sosaCourant][DELIEU]))
             {
                 Sosa1DeEndroitTextBox.BackColor = couleurTextTropLong;
@@ -3233,11 +3217,14 @@ namespace WindowsFormsApp1
                 Sosa1DeEndroitTextBox.BackColor = couleurChamp;
             }
         }
+        private void Sosa1DeEndroitTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            Modifier = true;
+            this.Text = NomPrograme + "   *" + FichierCourant;
+        }
         private void Sosa2NomTextBox_TextChanged(object sender, EventArgs e)
         {
             grille[sosaCourant * 2][NOM] = Sosa2NomTextBox.Text;
-            Modifier = true;
-            this.Text = NomPrograme + "   *" + FichierCourant;
             Sosa2NomTextBox.BackColor = Color.White;
             if (!LongeurNomtOk(grille[sosaCourant * 2][NOM]))
             {
@@ -3248,17 +3235,16 @@ namespace WindowsFormsApp1
                 Sosa2NomTextBox.BackColor = couleurChamp;
             }
         }
+        private void Sosa2NomTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            Modifier = true;
+            this.Text = NomPrograme + "   *" + FichierCourant;
+        }
         private void Sosa2NeTextBox_TextChanged(object sender, EventArgs e)
         {
             grille[sosaCourant * 2][NELE] = Sosa2NeTextBox.Text;
-            Modifier = true;
-            this.Text = NomPrograme + "   *" + FichierCourant;
             bool rep = ValiderDate(Sosa2NeTextBox.Text);
             if (rep)
-            {
-                Sosa2NeTextBox.BackColor = Color.LightCoral;
-            }
-            else
             {
                 Sosa2NeTextBox.BackColor = Color.White;
                 if (!LongeurTextOk(grille[sosaCourant][NELE]))
@@ -3270,12 +3256,20 @@ namespace WindowsFormsApp1
                     Sosa2NeTextBox.BackColor = couleurChamp;
                 }
             }
+            else
+            {
+                Sosa2NeTextBox.BackColor = Color.Red;
+            }
+            
+        }
+        private void Sosa2NeTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            Modifier = true;
+            this.Text = NomPrograme + "   *" + FichierCourant;
         }
         private void Sosa2NeEndroitTextBox_TextChanged(object sender, EventArgs e)
         {
             grille[sosaCourant * 2][NELIEU] = Sosa2NeEndroitTextBox.Text;
-            Modifier = true;
-            this.Text = NomPrograme + "   *" + FichierCourant;
             if (!LongeurTextOk(Sosa2NeEndroitTextBox.Text))
             {
                 Sosa2NeEndroitTextBox.BackColor = couleurTextTropLong;
@@ -3285,11 +3279,14 @@ namespace WindowsFormsApp1
                 Sosa2NeEndroitTextBox.BackColor = couleurChamp;
             }
         }
+        private void Sosa2NeEndroitTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            Modifier = true;
+            this.Text = NomPrograme + "   *" + FichierCourant;
+        }
         private void Sosa2DeTextBox_TextChanged(object sender, EventArgs e)
         {
             grille[sosaCourant * 2][DELE] = Sosa2DeTextBox.Text;
-            Modifier = true;
-            this.Text = NomPrograme + "   *" + FichierCourant;
             bool rep = ValiderDate(Sosa2DeTextBox.Text);
             if (rep)
             {
@@ -3305,14 +3302,17 @@ namespace WindowsFormsApp1
             }
             else
             {
-                Sosa2DeTextBox.BackColor = Color.LightCoral;
+                Sosa2DeTextBox.BackColor = Color.Red;
             }
+        }
+        private void Sosa2DeTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            Modifier = true;
+            this.Text = NomPrograme + "   *" + FichierCourant;
         }
         private void Sosa2DeEndroitTextBox_TextChanged(object sender, EventArgs e)
         {
             grille[sosaCourant * 2][DELIEU] = Sosa2DeEndroitTextBox.Text;
-            Modifier = true;
-            this.Text = NomPrograme + "   *" + FichierCourant;
             if (!LongeurTextOk(Sosa2DeEndroitTextBox.Text))
             {
                 Sosa2DeEndroitTextBox.BackColor = couleurTextTropLong;
@@ -3322,11 +3322,14 @@ namespace WindowsFormsApp1
                 Sosa2DeEndroitTextBox.BackColor = couleurChamp;
             }
         }
+        private void Sosa2DeEndroitTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            Modifier = true;
+            this.Text = NomPrograme + "   *" + FichierCourant;
+        }
         private void Sosa23MaTextBox_TextChanged(object sender, EventArgs e)
         {
             grille[sosaCourant * 2][MALE] = Sosa23MaTextBox.Text;
-            Modifier = true;
-            this.Text = NomPrograme + "   *" + FichierCourant;
             bool rep = ValiderDate(Sosa23MaTextBox.Text);
             if (rep)
             {
@@ -3342,14 +3345,17 @@ namespace WindowsFormsApp1
             }
             else
             {
-                Sosa23MaTextBox.BackColor = Color.LightCoral;
+                Sosa23MaTextBox.BackColor = Color.Red;
             }
+        }
+        private void Sosa23MaTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            Modifier = true;
+            this.Text = NomPrograme + "   *" + FichierCourant;
         }
         private void Sosa23MaEndroitTextBox_TextChanged(object sender, EventArgs e)
         {
             grille[sosaCourant * 2][MALIEU] = Sosa23MaEndroitTextBox.Text;
-            Modifier = true;
-            this.Text = NomPrograme + "   *" + FichierCourant;
             if (!LongeurTextOk(Sosa23MaEndroitTextBox.Text))
             {
                 Sosa23MaEndroitTextBox.BackColor = couleurTextTropLong;
@@ -3359,11 +3365,14 @@ namespace WindowsFormsApp1
                 Sosa23MaEndroitTextBox.BackColor = couleurChamp;
             }
         }
+        private void Sosa23MaEndroitBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            Modifier = true;
+            this.Text = NomPrograme + "   *" + FichierCourant;
+        }
         private void Sosa3NomTextBox_TextChanged(object sender, EventArgs e)
         {
             grille[sosaCourant * 2 + 1][NOM] = Sosa3NomTextBox.Text;
-            Modifier = true;
-            this.Text = NomPrograme + "   *" + FichierCourant;
             if (!LongeurNomtOk(grille[sosaCourant * 2 + 1][NOM]))
             {
                 Sosa3NomTextBox.BackColor = couleurTextTropLong;
@@ -3373,11 +3382,14 @@ namespace WindowsFormsApp1
                 Sosa3NomTextBox.BackColor = couleurChamp;
             }
         }
+        private void Sosa3NomTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            Modifier = true;
+            this.Text = NomPrograme + "   *" + FichierCourant;
+        }
         private void Sosa3NeTextBox_TextChanged(object sender, EventArgs e)
         {
             grille[sosaCourant * 2 + 1][NELE] = Sosa3NeTextBox.Text;
-            Modifier = true;
-            this.Text = NomPrograme + "   *" + FichierCourant;
             bool rep = ValiderDate(Sosa3NeTextBox.Text);
             if (rep)
             {
@@ -3393,14 +3405,17 @@ namespace WindowsFormsApp1
             }
             else
             {
-                Sosa3NeTextBox.BackColor = Color.LightCoral;
+                Sosa3NeTextBox.BackColor = Color.Red;
             }
+        }
+        private void Sosa3NeTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            Modifier = true;
+            this.Text = NomPrograme + "   *" + FichierCourant;
         }
         private void Sosa3NeEndroitTextBox_TextChanged(object sender, EventArgs e)
         {
             grille[sosaCourant * 2 + 1][NELIEU] = Sosa3NeEndroitTextBox.Text;
-            Modifier = true;
-            this.Text = NomPrograme + "   *" + FichierCourant;
             if (!LongeurTextOk(Sosa3NeEndroitTextBox.Text))
             {
                 Sosa3NeEndroitTextBox.BackColor = couleurTextTropLong;
@@ -3410,11 +3425,14 @@ namespace WindowsFormsApp1
                 Sosa3NeEndroitTextBox.BackColor = couleurChamp;
             }
         }
+        private void Sosa3NeEndroitTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            Modifier = true;
+            this.Text = NomPrograme + "   *" + FichierCourant;
+        }
         private void Sosa3DeTextBox_TextChanged(object sender, EventArgs e)
         {
             grille[sosaCourant * 2 + 1][DELE] = Sosa3DeTextBox.Text;
-            Modifier = true;
-            this.Text = NomPrograme + "   *" + FichierCourant;
             bool rep = ValiderDate(Sosa3DeTextBox.Text);
             if (rep)
             {
@@ -3430,14 +3448,17 @@ namespace WindowsFormsApp1
             }
             else
             {
-                Sosa3DeTextBox.BackColor = Color.LightCoral;
+                Sosa3DeTextBox.BackColor = Color.Red;
             }
+        }
+        private void Sosa3DeTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            Modifier = true;
+            this.Text = NomPrograme + "   *" + FichierCourant;
         }
         private void Sosa3DeEndroitTextBox_TextChanged(object sender, EventArgs e)
         {
             grille[sosaCourant * 2 + 1][DELIEU] = Sosa3DeEndroitTextBox.Text;
-            Modifier = true;
-            this.Text = NomPrograme + "   *" + FichierCourant;
             if (!LongeurTextOk(Sosa3DeEndroitTextBox.Text))
             {
                 Sosa3DeEndroitTextBox.BackColor = couleurTextTropLong;
@@ -3447,11 +3468,14 @@ namespace WindowsFormsApp1
                 Sosa3DeEndroitTextBox.BackColor = couleurChamp;
             }
         }
+        private void Sosa3DeEndroitTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            Modifier = true;
+            this.Text = NomPrograme + "   *" + FichierCourant;
+        }
         private void Sosa4NomTextBox_TextChanged(object sender, EventArgs e)
         {
             grille[sosaCourant * 4][NOM] = Sosa4NomTextBox.Text;
-            Modifier = true;  
-            this.Text = NomPrograme + "   *" + FichierCourant;
             if (!LongeurNomtOk(grille[sosaCourant * 4][NOM]))
             {
                 Sosa4NomTextBox.BackColor = couleurTextTropLong;
@@ -3461,11 +3485,14 @@ namespace WindowsFormsApp1
                 Sosa4NomTextBox.BackColor = couleurChamp;
             }
         }
+        private void Sosa4NomTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            Modifier = true;
+            this.Text = NomPrograme + "   *" + FichierCourant;
+        }
         private void Sosa4NeTextBox_TextChanged(object sender, EventArgs e)
         {
             grille[sosaCourant * 4][NELE] = Sosa4NeTextBox.Text;
-            Modifier = true;
-            this.Text = NomPrograme + "   *" + FichierCourant;
             bool rep = ValiderDate(Sosa4NeTextBox.Text);
             if (rep)
             {
@@ -3481,14 +3508,17 @@ namespace WindowsFormsApp1
             }
             else
             {
-                Sosa4NeTextBox.BackColor = Color.LightCoral;
+                Sosa4NeTextBox.BackColor = Color.Red;
             }
+        }
+        private void Sosa4NeTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            Modifier = true;
+            this.Text = NomPrograme + "   *" + FichierCourant;
         }
         private void Sosa4NeEndroitTextBox_TextChanged(object sender, EventArgs e)
         {
             grille[sosaCourant * 4][NELIEU] = Sosa4NeEndroitTextBox.Text;
-            Modifier = true;
-            this.Text = NomPrograme + "   *" + FichierCourant;
             if (!LongeurTextOk(Sosa4NeEndroitTextBox.Text))
             {
                 Sosa4NeEndroitTextBox.BackColor = couleurTextTropLong;
@@ -3498,11 +3528,14 @@ namespace WindowsFormsApp1
                 Sosa4NeEndroitTextBox.BackColor = couleurChamp;
             }
         }
+        private void Sosa4NeEndroitTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            Modifier = true;
+            this.Text = NomPrograme + "   *" + FichierCourant;
+        }
         private void Sosa4DeTextBox_TextChanged(object sender, EventArgs e)
         {
             grille[sosaCourant * 4][DELE] = Sosa4DeTextBox.Text;
-            Modifier = true;
-            this.Text = NomPrograme + "   *" + FichierCourant;
             bool rep = ValiderDate(Sosa4DeTextBox.Text);
             if (rep)
             {
@@ -3518,14 +3551,17 @@ namespace WindowsFormsApp1
             }
             else
             {
-                Sosa4DeTextBox.BackColor = Color.LightCoral;
+                Sosa4DeTextBox.BackColor = Color.Red;
             }
+        }
+        private void Sosa4DeTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            Modifier = true;
+            this.Text = NomPrograme + "   *" + FichierCourant;
         }
         private void Sosa4DeEndroitTextBox_TextChanged(object sender, EventArgs e)
         {
             grille[sosaCourant * 4][DELIEU] = Sosa4DeEndroitTextBox.Text;
-            Modifier = true;
-            this.Text = NomPrograme + "   *" + FichierCourant;
             if (!LongeurTextOk(Sosa4DeEndroitTextBox.Text))
             {
                 Sosa4DeEndroitTextBox.BackColor = couleurTextTropLong;
@@ -3535,11 +3571,14 @@ namespace WindowsFormsApp1
                 Sosa4DeEndroitTextBox.BackColor = couleurChamp;
             }
         }
+        private void Sosa4DeEndroitTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            Modifier = true;
+            this.Text = NomPrograme + "   *" + FichierCourant;
+        }
         private void Sosa45MaTextBox_TextChanged(object sender, EventArgs e)
         {
             grille[sosaCourant * 4][MALE] = Sosa45MaTextBox.Text;
-            Modifier = true;
-            this.Text = NomPrograme + "   *" + FichierCourant;
             bool rep = ValiderDate(Sosa45MaTextBox.Text);
             if (rep)
             {
@@ -3555,14 +3594,17 @@ namespace WindowsFormsApp1
             }
             else
             {
-                Sosa45MaTextBox.BackColor = Color.LightCoral;
+                Sosa45MaTextBox.BackColor = Color.Red;
             }
+        }
+        private void Sosa45MaTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            Modifier = true;
+            this.Text = NomPrograme + "   *" + FichierCourant;
         }
         private void Sosa45MaEndroitTextBox_TextChanged(object sender, EventArgs e)
         {
             grille[sosaCourant * 4][MALIEU] = Sosa45MaLEndroitTextBox.Text;
-            Modifier = true;
-            this.Text = NomPrograme + "   *" + FichierCourant;
             if (!LongeurTextOk(Sosa45MaLEndroitTextBox.Text))
             {
                 Sosa45MaLEndroitTextBox.BackColor = couleurTextTropLong;
@@ -3572,11 +3614,14 @@ namespace WindowsFormsApp1
                 Sosa45MaLEndroitTextBox.BackColor = couleurChamp;
             }
         }
+        private void Sosa45MaEndroitNomTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            Modifier = true;
+            this.Text = NomPrograme + "   *" + FichierCourant;
+        }
         private void Sosa5NomTextBox_TextChanged(object sender, EventArgs e)
         {
             grille[sosaCourant * 4 + 1][NOM] = Sosa5NomTextBox.Text;
-            Modifier = true;
-            this.Text = NomPrograme + "   *" + FichierCourant;
             if (!LongeurNomtOk(grille[sosaCourant * 4 + 1][NOM]))
             {
                 Sosa5NomTextBox.BackColor = couleurTextTropLong;
@@ -3586,11 +3631,14 @@ namespace WindowsFormsApp1
                 Sosa5NomTextBox.BackColor = couleurChamp;
             }
         }
+        private void Sosa5NomTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            Modifier = true;
+            this.Text = NomPrograme + "   *" + FichierCourant;
+        }
         private void Sosa5NeTextBox_TextChanged(object sender, EventArgs e)
         {
             grille[sosaCourant * 4 + 1][NELE] = Sosa5NeTextBox.Text;
-            Modifier = true;
-            this.Text = NomPrograme + "   *" + FichierCourant;
             bool rep = ValiderDate(Sosa5NeTextBox.Text);
             if (rep)
             {
@@ -3606,14 +3654,17 @@ namespace WindowsFormsApp1
             }
             else
             {
-                Sosa5NeTextBox.BackColor = Color.LightCoral;
+                Sosa5NeTextBox.BackColor = Color.Red;
             }
+        }
+        private void Sosa5NeTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            Modifier = true;
+            this.Text = NomPrograme + "   *" + FichierCourant;
         }
         private void Sosa5NeEndroitTextBox_TextChanged(object sender, EventArgs e)
         {
             grille[sosaCourant * 4 + 1][NELIEU] = Sosa5NeEndroitTextBox.Text;
-            Modifier = true;
-            this.Text = NomPrograme + "   *" + FichierCourant;
             if (!LongeurTextOk(Sosa5NeEndroitTextBox.Text))
             {
                 Sosa5NeEndroitTextBox.BackColor = couleurTextTropLong;
@@ -3623,12 +3674,15 @@ namespace WindowsFormsApp1
                 Sosa5NeEndroitTextBox.BackColor = couleurChamp;
             }
         }
+        private void Sosa5NeEndroit1NomTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            Modifier = true;
+            this.Text = NomPrograme + "   *" + FichierCourant;
+        }
         private void Sosa5DeTextBox_TextChanged(object sender, EventArgs e)
         {
             {
                 grille[sosaCourant * 4 + 1][DELE] = Sosa5DeTextBox.Text;
-                Modifier = true;
-                this.Text = NomPrograme + "   *" + FichierCourant;
                 bool rep = ValiderDate(Sosa5DeTextBox.Text);
                 if (rep)
                 {
@@ -3644,15 +3698,18 @@ namespace WindowsFormsApp1
                 }
                 else
                 {
-                    Sosa5DeTextBox.BackColor = Color.LightCoral;
+                    Sosa5DeTextBox.BackColor = Color.Red;
                 }
             }
+        }
+        private void Sosa5DeTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            Modifier = true;
+            this.Text = NomPrograme + "   *" + FichierCourant;
         }
         private void Sosa5DeEndroitTextBox_TextChanged(object sender, EventArgs e)
         {
             grille[sosaCourant * 4 + 1][DELIEU] = Sosa5DeEndroitTextBox.Text;
-            Modifier = true;
-            this.Text = NomPrograme + "   *" + FichierCourant;
             if (!LongeurTextOk(Sosa5DeEndroitTextBox.Text))
             {
                 Sosa5DeEndroitTextBox.BackColor = couleurTextTropLong;
@@ -3662,11 +3719,14 @@ namespace WindowsFormsApp1
                 Sosa5DeEndroitTextBox.BackColor = couleurChamp;
             }
         }
+        private void Sosa5DeEndroitTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            Modifier = true;
+            this.Text = NomPrograme + "   *" + FichierCourant;
+        }
         private void Sosa6NomTextBox_TextChanged(object sender, EventArgs e)
         {
             grille[sosaCourant * 4 + 2][NOM] = Sosa6NomTextBox.Text;
-            Modifier = true;
-            this.Text = NomPrograme + "   *" + FichierCourant;
             if (!LongeurNomtOk(grille[sosaCourant * 4 + 2][NOM]))
             {
                 Sosa6NomTextBox.BackColor = couleurTextTropLong;
@@ -3676,11 +3736,14 @@ namespace WindowsFormsApp1
                 Sosa6NomTextBox.BackColor = couleurChamp;
             }
         }
+        private void Sosa6NomTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            Modifier = true;
+            this.Text = NomPrograme + "   *" + FichierCourant;
+        }
         private void Sosa6NeTextBox_TextChanged(object sender, EventArgs e)
         {
             grille[sosaCourant * 4 + 2][NELE] = Sosa6NeTextBox.Text;
-            Modifier = true;
-            this.Text = NomPrograme + "   *" + FichierCourant;
             bool rep = ValiderDate(Sosa6NeTextBox.Text);
             if (rep)
             {
@@ -3696,14 +3759,17 @@ namespace WindowsFormsApp1
             }
             else
             {
-                Sosa6NeTextBox.BackColor = Color.LightCoral;
+                Sosa6NeTextBox.BackColor = Color.Red;
             }
+        }
+        private void Sosa6NeTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            Modifier = true;
+            this.Text = NomPrograme + "   *" + FichierCourant;
         }
         private void Sosa6NeEndroitTextBox_TextChanged(object sender, EventArgs e)
         {
             grille[sosaCourant * 4 + 2][NELIEU] = Sosa6NeEndroitTextBox.Text;
-            Modifier = true;
-            this.Text = NomPrograme + "   *" + FichierCourant;
             if (!LongeurTextOk(Sosa6NeEndroitTextBox.Text))
             {
                 Sosa6NeEndroitTextBox.BackColor = couleurTextTropLong;
@@ -3713,11 +3779,14 @@ namespace WindowsFormsApp1
                 Sosa6NeEndroitTextBox.BackColor = couleurChamp;
             }
         }
+        private void Sosa6NeEndroitTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            Modifier = true;
+            this.Text = NomPrograme + "   *" + FichierCourant;
+        }
         private void Sosa6DeTextBox_TextChanged(object sender, EventArgs e)
         {
             grille[sosaCourant * 4 + 2][DELE] = Sosa6DeTextBox.Text;
-            Modifier = true;
-            this.Text = NomPrograme + "   *" + FichierCourant;
             bool rep = ValiderDate(Sosa6DeTextBox.Text);
             if (rep)
             {
@@ -3733,14 +3802,17 @@ namespace WindowsFormsApp1
             }
             else
             {
-                Sosa6DeTextBox.BackColor = Color.LightCoral;
+                Sosa6DeTextBox.BackColor = Color.Red;
             }
+        }
+        private void Sosa6DeTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            Modifier = true;
+            this.Text = NomPrograme + "   *" + FichierCourant;
         }
         private void Sosa6DeEndroitTextBox_TextChanged(object sender, EventArgs e)
         {
             grille[sosaCourant * 4 + 2][DELIEU] = Sosa6DeEndroitTextBox.Text;
-            Modifier = true;
-            this.Text = NomPrograme + "   *" + FichierCourant;
             if (!LongeurTextOk(Sosa6DeEndroitTextBox.Text))
             {
                 Sosa6DeEndroitTextBox.BackColor = couleurTextTropLong;
@@ -3750,11 +3822,14 @@ namespace WindowsFormsApp1
                 Sosa6DeEndroitTextBox.BackColor = couleurChamp;
             }
         }
+        private void Sosa6DeEndroitTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            Modifier = true;
+            this.Text = NomPrograme + "   *" + FichierCourant;
+        }
         private void Sosa67MaTextBox_TextChanged(object sender, EventArgs e)
         {
             grille[sosaCourant * 4 + 2][MALE] = Sosa67MaTextBox.Text;
-            Modifier = true;
-            this.Text = NomPrograme + "   *" + FichierCourant;
             bool rep = ValiderDate(Sosa67MaTextBox.Text);
             if (rep)
             {
@@ -3770,14 +3845,17 @@ namespace WindowsFormsApp1
             }
             else
             {
-                Sosa67MaTextBox.BackColor = Color.LightCoral;
+                Sosa67MaTextBox.BackColor = Color.Red;
             }
+        }
+        private void Sosa67MaTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            Modifier = true;
+            this.Text = NomPrograme + "   *" + FichierCourant;
         }
         private void Sosa67MaEndroitTextBox_TextChanged(object sender, EventArgs e)
         {
             grille[sosaCourant * 4 + 2][MALIEU] = Sosa67MaEndroitTextBox.Text;
-            Modifier = true;
-            this.Text = NomPrograme + "   *" + FichierCourant;
             if (!LongeurTextOk(Sosa67MaEndroitTextBox.Text))
             {
                 Sosa67MaEndroitTextBox.BackColor = couleurTextTropLong;
@@ -3787,11 +3865,14 @@ namespace WindowsFormsApp1
                 Sosa67MaEndroitTextBox.BackColor = couleurChamp;
             }
         }
+        private void Sosa67MAEndroitTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            Modifier = true;
+            this.Text = NomPrograme + "   *" + FichierCourant;
+        }
         private void Sosa7NomTextBox_TextChanged(object sender, EventArgs e)
         {
             grille[sosaCourant * 4 + 3][NOM] = Sosa7NomTextBox.Text;
-            Modifier = true;
-            this.Text = NomPrograme + "   *" + FichierCourant;
             if (!LongeurNomtOk(grille[sosaCourant * 4 + 3][NOM]))
             {
                 Sosa7NomTextBox.BackColor = couleurTextTropLong;
@@ -3801,17 +3882,16 @@ namespace WindowsFormsApp1
                 Sosa7NomTextBox.BackColor = couleurChamp;
             }
         }
+        private void Sosa7NomTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            Modifier = true;
+            this.Text = NomPrograme + "   *" + FichierCourant;
+        }
         private void Sosa7NeTextBox_TextChanged(object sender, EventArgs e)
         {
             grille[sosaCourant * 4 + 3][NELE] = Sosa7NeTextBox.Text;
-            Modifier = true;
-            this.Text = NomPrograme + "   *" + FichierCourant;
             bool rep = ValiderDate(Sosa7NeTextBox.Text);
             if (rep)
-            {
-                Sosa7NeTextBox.BackColor = Color.LightCoral;
-            }
-            else
             {
                 Sosa7NeTextBox.BackColor = Color.White;
                 if (!LongeurTextOk(grille[sosaCourant * 4 + 3][NELE]))
@@ -3823,12 +3903,19 @@ namespace WindowsFormsApp1
                     Sosa7NeTextBox.BackColor = couleurChamp;
                 }
             }
+            else
+            {
+                Sosa7NeTextBox.BackColor = Color.Red;
+            }
+        }
+        private void Sosa7NeTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            Modifier = true;
+            this.Text = NomPrograme + "   *" + FichierCourant;
         }
         private void Sosa7NeEndroitTextBox_TextChanged(object sender, EventArgs e)
         {
             grille[sosaCourant * 4 + 3][NELIEU] = Sosa7NeTextBox.Text;
-            Modifier = true;
-            this.Text = NomPrograme + "   *" + FichierCourant;
             if (!LongeurTextOk(Sosa7NeEndroitTextBox.Text))
             {
                 Sosa7NeEndroitTextBox.BackColor = couleurTextTropLong;
@@ -3838,11 +3925,14 @@ namespace WindowsFormsApp1
                 Sosa7NeEndroitTextBox.BackColor = couleurChamp;
             }
         }
+        private void Sosa7NeEndroitTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            Modifier = true;
+            this.Text = NomPrograme + "   *" + FichierCourant;
+        }
         private void Sosa7DeTextBox_TextChanged(object sender, EventArgs e)
         {
             grille[sosaCourant * 4 + 3][DELE] = Sosa7DeTextBox.Text;
-            Modifier = true;
-            this.Text = NomPrograme + "   *" + FichierCourant;
             bool rep = ValiderDate(Sosa7DeTextBox.Text);
             if (rep)
             {
@@ -3858,14 +3948,17 @@ namespace WindowsFormsApp1
             }
             else
             {
-                Sosa7DeTextBox.BackColor = Color.LightCoral;
+                Sosa7DeTextBox.BackColor = Color.Red;
             }
+        }
+        private void Sosa7DeTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            Modifier = true;
+            this.Text = NomPrograme + "   *" + FichierCourant;
         }
         private void Sosa7DeEndroitTextBox_TextChanged(object sender, EventArgs e)
         {
             grille[sosaCourant * 4 + 3][DELIEU] = Sosa7DeEndroitTextBox.Text;
-            Modifier = true;
-            this.Text = NomPrograme + "   *" + FichierCourant;
             if (!LongeurTextOk(Sosa7DeEndroitTextBox.Text))
             {
                 Sosa7DeEndroitTextBox.BackColor = couleurTextTropLong;
@@ -3874,6 +3967,11 @@ namespace WindowsFormsApp1
             {
                 Sosa7DeEndroitTextBox.BackColor = couleurChamp;
             }
+        }
+        private void Sosa7DeEndroitTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            Modifier = true;
+            this.Text = NomPrograme + "   *" + FichierCourant;
         }
         private void EnregisterToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -4146,10 +4244,6 @@ namespace WindowsFormsApp1
         {
             AvoirDossierrapport();
         }
-        private void Directive_TextChanged_1(object sender, EventArgs e)
-        {
-
-        }
         private void ChoixSosaComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             ChoixChanger();
@@ -4168,7 +4262,7 @@ namespace WindowsFormsApp1
         {
             ChoixChanger();
         }
-        private void PreparerPar_TextChanged(object sender, EventArgs e)
+        private void PreparerPar_KeyPress(object sender, KeyPressEventArgs e)
         {
             Modifier = true;
             this.Text = NomPrograme + "   *" + FichierCourant;
@@ -4377,12 +4471,11 @@ namespace WindowsFormsApp1
             ChoixPersonne.Visible = false;
             ChoixPersonne.Enabled = false;
         }
-        private void AscendantDeTb_TextChanged(object sender, EventArgs e)
+        private void AscendantDeTb_KeyPress(object sender, KeyPressEventArgs e)
         {
             Modifier = true;
             this.Text = NomPrograme + "   *" + FichierCourant;
         }
-
         private void NomRecherche_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
@@ -4445,22 +4538,21 @@ namespace WindowsFormsApp1
         private void Note1_TextChanged(object sender, EventArgs e)
         {
             grille[sosaCourant][NOTE1] = Note1.Text;
+        }
+        private void Note1_KeyPress(object sender, KeyPressEventArgs e)
+        {
             Modifier = true;
             this.Text = NomPrograme + "   *" + FichierCourant;
         }
-
         private void Note2_TextChanged(object sender, EventArgs e)
         {
             grille[sosaCourant][NOTE2] = Note2.Text;
+        }
+        private void Note2_KeyPress(object sender, KeyPressEventArgs e)
+        {
             Modifier = true;
             this.Text = NomPrograme + "   *" + FichierCourant;
         }
-        /*
-        private void Sosa1MaAvecTextlb_TextChanged(object sender, EventArgs e)
-        {
-            grille[0][NOM] = Sosa1MaAvecTextlb.Text;
-        }
-        */
         private void RechercheSosaButton_Click(object sender, EventArgs e)
         {
             DummyButton.Focus();
@@ -4544,7 +4636,6 @@ namespace WindowsFormsApp1
                 return;
             }
         }
-
         private void RechercheSosaTextBox_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
@@ -4553,7 +4644,6 @@ namespace WindowsFormsApp1
                 RechercheSosaButton.PerformClick();
             }
         }
-
         private void FlecheGaucheRechercheButton_Click(object sender, EventArgs e)
         {
             DummyButton.Focus();
@@ -4577,7 +4667,6 @@ namespace WindowsFormsApp1
                 }
             }
         }
-
         private void FlecheDroiteRechercheButton_Click(object sender, EventArgs e)
         {
             DummyButton.Focus();
@@ -4600,7 +4689,6 @@ namespace WindowsFormsApp1
                 }
             }
         }
-
         private void RechercheSosaTextBox_TextChanged(object sender, EventArgs e)
         {
             FlecheGaucheRechercheButton.Visible = false;
@@ -4614,7 +4702,7 @@ namespace WindowsFormsApp1
             }
             XUnit pouce = XUnit.FromInch(1);
             XPen pen1 = new XPen(XColor.FromArgb(0, 0, 0), 1);
-            XFont fontNom = new XFont("Arial", 10, XFontStyle.Regular);
+            XFont fontNom = new XFont("Arial", 10, XFontStyle.Bold);
             XFont fontDate = new XFont("Arial", 8, XFontStyle.Regular);
             XFont fontB = new XFont("Arial", 8, XFontStyle.Bold);
             XFont font32 = new XFont("arial", 24, XFontStyle.Bold);
@@ -4674,9 +4762,9 @@ namespace WindowsFormsApp1
             // col 1 ligne 1 nom
             gfx.DrawString("Non", fontNom, XBrushes.Black, col1 + padding, Y + hauteurLigne);
             // col 1 ligne 2 Date et lieu de naissance
-            gfx.DrawString("Date et lieu de naissance", font8, XBrushes.Black, col1 + padding, Y + hauteurLigne * 2);
+            // gfx.DrawString("Date et lieu de naissance", font8, XBrushes.Black, col1 + padding, Y + hauteurLigne * 2);
             // col 1 ligne 3 Date et lieu du décès
-            gfx.DrawString("Date et lieu du décès", font8, XBrushes.Black, col1 + padding, Y + hauteurLigne * 3);
+            //gfx.DrawString("Date et lieu du décès", font8, XBrushes.Black, col1 + padding, Y + hauteurLigne * 3);
             // col 3 ligne 1 Date du mariage
             PDFEcrireCentrer(ref gfx, "Date du mariage", col3, Y + hauteurLigne, col4);
             // col 3 ligne 2 Lieu du mariage
@@ -4686,7 +4774,7 @@ namespace WindowsFormsApp1
             // col 4 ligne 2 Nom des parents de la conjointe
             gfx.DrawString("Nom des parents de la conjointe", font8, XBrushes.Black, col4 + padding, Y + hauteurLigne * 2);
             // col 4 ligne 3 Date et lieu du mariage des parents de la conjointe
-            PDFEcrire(ref gfx, "Date et lieu du mariage des parents de la conjointe", col4 + padding, Y + hauteurLigne * 3, 2.3 * pouce);
+            //PDFEcrire(ref gfx, "Date et lieu du mariage des parents de la conjointe", col4 + padding, Y + hauteurLigne * 3, 2.3 * pouce);
 
 
 
@@ -4694,15 +4782,15 @@ namespace WindowsFormsApp1
             foreach (int sosa in sosaListe)
             {
                 Y = Y + hauteur + espace;
-                if (sosa == 256) str = "1ère génération";
-                if (sosa == 128) str = "2e génération";
-                if (sosa == 64) str = "3e génération";
-                if (sosa == 32) str = "4e génération";
+                if (sosa == 256) str = "9e génération";
+                if (sosa == 128) str = "8e génération";
+                if (sosa == 64) str = "7e génération";
+                if (sosa == 32) str = "6e génération";
                 if (sosa == 16) str = "5e génération";
-                if (sosa == 8) str = "6e génération";
-                if (sosa == 4) str = "7e génération";
-                if (sosa == 2) str = "8e génération";
-                if (sosa == 1) str = "9e génération";
+                if (sosa == 8) str = "4e génération";
+                if (sosa == 4) str = "3e génération";
+                if (sosa == 2) str = "2e génération";
+                if (sosa == 1) str = "1ère génération";
                 textLargeur = gfx.MeasureString(str, fontB);
                 gfx.DrawString(str, fontB, XBrushes.Black, page.Width / 2 - textLargeur.Width / 2, Y - 4);
                 gfx.DrawRectangle(pen1, margin, Y, largeur, hauteur);
@@ -4720,25 +4808,36 @@ namespace WindowsFormsApp1
                     gfx.DrawString("+", fontDate, XBrushes.Black, col1 + padding, Y + hauteurLigne * 3);
                 PDFEcrire(ref gfx, grille[sosa][DELE], col1 + padding + 6, Y + hauteurLigne * 3, .5 * pouce);
                 PDFEcrire(ref gfx, grille[sosa][DELIEU], col2, Y + hauteurLigne * 3, 1.5 * pouce);
-                // col 3 ligne 1
-                if (grille[sosa][MALE] != "")
+
+                if (sosa > 1)
                 {
-                    gfx.DrawString("X", fontDate, XBrushes.Black, col3 + .83 * pouce, Y + hauteurLigne);
-                    gfx.DrawString(grille[sosa][MALE], fontDate, XBrushes.Black, col3 + 6 + .83 * pouce, Y + hauteurLigne);
+                    // col 3 ligne 1
+                    if (grille[sosa][MALE] != "")
+                    {
+                        gfx.DrawString("X", fontDate, XBrushes.Black, col3 + .83 * pouce, Y + hauteurLigne);
+                        gfx.DrawString(grille[sosa][MALE], fontDate, XBrushes.Black, col3 + 6 + .83 * pouce, Y + hauteurLigne);
+                    }
+                    // col 3 ligne 2
+                    PDFEcrireCentrer(ref gfx, grille[sosa][MALIEU], col3, Y + hauteurLigne * 2, col4);
+
                 }
-                // col 3 ligne 2
-                PDFEcrireCentrer(ref gfx, grille[sosa][MALIEU], col3, Y + hauteurLigne * 2, col4);
-                // col 4 ligne 1 // nom conjoint
-                PDFEcrire(ref gfx, grille[sosa + 1][NOM], col4 + padding, Y + hauteurLigne, 2.3 * pouce);
-                // col 4 ligne 2 ET 3
-                int sosaParent = sosa * 2;
-                if ((sosaParent < 512 && sosaParent > 0) && grille[sosaParent][NOM] != "" && grille[(sosaParent + 1)][NOM] != "")
+                if (sosa > 1)
                 {
-                    nomParent = grille[sosaParent][NOM] + " et " + grille[(sosaParent + 1)][NOM];
-                    PDFEcrire(ref gfx, nomParent, col4 + padding, Y + hauteurLigne * 2, 2.3 * pouce);
-                    gfx.DrawString("X", fontDate, XBrushes.Black, col4 + padding + 1, Y + hauteurLigne * 3);
-                    PDFEcrire(ref gfx, grille[sosaParent][MALE], col4 + padding + 6, Y + hauteurLigne * 3, .5 * pouce);
-                    PDFEcrire(ref gfx, grille[sosaParent][MALIEU], col5, Y + hauteurLigne * 3, 1 * pouce);
+                    // col 4 ligne 1 // nom conjoint
+                    PDFEcrire(ref gfx, grille[sosa + 1][NOM], col4 + padding, Y + hauteurLigne, 2.3 * pouce);
+                    // col 4 ligne 2 ET 3
+                    int sosaParent = (sosa + 1) * 2;
+                    if ((sosaParent < 512 && sosaParent > 0) && grille[sosaParent][NOM] != "" && grille[(sosaParent + 1)][NOM] != "")
+                    {
+                        nomParent = grille[sosaParent][NOM] + " et " + grille[(sosaParent + 1)][NOM];
+                        PDFEcrire(ref gfx, nomParent, col4 + padding, Y + hauteurLigne * 2, 2.3 * pouce);
+                        if (grille[sosaParent][MALE] != "" || grille[sosaParent][MALIEU] != "")
+                        {
+                            gfx.DrawString("X", fontDate, XBrushes.Black, col4 + padding + 1, Y + hauteurLigne * 3);
+                            PDFEcrire(ref gfx, grille[sosaParent][MALE], col4 + padding + 6, Y + hauteurLigne * 3, .5 * pouce);
+                            PDFEcrire(ref gfx, grille[sosaParent][MALIEU], col5, Y + hauteurLigne * 3, 1 * pouce);
+                        }
+                    }
                 }
             }
             //string numeroTableau = DessinerPage(ref document, ref gfx, sosa, false);
@@ -4772,7 +4871,7 @@ namespace WindowsFormsApp1
 
             //string dateMariage;
             string nomParent;
-            int sosaMariage;
+            //int sosaMariage;
             double largeur = 7 * pouce;
             double margin = .75 * pouce;
             double col1 = margin;
@@ -4825,20 +4924,20 @@ namespace WindowsFormsApp1
 
             // col 1 ligne 1 nom
             gfx.DrawString("Non", fontNom, XBrushes.Black, col1 + padding, Y + hauteurLigne);
-            // col 1 ligne 2 Date et lieu de naissance
-            gfx.DrawString("Date et lieu de naissance", font8, XBrushes.Black, col1 + padding, Y + hauteurLigne * 2);
-            // col 1 ligne 3 Date et lieu du décès
-            gfx.DrawString("Date et lieu du décès", font8, XBrushes.Black, col1 + padding, Y + hauteurLigne * 3);
-            // col 3 ligne 1 Date du mariage
-            PDFEcrireCentrer(ref gfx, "Date du mariage", col3, Y + hauteurLigne, col4);
+            // col 1 ligne 2 ° Date et lieu de naissance
+            gfx.DrawString("° Date et lieu de naissance", font8, XBrushes.Black, col1 + padding, Y + hauteurLigne * 2);
+            // col 1 ligne 3 + Date et lieu du décès
+            gfx.DrawString("+ Date et lieu du décès", font8, XBrushes.Black, col1 + padding, Y + hauteurLigne * 3);
+            // col 3 ligne 1 X Date du mariage
+            PDFEcrireCentrer(ref gfx, "X Date du mariage", col3, Y + hauteurLigne, col4);
             // col 3 ligne 2 Lieu du mariage
             PDFEcrireCentrer(ref gfx, "Lieu du mariage", col3, Y + hauteurLigne * 2, col4);
-            // col 3 ligne 1 Non de la conjointe
-            gfx.DrawString("Non de la conjointe", font8, XBrushes.Black, col4 + padding, Y + hauteurLigne);
-            // col 4 ligne 2 Nom des parents de la conjointe
-            gfx.DrawString("Nom des parents de la conjointe", font8, XBrushes.Black, col4 + padding, Y + hauteurLigne * 2);
-            // col 4 ligne 3 Date et lieu du mariage des parents de la conjointe
-            PDFEcrire(ref gfx, "Date et lieu du mariage des parents de la conjointe", col4 + padding, Y + hauteurLigne * 3, 2.3 * pouce);
+            // col 3 ligne 1 Non du conjoint
+            gfx.DrawString("Non du conjoint", font8, XBrushes.Black, col4 + padding, Y + hauteurLigne);
+            // col 4 ligne 2 Nom des parents du conjoint
+            gfx.DrawString("Nom des parents du conjoint", font8, XBrushes.Black, col4 + padding, Y + hauteurLigne * 2);
+            // col 4 ligne 3 Date et lieu du mariage des parents du conjoint
+            PDFEcrire(ref gfx, "Date et lieu du mariage des parents du conjoint", col4 + padding, Y + hauteurLigne * 3, 2.3 * pouce);
 
 
 
@@ -4846,15 +4945,15 @@ namespace WindowsFormsApp1
             foreach (int sosa in sosaListe)
             {
                 Y = Y + hauteur + espace;
-                if (sosa == 511) str = "1ère génération";
-                if (sosa == 255) str = "2e génération";
-                if (sosa == 127) str = "3e génération";
-                if (sosa == 63) str = "4e génération";
+                if (sosa == 511) str = "9e génération";
+                if (sosa == 255) str = "8e génération";
+                if (sosa == 127) str = "7e génération";
+                if (sosa == 63) str = "6e génération";
                 if (sosa == 31) str = "5e génération";
-                if (sosa == 15) str = "6e génération";
-                if (sosa == 7) str = "7e génération";
-                if (sosa == 3) str = "8e génération";
-                if (sosa == 1) str = "9e génération";
+                if (sosa == 15) str = "4e génération";
+                if (sosa == 7) str = "3e génération";
+                if (sosa == 3) str = "2e génération";
+                if (sosa == 1) str = "1ère génération";
                 textLargeur = gfx.MeasureString(str, fontB);
                 gfx.DrawString(str, fontB, XBrushes.Black, page.Width / 2 - textLargeur.Width / 2, Y - 4);
                 gfx.DrawRectangle(pen1, margin, Y, largeur, hauteur);
@@ -4872,33 +4971,35 @@ namespace WindowsFormsApp1
                     gfx.DrawString("+", fontDate, XBrushes.Black, col1 + padding, Y + hauteurLigne * 3);
                 PDFEcrire(ref gfx, grille[sosa][DELE], col1 + padding + 6, Y + hauteurLigne * 3, .5 * pouce);
                 PDFEcrire(ref gfx, grille[sosa][DELIEU], col2, Y + hauteurLigne * 3, 1.5 * pouce);
+                
                 // col 3 ligne 1
-                if ( sosa == 1)
+                if (sosa > 1)
                 {
-                    sosaMariage = 1;
-                } else
-                {
-                    sosaMariage = sosa - 1;
+                    if (grille[sosa-1][MALE] != "")
+                    {
+                        gfx.DrawString("X", fontDate, XBrushes.Black, col3 + .83 * pouce, Y + hauteurLigne);
+                        gfx.DrawString(grille[sosa-1][MALE], fontDate, XBrushes.Black, col3 + 6 + .83 * pouce, Y + hauteurLigne);
+                    }
+                    // col 3 ligne 2
+                    PDFEcrireCentrer(ref gfx, grille[sosa-1][MALIEU], col3, Y + hauteurLigne * 2, col4);
                 }
-                if (grille[sosaMariage][MALE] != "")
+                if (sosa > 1)
                 {
-                    gfx.DrawString("X", fontDate, XBrushes.Black, col3 + .83 * pouce, Y + hauteurLigne);
-                    gfx.DrawString(grille[sosaMariage][MALE], fontDate, XBrushes.Black, col3 + 6 + .83 * pouce, Y + hauteurLigne);
-                }
-                // col 3 ligne 2
-                PDFEcrireCentrer(ref gfx, grille[sosaMariage][MALIEU], col3, Y + hauteurLigne * 2, col4);
                 // col 4 ligne 1 // nom conjoint
-
-                PDFEcrire(ref gfx, grille[sosa - 1][NOM], col4 + padding, Y + hauteurLigne, 2.3 * pouce);
+                    PDFEcrire(ref gfx, grille[sosa - 1][NOM], col4 + padding, Y + hauteurLigne, 2.3 * pouce);
                 // col 4 ligne 2 ET 3
-                int sosaParent = sosa * 2;
-                if ((sosaParent < 512 && sosaParent > 0) && grille[sosaParent][NOM] != "" && grille[(sosaParent + 1)][NOM] != "")
-                {
-                    nomParent = grille[sosaParent][NOM] + " et " + grille[(sosaParent + 1)][NOM];
-                    PDFEcrire(ref gfx, nomParent, col4 + padding, Y + hauteurLigne * 2, 2.3 * pouce);
-                    gfx.DrawString("X", fontDate, XBrushes.Black, col4 + padding + 1, Y + hauteurLigne * 3);
-                    PDFEcrire(ref gfx, grille[sosaParent][MALE], col4 + padding + 6, Y + hauteurLigne * 3, .5 * pouce);
-                    PDFEcrire(ref gfx, grille[sosaParent][MALIEU], col5, Y + hauteurLigne * 3, 1 * pouce);
+
+                    int sosaParent = (sosa - 1) * 2;
+                    if ((sosaParent < 512 && sosaParent > 0) && grille[sosaParent][NOM] != "" && grille[(sosaParent + 1)][NOM] != "")
+                    {
+                        nomParent = grille[sosaParent][NOM] + " et " + grille[(sosaParent + 1)][NOM];
+                        PDFEcrire(ref gfx, nomParent, col4 + padding, Y + hauteurLigne * 2, 2.3 * pouce);
+                        if (grille[sosaParent][MALE] != "" || grille[sosaParent][MALIEU] != "") {
+                            gfx.DrawString("X", fontDate, XBrushes.Black, col4 + padding + 1, Y + hauteurLigne * 3);
+                            PDFEcrire(ref gfx, grille[sosaParent][MALE], col4 + padding + 6, Y + hauteurLigne * 3, .5 * pouce);
+                            PDFEcrire(ref gfx, grille[sosaParent][MALIEU], col5, Y + hauteurLigne * 3, 1 * pouce);
+                        }
+                    }
                 }
             }
             //string numeroTableau = DessinerPage(ref document, ref gfx, sosa, false);
@@ -4917,10 +5018,16 @@ namespace WindowsFormsApp1
                                  MessageBoxIcon.Warning);
             }
         }
-
         private void ContinuerBtn_Click(object sender, EventArgs e)
         {
             Continuer();
+        }
+        private void GoSosaConjoint1Btn_Click(object sender, EventArgs e)
+        {
+            double a = System.Convert.ToInt32(sosaCourant + 1);
+            //a = Math.Floor(a / 8);
+            //int b = System.Convert.ToInt32(a);
+            ChoixSosaComboBox.Text = Convert.ToString(a);
         }
     }
  }

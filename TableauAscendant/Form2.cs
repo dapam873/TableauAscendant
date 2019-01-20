@@ -14,7 +14,7 @@ namespace TableauAscendant
     {
 
         /// <summary>
-        /// 
+        /// inconnu
         /// </summary>
         public Form2()
         {

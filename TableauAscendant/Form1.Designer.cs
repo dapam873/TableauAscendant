@@ -111,6 +111,8 @@ namespace WindowsFormsApp1
             this.Nele1Lbl = new System.Windows.Forms.Label();
             this.Sosa1NomTextBox = new System.Windows.Forms.TextBox();
             this.ShapeContainer1 = new Microsoft.VisualBasic.PowerPacks.ShapeContainer();
+            this.sosa1LigneVertical = new Microsoft.VisualBasic.PowerPacks.LineShape();
+            this.RectangleSosaConjoint1 = new Microsoft.VisualBasic.PowerPacks.RectangleShape();
             this.rectangleShape4 = new Microsoft.VisualBasic.PowerPacks.RectangleShape();
             this.rectangleShape3 = new Microsoft.VisualBasic.PowerPacks.RectangleShape();
             this.RectangleGénérationA = new Microsoft.VisualBasic.PowerPacks.RectangleShape();
@@ -204,6 +206,13 @@ namespace WindowsFormsApp1
             this.FlecheGaucheRechercheButton = new System.Windows.Forms.Button();
             this.DummyButton = new System.Windows.Forms.Button();
             this.DAPAMlabel = new System.Windows.Forms.Label();
+            this.Sosa1MaEndroitTextBox = new System.Windows.Forms.TextBox();
+            this.Sosa1MaTextBox = new System.Windows.Forms.TextBox();
+            this.Sosa1LieuEtiquettetBox = new System.Windows.Forms.Label();
+            this.Sosa1MaEtiquettetBox = new System.Windows.Forms.Label();
+            this.SosaConjoint1NomTextBox = new System.Windows.Forms.TextBox();
+            this.SosaConjoint1Label = new System.Windows.Forms.Label();
+            this.GoSosaConjoint1Btn = new System.Windows.Forms.Button();
             this.MenuMs.SuspendLayout();
             this.ChoixPersonne.SuspendLayout();
             this.SuspendLayout();
@@ -228,6 +237,7 @@ namespace WindowsFormsApp1
             this.Sosa5NomTextBox.TabIndex = 26;
             this.Sosa5NomTextBox.Visible = false;
             this.Sosa5NomTextBox.TextChanged += new System.EventHandler(this.Sosa5NomTextBox_TextChanged);
+            this.Sosa5NomTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Sosa5NomTextBox_KeyPress);
             // 
             // DeEndroit5Lbl
             // 
@@ -278,6 +288,7 @@ namespace WindowsFormsApp1
             this.Sosa5NeTextBox.TabIndex = 27;
             this.Sosa5NeTextBox.Visible = false;
             this.Sosa5NeTextBox.TextChanged += new System.EventHandler(this.Sosa5NeTextBox_TextChanged);
+            this.Sosa5NeTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Sosa5NeTextBox_KeyPress);
             // 
             // Sosa5NeEndroitTextBox
             // 
@@ -288,6 +299,7 @@ namespace WindowsFormsApp1
             this.Sosa5NeEndroitTextBox.TabIndex = 28;
             this.Sosa5NeEndroitTextBox.Visible = false;
             this.Sosa5NeEndroitTextBox.TextChanged += new System.EventHandler(this.Sosa5NeEndroitTextBox_TextChanged);
+            this.Sosa5NeTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Sosa5NeTextBox_KeyPress);
             // 
             // Sosa5DeTextBox
             // 
@@ -308,6 +320,7 @@ namespace WindowsFormsApp1
             this.Sosa5DeEndroitTextBox.TabIndex = 30;
             this.Sosa5DeEndroitTextBox.Visible = false;
             this.Sosa5DeEndroitTextBox.TextChanged += new System.EventHandler(this.Sosa5DeEndroitTextBox_TextChanged);
+            this.Sosa5DeEndroitTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Sosa5DeEndroitTextBox_KeyPress);
             // 
             // Sosa4DeEndroitTextBox
             // 
@@ -318,6 +331,7 @@ namespace WindowsFormsApp1
             this.Sosa4DeEndroitTextBox.TabIndex = 23;
             this.Sosa4DeEndroitTextBox.Visible = false;
             this.Sosa4DeEndroitTextBox.TextChanged += new System.EventHandler(this.Sosa4DeEndroitTextBox_TextChanged);
+            this.Sosa4DeEndroitTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Sosa4DeEndroitTextBox_KeyPress);
             // 
             // Sosa4DeTextBox
             // 
@@ -328,6 +342,7 @@ namespace WindowsFormsApp1
             this.Sosa4DeTextBox.TabIndex = 22;
             this.Sosa4DeTextBox.Visible = false;
             this.Sosa4DeTextBox.TextChanged += new System.EventHandler(this.Sosa4DeTextBox_TextChanged);
+            this.Sosa4DeTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Sosa4DeTextBox_KeyPress);
             // 
             // Sosa4NeEndroitTextBox
             // 
@@ -338,6 +353,7 @@ namespace WindowsFormsApp1
             this.Sosa4NeEndroitTextBox.TabIndex = 21;
             this.Sosa4NeEndroitTextBox.Visible = false;
             this.Sosa4NeEndroitTextBox.TextChanged += new System.EventHandler(this.Sosa4NeEndroitTextBox_TextChanged);
+            this.Sosa4NeEndroitTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Sosa4NeEndroitTextBox_KeyPress);
             // 
             // Sosa4NeTextBox
             // 
@@ -348,6 +364,7 @@ namespace WindowsFormsApp1
             this.Sosa4NeTextBox.TabIndex = 20;
             this.Sosa4NeTextBox.Visible = false;
             this.Sosa4NeTextBox.TextChanged += new System.EventHandler(this.Sosa4NeTextBox_TextChanged);
+            this.Sosa4NeTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Sosa4NeTextBox_KeyPress);
             // 
             // DeEndroit4Lbl
             // 
@@ -403,6 +420,7 @@ namespace WindowsFormsApp1
             this.Sosa4NomTextBox.TabIndex = 19;
             this.Sosa4NomTextBox.Visible = false;
             this.Sosa4NomTextBox.TextChanged += new System.EventHandler(this.Sosa4NomTextBox_TextChanged);
+            this.Sosa4NomTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Sosa4NomTextBox_KeyPress);
             // 
             // Sosa4Label
             // 
@@ -423,6 +441,7 @@ namespace WindowsFormsApp1
             this.Sosa45MaLEndroitTextBox.TabIndex = 25;
             this.Sosa45MaLEndroitTextBox.Visible = false;
             this.Sosa45MaLEndroitTextBox.TextChanged += new System.EventHandler(this.Sosa45MaEndroitTextBox_TextChanged);
+            this.Sosa45MaTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Sosa45MaTextBox_KeyPress);
             // 
             // Sosa45MaTextBox
             // 
@@ -433,6 +452,7 @@ namespace WindowsFormsApp1
             this.Sosa45MaTextBox.TabIndex = 24;
             this.Sosa45MaTextBox.Visible = false;
             this.Sosa45MaTextBox.TextChanged += new System.EventHandler(this.Sosa45MaTextBox_TextChanged);
+            this.Sosa45MaTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Sosa45MaTextBox_KeyPress);
             // 
             // Label14
             // 
@@ -461,6 +481,7 @@ namespace WindowsFormsApp1
             this.Sosa67MaEndroitTextBox.TabIndex = 37;
             this.Sosa67MaEndroitTextBox.Visible = false;
             this.Sosa67MaEndroitTextBox.TextChanged += new System.EventHandler(this.Sosa67MaEndroitTextBox_TextChanged);
+            this.Sosa67MaEndroitTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Sosa67MAEndroitTextBox_KeyPress);
             // 
             // Sosa67MaTextBox
             // 
@@ -471,6 +492,7 @@ namespace WindowsFormsApp1
             this.Sosa67MaTextBox.TabIndex = 36;
             this.Sosa67MaTextBox.Visible = false;
             this.Sosa67MaTextBox.TextChanged += new System.EventHandler(this.Sosa67MaTextBox_TextChanged);
+            this.Sosa67MaTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Sosa67MaTextBox_KeyPress);
             // 
             // Label5
             // 
@@ -499,6 +521,7 @@ namespace WindowsFormsApp1
             this.Sosa6DeEndroitTextBox.TabIndex = 35;
             this.Sosa6DeEndroitTextBox.Visible = false;
             this.Sosa6DeEndroitTextBox.TextChanged += new System.EventHandler(this.Sosa6DeEndroitTextBox_TextChanged);
+            this.Sosa6DeEndroitTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Sosa6DeEndroitTextBox_KeyPress);
             // 
             // Sosa6DeTextBox
             // 
@@ -509,6 +532,7 @@ namespace WindowsFormsApp1
             this.Sosa6DeTextBox.TabIndex = 34;
             this.Sosa6DeTextBox.Visible = false;
             this.Sosa6DeTextBox.TextChanged += new System.EventHandler(this.Sosa6DeTextBox_TextChanged);
+            this.Sosa6DeTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Sosa6DeTextBox_KeyPress);
             // 
             // Sosa6NeEndroitTextBox
             // 
@@ -519,6 +543,7 @@ namespace WindowsFormsApp1
             this.Sosa6NeEndroitTextBox.TabIndex = 33;
             this.Sosa6NeEndroitTextBox.Visible = false;
             this.Sosa6NeEndroitTextBox.TextChanged += new System.EventHandler(this.Sosa6NeEndroitTextBox_TextChanged);
+            this.Sosa6NeTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Sosa6NeTextBox_KeyPress);
             // 
             // Sosa6NeTextBox
             // 
@@ -529,6 +554,7 @@ namespace WindowsFormsApp1
             this.Sosa6NeTextBox.TabIndex = 32;
             this.Sosa6NeTextBox.Visible = false;
             this.Sosa6NeTextBox.TextChanged += new System.EventHandler(this.Sosa6NeTextBox_TextChanged);
+            this.Sosa6NeTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Sosa6NeTextBox_KeyPress);
             // 
             // DeEndroit6Lbl
             // 
@@ -580,6 +606,7 @@ namespace WindowsFormsApp1
             this.Sosa6NomTextBox.TabIndex = 31;
             this.Sosa6NomTextBox.Visible = false;
             this.Sosa6NomTextBox.TextChanged += new System.EventHandler(this.Sosa6NomTextBox_TextChanged);
+            this.Sosa6NomTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Sosa6NomTextBox_KeyPress);
             // 
             // Sosa6Label
             // 
@@ -600,6 +627,7 @@ namespace WindowsFormsApp1
             this.Sosa7DeEndroitTextBox.TabIndex = 42;
             this.Sosa7DeEndroitTextBox.Visible = false;
             this.Sosa7DeEndroitTextBox.TextChanged += new System.EventHandler(this.Sosa7DeEndroitTextBox_TextChanged);
+            this.Sosa7DeEndroitTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Sosa7DeEndroitTextBox_KeyPress);
             // 
             // Sosa7DeTextBox
             // 
@@ -610,6 +638,7 @@ namespace WindowsFormsApp1
             this.Sosa7DeTextBox.TabIndex = 41;
             this.Sosa7DeTextBox.Visible = false;
             this.Sosa7DeTextBox.TextChanged += new System.EventHandler(this.Sosa7DeTextBox_TextChanged);
+            this.Sosa7DeTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Sosa7DeTextBox_KeyPress);
             // 
             // Sosa7NeEndroitTextBox
             // 
@@ -620,6 +649,7 @@ namespace WindowsFormsApp1
             this.Sosa7NeEndroitTextBox.TabIndex = 40;
             this.Sosa7NeEndroitTextBox.Visible = false;
             this.Sosa7NeEndroitTextBox.TextChanged += new System.EventHandler(this.Sosa7NeEndroitTextBox_TextChanged);
+            this.Sosa7NeEndroitTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Sosa7NeEndroitTextBox_KeyPress);
             // 
             // Sosa7NeTextBox
             // 
@@ -630,6 +660,7 @@ namespace WindowsFormsApp1
             this.Sosa7NeTextBox.TabIndex = 39;
             this.Sosa7NeTextBox.Visible = false;
             this.Sosa7NeTextBox.TextChanged += new System.EventHandler(this.Sosa7NeTextBox_TextChanged);
+            this.Sosa7NeTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Sosa7NeTextBox_KeyPress);
             // 
             // DeEndroit7Lbl
             // 
@@ -681,6 +712,7 @@ namespace WindowsFormsApp1
             this.Sosa7NomTextBox.TabIndex = 38;
             this.Sosa7NomTextBox.Visible = false;
             this.Sosa7NomTextBox.TextChanged += new System.EventHandler(this.Sosa7NomTextBox_TextChanged);
+            this.Sosa7NomTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Sosa7NomTextBox_KeyPress);
             // 
             // Sosa7Label
             // 
@@ -701,6 +733,8 @@ namespace WindowsFormsApp1
             this.Sosa23MaEndroitTextBox.TabIndex = 13;
             this.Sosa23MaEndroitTextBox.Visible = false;
             this.Sosa23MaEndroitTextBox.TextChanged += new System.EventHandler(this.Sosa23MaEndroitTextBox_TextChanged);
+            this.Sosa23MaTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Sosa23MaTextBox_KeyPress);
+            
             // 
             // Label24
             // 
@@ -729,6 +763,7 @@ namespace WindowsFormsApp1
             this.Sosa2DeEndroitTextBox.TabIndex = 11;
             this.Sosa2DeEndroitTextBox.Visible = false;
             this.Sosa2DeEndroitTextBox.TextChanged += new System.EventHandler(this.Sosa2DeEndroitTextBox_TextChanged);
+            this.Sosa2DeEndroitTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Sosa2DeEndroitTextBox_KeyPress);
             // 
             // Sosa2DeTextBox
             // 
@@ -739,6 +774,7 @@ namespace WindowsFormsApp1
             this.Sosa2DeTextBox.TabIndex = 10;
             this.Sosa2DeTextBox.Visible = false;
             this.Sosa2DeTextBox.TextChanged += new System.EventHandler(this.Sosa2DeTextBox_TextChanged);
+            this.Sosa2DeTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Sosa2DeTextBox_KeyPress);
             // 
             // Sosa2NeEndroitTextBox
             // 
@@ -749,6 +785,7 @@ namespace WindowsFormsApp1
             this.Sosa2NeEndroitTextBox.TabIndex = 9;
             this.Sosa2NeEndroitTextBox.Visible = false;
             this.Sosa2NeEndroitTextBox.TextChanged += new System.EventHandler(this.Sosa2NeEndroitTextBox_TextChanged);
+            this.Sosa2NeEndroitTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Sosa2NeEndroitTextBox_KeyPress);
             // 
             // Sosa2NeTextBox
             // 
@@ -759,6 +796,7 @@ namespace WindowsFormsApp1
             this.Sosa2NeTextBox.TabIndex = 8;
             this.Sosa2NeTextBox.Visible = false;
             this.Sosa2NeTextBox.TextChanged += new System.EventHandler(this.Sosa2NeTextBox_TextChanged);
+            this.Sosa2NeTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Sosa2NeTextBox_KeyPress);
             // 
             // DeEndroit2Lbl
             // 
@@ -810,6 +848,7 @@ namespace WindowsFormsApp1
             this.Sosa2NomTextBox.TabIndex = 7;
             this.Sosa2NomTextBox.Visible = false;
             this.Sosa2NomTextBox.TextChanged += new System.EventHandler(this.Sosa2NomTextBox_TextChanged);
+            this.Sosa2NomTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Sosa2NomTextBox_KeyPress);
             // 
             // Sosa2Label
             // 
@@ -830,6 +869,7 @@ namespace WindowsFormsApp1
             this.Sosa3DeEndroitTextBox.TabIndex = 18;
             this.Sosa3DeEndroitTextBox.Visible = false;
             this.Sosa3DeEndroitTextBox.TextChanged += new System.EventHandler(this.Sosa3DeEndroitTextBox_TextChanged);
+            this.Sosa3DeEndroitTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Sosa3DeEndroitTextBox_KeyPress);
             // 
             // Sosa3DeTextBox
             // 
@@ -840,6 +880,7 @@ namespace WindowsFormsApp1
             this.Sosa3DeTextBox.TabIndex = 17;
             this.Sosa3DeTextBox.Visible = false;
             this.Sosa3DeTextBox.TextChanged += new System.EventHandler(this.Sosa3DeTextBox_TextChanged);
+            this.Sosa3DeTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Sosa3DeTextBox_KeyPress);
             // 
             // Sosa3NeEndroitTextBox
             // 
@@ -850,6 +891,7 @@ namespace WindowsFormsApp1
             this.Sosa3NeEndroitTextBox.TabIndex = 16;
             this.Sosa3NeEndroitTextBox.Visible = false;
             this.Sosa3NeEndroitTextBox.TextChanged += new System.EventHandler(this.Sosa3NeEndroitTextBox_TextChanged);
+            this.Sosa3NeEndroitTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Sosa3NeEndroitTextBox_KeyPress);
             // 
             // Sosa3NeTextBox
             // 
@@ -860,6 +902,7 @@ namespace WindowsFormsApp1
             this.Sosa3NeTextBox.TabIndex = 15;
             this.Sosa3NeTextBox.Visible = false;
             this.Sosa3NeTextBox.TextChanged += new System.EventHandler(this.Sosa3NeTextBox_TextChanged);
+            this.Sosa3NeTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Sosa3NeTextBox_KeyPress);
             // 
             // DeEndroit3Lbl
             // 
@@ -911,6 +954,7 @@ namespace WindowsFormsApp1
             this.Sosa3NomTextBox.TabIndex = 14;
             this.Sosa3NomTextBox.Visible = false;
             this.Sosa3NomTextBox.TextChanged += new System.EventHandler(this.Sosa3NomTextBox_TextChanged);
+            this.Sosa3NomTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Sosa3NomTextBox_KeyPress);
             // 
             // Sosa3Label
             // 
@@ -931,6 +975,7 @@ namespace WindowsFormsApp1
             this.Sosa1DeEndroitTextBox.TabIndex = 6;
             this.Sosa1DeEndroitTextBox.Visible = false;
             this.Sosa1DeEndroitTextBox.TextChanged += new System.EventHandler(this.Sosa1DeEndroitTextBox_TextChanged);
+            this.Sosa1DeEndroitTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Sosa1DeEndroitTextBox_KeyPress);
             // 
             // Sosa1DeTextBox
             // 
@@ -941,6 +986,7 @@ namespace WindowsFormsApp1
             this.Sosa1DeTextBox.TabIndex = 5;
             this.Sosa1DeTextBox.Visible = false;
             this.Sosa1DeTextBox.TextChanged += new System.EventHandler(this.Sosa1DeTextBox_TextChanged);
+            this.Sosa1DeTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Sosa1DeTextBox_KeyPress);
             // 
             // Sosa1NeEndroitTextBox
             // 
@@ -952,6 +998,7 @@ namespace WindowsFormsApp1
             this.Sosa1NeEndroitTextBox.TabIndex = 4;
             this.Sosa1NeEndroitTextBox.Visible = false;
             this.Sosa1NeEndroitTextBox.TextChanged += new System.EventHandler(this.Sosa1NeEndroitTextBox_TextChanged);
+            this.Sosa1NeEndroitTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Sosa1NeEndroitTextBox_KeyPress);
             // 
             // Sosa1NeTextBox
             // 
@@ -962,6 +1009,7 @@ namespace WindowsFormsApp1
             this.Sosa1NeTextBox.TabIndex = 3;
             this.Sosa1NeTextBox.Visible = false;
             this.Sosa1NeTextBox.TextChanged += new System.EventHandler(this.Sosa1NeTextBox_TextChanged);
+            this.Sosa1NeTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Sosa1NeTextBox_KeyPress);
             // 
             // DeEndroit1Lbl
             // 
@@ -1013,6 +1061,7 @@ namespace WindowsFormsApp1
             this.Sosa1NomTextBox.TabIndex = 2;
             this.Sosa1NomTextBox.Visible = false;
             this.Sosa1NomTextBox.TextChanged += new System.EventHandler(this.Sosa1NomTextBox_TextChanged);
+            this.Sosa1NomTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Sosa1NomTextBox_KeyPress);
             // 
             // ShapeContainer1
             // 
@@ -1020,6 +1069,8 @@ namespace WindowsFormsApp1
             this.ShapeContainer1.Margin = new System.Windows.Forms.Padding(0);
             this.ShapeContainer1.Name = "ShapeContainer1";
             this.ShapeContainer1.Shapes.AddRange(new Microsoft.VisualBasic.PowerPacks.Shape[] {
+            this.sosa1LigneVertical,
+            this.RectangleSosaConjoint1,
             this.rectangleShape4,
             this.rectangleShape3,
             this.RectangleGénérationA,
@@ -1041,6 +1092,29 @@ namespace WindowsFormsApp1
             this.ShapeContainer1.Size = new System.Drawing.Size(1284, 861);
             this.ShapeContainer1.TabIndex = 99;
             this.ShapeContainer1.TabStop = false;
+            // 
+            // sosa1LigneVertical
+            // 
+            this.sosa1LigneVertical.BorderColor = System.Drawing.Color.Black;
+            this.sosa1LigneVertical.BorderWidth = 3;
+            this.sosa1LigneVertical.Name = "sosa1LigneVertical";
+            this.sosa1LigneVertical.X1 = 130;
+            this.sosa1LigneVertical.X2 = 131;
+            this.sosa1LigneVertical.Y1 = 530;
+            this.sosa1LigneVertical.Y2 = 593;
+            // 
+            // RectangleSosaConjoint1
+            // 
+            this.RectangleSosaConjoint1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
+            this.RectangleSosaConjoint1.BackStyle = Microsoft.VisualBasic.PowerPacks.BackStyle.Opaque;
+            this.RectangleSosaConjoint1.BorderColor = System.Drawing.Color.Black;
+            this.RectangleSosaConjoint1.BorderWidth = 3;
+            this.RectangleSosaConjoint1.CornerRadius = 10;
+            this.RectangleSosaConjoint1.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
+            this.RectangleSosaConjoint1.FillStyle = Microsoft.VisualBasic.PowerPacks.FillStyle.Solid;
+            this.RectangleSosaConjoint1.Location = new System.Drawing.Point(117, 592);
+            this.RectangleSosaConjoint1.Name = "RectangleSosaConjoint1";
+            this.RectangleSosaConjoint1.Size = new System.Drawing.Size(300, 30);
             // 
             // rectangleShape4
             // 
@@ -1340,6 +1414,7 @@ namespace WindowsFormsApp1
             this.Sosa23MaTextBox.TabIndex = 12;
             this.Sosa23MaTextBox.Visible = false;
             this.Sosa23MaTextBox.TextChanged += new System.EventHandler(this.Sosa23MaTextBox_TextChanged);
+            this.Sosa23MaTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Sosa23MaTextBox_KeyPress);
             // 
             // Label18
             // 
@@ -1649,7 +1724,7 @@ namespace WindowsFormsApp1
             this.PreparerPar.Name = "PreparerPar";
             this.PreparerPar.Size = new System.Drawing.Size(226, 20);
             this.PreparerPar.TabIndex = 44;
-            this.PreparerPar.TextChanged += new System.EventHandler(this.PreparerPar_TextChanged);
+            this.PreparerPar.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.PreparerPar_KeyPress);
             // 
             // label13
             // 
@@ -1931,7 +2006,7 @@ namespace WindowsFormsApp1
             this.AscendantDeTb.Name = "AscendantDeTb";
             this.AscendantDeTb.Size = new System.Drawing.Size(226, 20);
             this.AscendantDeTb.TabIndex = 43;
-            this.AscendantDeTb.TextChanged += new System.EventHandler(this.AscendantDeTb_TextChanged);
+            this.AscendantDeTb.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.AscendantDeTb_KeyPress);
             // 
             // label2
             // 
@@ -2011,13 +2086,14 @@ namespace WindowsFormsApp1
             // 
             // Note2
             // 
-            this.Note2.Location = new System.Drawing.Point(117, 638);
+            this.Note2.Location = new System.Drawing.Point(117, 648);
             this.Note2.Multiline = true;
             this.Note2.Name = "Note2";
             this.Note2.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.Note2.Size = new System.Drawing.Size(301, 101);
             this.Note2.TabIndex = 155;
             this.Note2.TextChanged += new System.EventHandler(this.Note2_TextChanged);
+            this.Note2.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Note2_KeyPress);
             // 
             // Note1
             // 
@@ -2028,11 +2104,12 @@ namespace WindowsFormsApp1
             this.Note1.Size = new System.Drawing.Size(301, 101);
             this.Note1.TabIndex = 156;
             this.Note1.TextChanged += new System.EventHandler(this.Note1_TextChanged);
+            this.Note1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Note1_KeyPress);
             // 
             // NoteDuBasLb
             // 
             this.NoteDuBasLb.AutoSize = true;
-            this.NoteDuBasLb.Location = new System.Drawing.Point(114, 622);
+            this.NoteDuBasLb.Location = new System.Drawing.Point(114, 632);
             this.NoteDuBasLb.Name = "NoteDuBasLb";
             this.NoteDuBasLb.Size = new System.Drawing.Size(65, 13);
             this.NoteDuBasLb.TabIndex = 157;
@@ -2135,6 +2212,83 @@ namespace WindowsFormsApp1
             this.DAPAMlabel.TabIndex = 171;
             this.DAPAMlabel.Text = "DAPAM";
             // 
+            // Sosa1MaEndroitTextBox
+            // 
+            this.Sosa1MaEndroitTextBox.BackColor = System.Drawing.Color.White;
+            this.Sosa1MaEndroitTextBox.Location = new System.Drawing.Point(176, 563);
+            this.Sosa1MaEndroitTextBox.Name = "Sosa1MaEndroitTextBox";
+            this.Sosa1MaEndroitTextBox.Size = new System.Drawing.Size(226, 20);
+            this.Sosa1MaEndroitTextBox.TabIndex = 173;
+            // 
+            // Sosa1MaTextBox
+            // 
+            this.Sosa1MaTextBox.BackColor = System.Drawing.Color.White;
+            this.Sosa1MaTextBox.Location = new System.Drawing.Point(176, 538);
+            this.Sosa1MaTextBox.Name = "Sosa1MaTextBox";
+            this.Sosa1MaTextBox.Size = new System.Drawing.Size(226, 20);
+            this.Sosa1MaTextBox.TabIndex = 172;
+            // 
+            // Sosa1LieuEtiquettetBox
+            // 
+            this.Sosa1LieuEtiquettetBox.AutoSize = true;
+            this.Sosa1LieuEtiquettetBox.Location = new System.Drawing.Point(144, 566);
+            this.Sosa1LieuEtiquettetBox.Name = "Sosa1LieuEtiquettetBox";
+            this.Sosa1LieuEtiquettetBox.Size = new System.Drawing.Size(27, 13);
+            this.Sosa1LieuEtiquettetBox.TabIndex = 175;
+            this.Sosa1LieuEtiquettetBox.Text = "Lieu";
+            // 
+            // Sosa1MaEtiquettetBox
+            // 
+            this.Sosa1MaEtiquettetBox.AutoSize = true;
+            this.Sosa1MaEtiquettetBox.Location = new System.Drawing.Point(141, 541);
+            this.Sosa1MaEtiquettetBox.Name = "Sosa1MaEtiquettetBox";
+            this.Sosa1MaEtiquettetBox.Size = new System.Drawing.Size(30, 13);
+            this.Sosa1MaEtiquettetBox.TabIndex = 174;
+            this.Sosa1MaEtiquettetBox.Text = "M. le";
+            // 
+            // SosaConjoint1NomTextBox
+            // 
+            this.SosaConjoint1NomTextBox.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
+            this.SosaConjoint1NomTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.SosaConjoint1NomTextBox.CausesValidation = false;
+            this.SosaConjoint1NomTextBox.Cursor = System.Windows.Forms.Cursors.No;
+            this.SosaConjoint1NomTextBox.Location = new System.Drawing.Point(176, 601);
+            this.SosaConjoint1NomTextBox.Name = "SosaConjoint1NomTextBox";
+            this.SosaConjoint1NomTextBox.ReadOnly = true;
+            this.SosaConjoint1NomTextBox.Size = new System.Drawing.Size(226, 13);
+            this.SosaConjoint1NomTextBox.TabIndex = 176;
+            this.SosaConjoint1NomTextBox.Visible = false;
+            // 
+            // SosaConjoint1Label
+            // 
+            this.SosaConjoint1Label.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
+            this.SosaConjoint1Label.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SosaConjoint1Label.ForeColor = System.Drawing.Color.Black;
+            this.SosaConjoint1Label.Location = new System.Drawing.Point(125, 600);
+            this.SosaConjoint1Label.Name = "SosaConjoint1Label";
+            this.SosaConjoint1Label.Size = new System.Drawing.Size(42, 15);
+            this.SosaConjoint1Label.TabIndex = 177;
+            // 
+            // GoSosaConjoint1Btn
+            // 
+            this.GoSosaConjoint1Btn.BackColor = System.Drawing.Color.Transparent;
+            this.GoSosaConjoint1Btn.BackgroundImage = global::TableauAscendant.Properties.Resources.flecheGauche;
+            this.GoSosaConjoint1Btn.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.GoSosaConjoint1Btn.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.GoSosaConjoint1Btn.FlatAppearance.BorderColor = System.Drawing.Color.SteelBlue;
+            this.GoSosaConjoint1Btn.FlatAppearance.BorderSize = 0;
+            this.GoSosaConjoint1Btn.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.GoSosaConjoint1Btn.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Transparent;
+            this.GoSosaConjoint1Btn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.GoSosaConjoint1Btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.GoSosaConjoint1Btn.Location = new System.Drawing.Point(51, 581);
+            this.GoSosaConjoint1Btn.Name = "GoSosaConjoint1Btn";
+            this.GoSosaConjoint1Btn.Size = new System.Drawing.Size(61, 53);
+            this.GoSosaConjoint1Btn.TabIndex = 178;
+            this.GoSosaConjoint1Btn.Text = "126";
+            this.GoSosaConjoint1Btn.UseVisualStyleBackColor = false;
+            this.GoSosaConjoint1Btn.Click += new System.EventHandler(this.GoSosaConjoint1Btn_Click);
+            // 
             // TableauAscendant
             // 
             this.AccessibleRole = System.Windows.Forms.AccessibleRole.None;
@@ -2143,6 +2297,13 @@ namespace WindowsFormsApp1
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(204)))), ((int)(((byte)(255)))));
             this.BackgroundImage = global::TableauAscendant.Properties.Resources.beta;
             this.ClientSize = new System.Drawing.Size(1284, 861);
+            this.Controls.Add(this.GoSosaConjoint1Btn);
+            this.Controls.Add(this.SosaConjoint1Label);
+            this.Controls.Add(this.SosaConjoint1NomTextBox);
+            this.Controls.Add(this.Sosa1MaEndroitTextBox);
+            this.Controls.Add(this.Sosa1MaTextBox);
+            this.Controls.Add(this.Sosa1LieuEtiquettetBox);
+            this.Controls.Add(this.Sosa1MaEtiquettetBox);
             this.Controls.Add(this.DAPAMlabel);
             this.Controls.Add(this.DummyButton);
             this.Controls.Add(this.FlecheGaucheRechercheButton);
@@ -2260,6 +2421,7 @@ namespace WindowsFormsApp1
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.MenuMs;
+            this.MaximizeBox = false;
             this.MaximumSize = new System.Drawing.Size(1300, 900);
             this.MinimumSize = new System.Drawing.Size(700, 500);
             this.Name = "TableauAscendant";
@@ -2451,6 +2613,15 @@ namespace WindowsFormsApp1
         private System.Windows.Forms.ToolStripMenuItem CreerUnePageMatrilénéaireToolStripMenuItem;
         private Microsoft.VisualBasic.PowerPacks.RectangleShape rectangleShape4;
         private System.Windows.Forms.Label DAPAMlabel;
+        private Microsoft.VisualBasic.PowerPacks.LineShape sosa1LigneVertical;
+        private Microsoft.VisualBasic.PowerPacks.RectangleShape RectangleSosaConjoint1;
+        private System.Windows.Forms.TextBox Sosa1MaEndroitTextBox;
+        private System.Windows.Forms.TextBox Sosa1MaTextBox;
+        private System.Windows.Forms.Label Sosa1LieuEtiquettetBox;
+        private System.Windows.Forms.Label Sosa1MaEtiquettetBox;
+        private System.Windows.Forms.TextBox SosaConjoint1NomTextBox;
+        private System.Windows.Forms.Label SosaConjoint1Label;
+        private System.Windows.Forms.Button GoSosaConjoint1Btn;
     }
 }
 

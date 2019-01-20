@@ -192,6 +192,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.shapeContainer1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
             this.MaximumSize = new System.Drawing.Size(300, 400);
             this.MinimumSize = new System.Drawing.Size(300, 400);
             this.Name = "Form2";

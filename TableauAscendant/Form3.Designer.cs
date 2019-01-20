@@ -689,6 +689,7 @@
             this.Controls.Add(this.titre_lb);
             this.Controls.Add(this.shapeContainer1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
             this.MaximumSize = new System.Drawing.Size(865, 500);
             this.MinimumSize = new System.Drawing.Size(865, 500);
             this.Name = "AideFm";
