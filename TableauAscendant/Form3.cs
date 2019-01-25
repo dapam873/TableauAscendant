@@ -76,7 +76,7 @@ namespace TableauAscendant
             Intro_lb.Location = new Point(col1, y);
             hauteur = 60;
             Intro_lb.Height = hauteur;
-            Intro_lb.Text = "Ce logiciel permet de produire un ou des fichiers PDF de TableauAscendance. Les Tableaux peuvent être créés en PDF vierge aussi bien que remplis. Les données entrées peuvent être enregistrées. Chaque rectangle représente la fiche d'une personne. Le logiciel permet d'entrer 511 individus. ";
+            Intro_lb.Text = "Ce logiciel permet de produire un ou des fichiers PDF de TableauAscendance. Les Tableaux peuvent être créés en PDF vierge aussi bien que remplis. Les données entrées peuvent être enregistrées. Chaque rectangle représente la fiche d'une personne. Le logiciel permet d'entrer 511 individus soit 9 générations. ";
             y = y + hauteur  + 20;
             lineShape1.X1 = col1;
             lineShape1.X2 = 790;

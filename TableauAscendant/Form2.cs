@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace TableauAscendant
 {
+    
     public partial class Form2 : Form
     {
-
         /// <summary>
         /// inconnu
         /// </summary>

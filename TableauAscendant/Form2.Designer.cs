@@ -1,5 +1,8 @@
 ﻿namespace TableauAscendant
 {
+    /// <summary>
+    /// inconnu
+    /// </summary>
     partial class Form2
     {
         /// <summary>

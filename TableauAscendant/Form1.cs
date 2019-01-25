@@ -272,9 +272,11 @@ namespace WindowsFormsApp1
                     Sosa1MaEndroitTextBox.Visible = false;
                     sosa1LigneVertical.Visible = false;
                     SosaConjoint1Label.Visible = false;
+                    SosaConjoint1NomTextBox.Visible = false;
                     RectangleSosaConjoint1.Visible = false;
                     Sosa1MaEtiquettetBox.Visible = false;
                     Sosa1LieuEtiquettetBox.Visible = false;
+                    
                 }
                 Note1.Visible = true;
                 Note2.Visible = true;
@@ -735,7 +737,7 @@ namespace WindowsFormsApp1
             string IDFamilleEnfant = GEDCOM.AvoirFamilleEnfant(ID);
             grille[1][IDFAMILLEENFANT] = GEDCOM.AvoirFamilleEnfant(ID);
             grille[0][NOM] = GEDCOM.AvoirPrenom(IDConjoint) + " " + GEDCOM.AvoirNom(IDConjoint);
-            for (int f = 2; f < 510; f += 2)
+            for (int f = 2; f < 512; f += 2)
             {
                 int a = f / 2;
                 string ss = grille[f / 2][IDFAMILLEENFANT];
@@ -749,7 +751,7 @@ namespace WindowsFormsApp1
                     grille[f + 1][IDFAMILLEENFANT] = GEDCOM.AvoirFamilleEnfant(grille[f + 1][IDg]);
                 }
             }
-            for (int f = 2; f < 510; f += 2)
+            for (int f = 2; f < 512; f += 2)
             {
                 //grille[f, IDg] = sosaID[f].ToString();
                 ID = grille[f][IDg];
@@ -891,7 +893,6 @@ namespace WindowsFormsApp1
                 return false;
             }
         }
-        
         private void    EffacerData()
         {
             //SystemSounds.Beep.Play();
@@ -1554,7 +1555,7 @@ namespace WindowsFormsApp1
             rect = new XRect(xx + 100, y, 170, 10);
             et.DrawString("Nom", font8, XBrushes.Black, rect, XStringFormats.TopLeft);
             rect = new XRect(xx + 219, y, 50, 10);
-            et.DrawString("Tableau", font8, XBrushes.Black, rect, XStringFormats.TopLeft);
+            et.DrawString("Tableau", font8, XBrushes.Red, rect, XStringFormats.TopLeft);
         }
         private void    FichierTest()
         {
@@ -1642,12 +1643,13 @@ namespace WindowsFormsApp1
             }
             return;
         }
-        private string  DessinerPage(ref PdfDocument document, ref XGraphics gfx, int sosa, bool fleche)
+        private string  DessinerPage(ref PdfDocument document, ref XGraphics gfx, int sosa, bool fleche, bool tous)
         {
             //int inch = 72 // 72 pointCreatePage
             XUnit pouce = XUnit.FromInch(1);
             XPen pen = new XPen(XColor.FromArgb(0, 0, 0),2);
             XPen penG = new XPen(XColor.FromArgb(100, 100, 100), 1);
+            XPen penM = new XPen(XColor.FromArgb(0, 0, 255), 1);
             XPen penB = new XPen(XColor.FromArgb(255, 255, 255), 1);
             XFont fontT = new XFont("Arial", 14, XFontStyle.Regular);
             XFont font8 = new XFont("Arial", 8, XFontStyle.Regular);
@@ -1669,10 +1671,13 @@ namespace WindowsFormsApp1
             /*
             gfx.DrawRectangle(pen, pouce * 0.5, 0.5 * pouce, pouce * 10, pouce * 7.5); //' x1,y1,x2,y2  cadrage de page
             */
-            // FIN
+            /**************************************************************************/
+            /* FIN                                                                    */
+            /**************************************************************************/
+            double hauteurLigne = pouce * .1; //ok .125;
             double largeurBoite = pouce * 2.05;
-            double hauteurBoite = pouce * .75;
-            double hauteurBoiteMini = pouce * .25;
+            double hauteurBoite = hauteurLigne * 11;
+            double hauteurBoiteMini = hauteurLigne * 4;
             double EspaceEntreBoite = pouce * .25;
             double Col1 = pouce * .5;               // Flèche Gauche
             double Col2 = pouce;                    // Boite coté gauche sosa 1
@@ -1685,21 +1690,22 @@ namespace WindowsFormsApp1
             double Col9 = Col8 + largeurBoite;      // Boite coté droite sosa 8
             double Col10 = Col9 + 5;                // Flèche Droite
 
-            double hauteurLigne = pouce * .125;
+            
             double positionLieu = .16 * pouce; // position Lieu par rapport date mariage = .16 * pouce; // par rapport date mariage
             // position des ligne au 1/4 pouce
-            double[] Ligne = new double[65];
-            for (f = 0; f < 65; f++)
+            double[] Ligne = new double[100];
+            for (f = 0; f < 100; f++)
             {
                 double l = hauteurLigne * f;
                 Ligne[f] = l;
             }
             /**************************************************************************/
-            //* Pour le développement dessine colonnes                                */   
+            /* Pour le développement dessine colonnes                                 */
             /**************************************************************************/
             /*
             XPen penLigne = new XPen(XColor.FromArgb(200, 200, 255), 0.5);
-            for (f = 0; f < 65; f++)
+            
+            for (f = 0; f < 100; f++)
             {
                 gfx.DrawString("V" + f, font8, XBrushes.Black, 0, Ligne[f]);
                 gfx.DrawLine(penLigne, 0, Ligne[f], pouce * 11, Ligne[f]);
@@ -1725,7 +1731,9 @@ namespace WindowsFormsApp1
             gfx.DrawString("<10", font8, XBrushes.Black, Col10, y + 20);
             gfx.DrawLine(penLigne, Col10, 0, Col10, pouce * 8.5);
             */
-            // FIN
+            /**************************************************************************/
+            /* FIN                                                                    */
+            /**************************************************************************/
 
             /**************************************************************************/
             // Position des boites
@@ -1733,72 +1741,54 @@ namespace WindowsFormsApp1
             {
                 // boite 1
                 positionBoite[1, 0] = Col2 + 2;
-                positionBoite[1, 1] = Ligne[32] + (pouce * .25 / 2);
+                positionBoite[1, 1] = Ligne[39];
                 // boite 2
                 positionBoite[2, 0] = Col4 + 2;
-                positionBoite[2, 1] = Ligne[18] + (pouce * .25 / 2);
+                positionBoite[2, 1] = Ligne[24];
                 // boite 3
                 positionBoite[3, 0] = Col4 + 2;
-                positionBoite[3, 1] = Ligne[46] + (pouce * .25 / 2);
+                positionBoite[3, 1] = Ligne[56];
                 // boite 4
                 positionBoite[4, 0] = Col6 + 2;
-                positionBoite[4, 1] = Ligne[12];
+                positionBoite[4, 1] = Ligne[16];
                 // boite 5
                 positionBoite[5, 0] = Col6 + 2;
-                positionBoite[5, 1] = Ligne[26];
+                positionBoite[5, 1] = Ligne[32];
                 // boite 6
                 positionBoite[6, 0] = Col6 + 2;
-                positionBoite[6, 1] = Ligne[40];
+                positionBoite[6, 1] = Ligne[48];
                 // boite 7
                 positionBoite[7, 0] = Col6 + 2;
-                positionBoite[7, 1] = Ligne[54];
-                
+                positionBoite[7, 1] = Ligne[64];
                 // boite 8
                 positionBoite[8, 0] = Col8 + 2;
-                positionBoite[8, 1] = Ligne[11];
+                positionBoite[8, 1] = Ligne[15];
                 // boite 9
                 positionBoite[9, 0] = Col8 + 2;
-                positionBoite[9, 1] = Ligne[17];
+                positionBoite[9, 1] = Ligne[24];
                 // boite 10
                 positionBoite[10, 0] = Col8 + 2;
-                positionBoite[10, 1] = Ligne[25];
+                positionBoite[10, 1] = Ligne[31];
                 // boite 11
                 positionBoite[11, 0] = Col8 + 2;
-                positionBoite[11, 1] = Ligne[31];
+                positionBoite[11, 1] = Ligne[40];
                 // boite 12
                 positionBoite[12, 0] = Col8 + 2;
-                positionBoite[12, 1] = Ligne[39];
+                positionBoite[12, 1] = Ligne[47];
                 // boite 13
                 positionBoite[13, 0] = Col8 + 2;
-                positionBoite[13, 1] = Ligne[45];
+                positionBoite[13, 1] = Ligne[56];
                 // boite 14
                 positionBoite[14, 0] = Col8 + 2;
-                positionBoite[14, 1] = Ligne[53];
+                positionBoite[14, 1] = Ligne[63];
                 // boite 15
                 positionBoite[15, 0] = Col8 + 2;
-                positionBoite[15, 1] = y = Ligne[59];
+                positionBoite[15, 1] = Ligne[72];
             }
+            
             // position mariage
             double[,] positionMariagexx = new double[7, 2]; // en pouce
-            {
-                int p = 10;
-                positionMariagexx[0, 0] = Col4 + p;   // 2 3
-                positionMariagexx[0, 1] = Ligne[34] + 17;
-                positionMariagexx[1, 0] = Col6 + p;   // 4 5
-                positionMariagexx[1, 1] = Ligne[20] + 17;
-                positionMariagexx[2, 0] = Col6 + p;   // 6 7
-                positionMariagexx[2, 1] = Ligne[48] + 17;
-                positionMariagexx[3, 0] = Col8 + 12;   // 8 9
-                positionMariagexx[3, 1] = Ligne[14] + 9;
-                positionMariagexx[4, 0] = Col8 + p;   // 10 11
-                positionMariagexx[4, 1] = Ligne[28] + 9;
-                positionMariagexx[5, 0] = Col8 + 12;   // 12 13
-                positionMariagexx[5, 1] = Ligne[42] + 9;
-                positionMariagexx[6, 0] = Col8 + 12;   // 14 15
-                positionMariagexx[6, 1] = Ligne[56] + 9;
-            }
             int[] sosaIndex = new int[16];
-
             sosaIndex[1] = sosa;
             sosaIndex[2] = sosa * 2;
             sosaIndex[3] = sosa * 2 + 1;
@@ -1814,7 +1804,6 @@ namespace WindowsFormsApp1
             sosaIndex[13] = sosa * 8 + 5;
             sosaIndex[14] = sosa * 8 + 6;
             sosaIndex[15] = sosa * 8 + 7;
-
             string[] sosaBoite = new string[16];
             for (f = 1; f < 16; f++)
             {
@@ -1823,7 +1812,8 @@ namespace WindowsFormsApp1
             y = pouce;
             double HauteurGeneration = pouce * .25;
             double Rond = 10;
-            // au de page
+
+            // haut de page
             str = "Tableau ascendant de ";
             XSize textLargeur = gfx.MeasureString(str, fontT);
             gfx.DrawString(str, fontT, XBrushes.Black, Col1, POUCE * .75);
@@ -1838,47 +1828,48 @@ namespace WindowsFormsApp1
                 str = "____________________________________";
                 gfx.DrawString(str, fontT, XBrushes.Black, Col1 + textLargeur.Width + 5, POUCE * .75);
             }
+            
             // dessine génération
             {
                 //génération 1
                 XRect g = new XRect(Col2, 50, largeurBoite, 20);
-                gfx.DrawRoundedRectangle(pen, CouleurBloc, Col2, Ligne[8], largeurBoite, HauteurGeneration, Rond, Rond);
+                gfx.DrawRoundedRectangle(pen, CouleurBloc, Col2, Ligne[10], largeurBoite, HauteurGeneration, Rond, Rond);
                 str = "Génération " + grille[sosa][GENERATION];
                 textLargeur = gfx.MeasureString(str, font8);
                 if (grille[sosa][GENERATION] == "")
                 {
-                    gfx.DrawLine(penG, Col2 + (largeurBoite / 2) + (textLargeur.Width / 2) +2, y + 12, Col2 + (largeurBoite / 2) + (textLargeur.Width / 2) + 20, y + 12);
+                    gfx.DrawLine(penG, Col2 + (largeurBoite / 2) + (textLargeur.Width / 2) +2, Ligne[10] + 12, Col2 + (largeurBoite / 2) + (textLargeur.Width / 2) + 20, Ligne[10] + 12);
                 }
-                gfx.DrawString(str, font8, XBrushes.Black, Col2 + (largeurBoite / 2) - textLargeur.Width / 2, y + 12);
+                gfx.DrawString(str, font8, XBrushes.Black, Col2 + (largeurBoite / 2) - textLargeur.Width / 2, Ligne[10] + 12);
 
                 //génération 2
                 g = new XRect(Col4, 50, largeurBoite, 20);
-                gfx.DrawRoundedRectangle(pen, CouleurBloc, Col4, y, largeurBoite, HauteurGeneration, Rond, Rond);
+                gfx.DrawRoundedRectangle(pen, CouleurBloc, Col4, Ligne[10], largeurBoite, HauteurGeneration, Rond, Rond);
                 str = "Génération " + grille[sosa * 2][GENERATION];
                 textLargeur = gfx.MeasureString(str, font8);
                 if (grille[sosa * 2][GENERATION] == "")
                 {
-                    gfx.DrawLine(penG, Col4 + (largeurBoite / 2) + (textLargeur.Width / 2) + 2, y + 12, Col4 + (largeurBoite / 2) + (textLargeur.Width / 2) + 20, y + 12);
+                    gfx.DrawLine(penG, Col4 + (largeurBoite / 2) + (textLargeur.Width / 2) + 2, Ligne[10] + 12, Col4 + (largeurBoite / 2) + (textLargeur.Width / 2) + 20, Ligne[10] + 12);
                 }
-                gfx.DrawString(str, font8, XBrushes.Black, Col4 + (largeurBoite / 2) - textLargeur.Width / 2, y + 12);
+                gfx.DrawString(str, font8, XBrushes.Black, Col4 + (largeurBoite / 2) - textLargeur.Width / 2, Ligne[10] + 12);
 
                 //génération 3
                 g = new XRect(Col6, 50, largeurBoite, 20);
-                gfx.DrawRoundedRectangle(pen, CouleurBloc, Col6, y, largeurBoite, HauteurGeneration, Rond, Rond);
+                gfx.DrawRoundedRectangle(pen, CouleurBloc, Col6, Ligne[10], largeurBoite, HauteurGeneration, Rond, Rond);
                 str = "Génération " + grille[sosa * 4][GENERATION];
                 textLargeur = gfx.MeasureString(str, font8);
                 if (grille[sosa * 4][GENERATION] == "")
                 {
-                    gfx.DrawLine(penG, Col6 + (largeurBoite / 2) + (textLargeur.Width / 2) + 2, y + 12, Col6 + (largeurBoite / 2) + (textLargeur.Width / 2) + 20, y + 12);
+                    gfx.DrawLine(penG, Col6 + (largeurBoite / 2) + (textLargeur.Width / 2) + 2, Ligne[10] + 12, Col6 + (largeurBoite / 2) + (textLargeur.Width / 2) + 20, Ligne[10] + 12);
                 }
-                gfx.DrawString(str, font8, XBrushes.Black, Col6 + (largeurBoite / 2) - textLargeur.Width / 2, y + 12);
+                gfx.DrawString(str, font8, XBrushes.Black, Col6 + (largeurBoite / 2) - textLargeur.Width / 2, Ligne[10] + 12);
 
                 //génération 4
                 int s = sosa * 8;
                 if (s < 512)
                 {
                     g = new XRect(Col8, 50, largeurBoite, 20);
-                    gfx.DrawRoundedRectangle(pen, CouleurBloc, Col8, y, largeurBoite, HauteurGeneration, Rond, Rond);
+                    gfx.DrawRoundedRectangle(pen, CouleurBloc, Col8, Ligne[10], largeurBoite, HauteurGeneration, Rond, Rond);
                     str = "Génération " + grille[s][GENERATION];
                     textLargeur = gfx.MeasureString(str, font8);
                     if (grille[s][GENERATION] == "")
@@ -1888,66 +1879,93 @@ namespace WindowsFormsApp1
                     gfx.DrawString(str, font8, XBrushes.Black, Col8 + (largeurBoite / 2) - textLargeur.Width / 2, y + 12);
                 }
             }
+            
             // dessine boite
             {
-                gfx.DrawRoundedRectangle(pen, CouleurBloc, Col2, Ligne[32] + (pouce * .25 / 2), largeurBoite, hauteurBoite, 10, 10); // Boite sosa 1
+                gfx.DrawRoundedRectangle(pen, CouleurBloc, Col2, positionBoite[1, 1], largeurBoite, hauteurBoite, 10, 10); // Boite sosa 1
                 if(sosa != 1) {
-                    gfx.DrawRoundedRectangle(pen, CouleurBloc, Col2, Ligne[43], largeurBoite, hauteurBoiteMini, 10, 10); //  Boite sosa 1 conjoint
+                    gfx.DrawRoundedRectangle(pen, CouleurBloc, Col2, positionBoite[1, 1] + hauteurLigne* 16, largeurBoite, hauteurBoiteMini, 10, 10); //  Boite sosa 1 conjoint
                 }
-                gfx.DrawRoundedRectangle(pen, CouleurBloc, Col4, Ligne[18] + (pouce * .25 / 2), largeurBoite, hauteurBoite, 10, 10); // Boite sosa 2
-                gfx.DrawRoundedRectangle(pen, CouleurBloc, Col4, Ligne[46] + (pouce * .25 / 2), largeurBoite, hauteurBoite, 10, 10); // Boite sosa 3
-                gfx.DrawRoundedRectangle(pen, CouleurBloc, Col6, Ligne[12], largeurBoite, hauteurBoite, 10, 10); // Boite sosa 4
-                gfx.DrawRoundedRectangle(pen, CouleurBloc, Col6, Ligne[26], largeurBoite, hauteurBoite, 10, 10); // Boite sosa 5
-                gfx.DrawRoundedRectangle(pen, CouleurBloc, Col6, Ligne[40], largeurBoite, hauteurBoite, 10, 10); // Boite sosa 6
-                gfx.DrawRoundedRectangle(pen, CouleurBloc, Col6, Ligne[54], largeurBoite, hauteurBoite, 10, 10); // Boite sosa 7
+                gfx.DrawRoundedRectangle(pen, CouleurBloc, Col4, positionBoite[2, 1], largeurBoite, hauteurBoite, 10, 10); // Boite sosa 2
+                gfx.DrawRoundedRectangle(pen, CouleurBloc, Col4, positionBoite[3, 1], largeurBoite, hauteurBoite, 10, 10); // Boite sosa 3
+                gfx.DrawRoundedRectangle(pen, CouleurBloc, Col6, positionBoite[4, 1], largeurBoite, hauteurBoite, 10, 10); // Boite sosa 4
+                gfx.DrawRoundedRectangle(pen, CouleurBloc, Col6, positionBoite[5, 1], largeurBoite, hauteurBoite, 10, 10); // Boite sosa 5
+                gfx.DrawRoundedRectangle(pen, CouleurBloc, Col6, positionBoite[6, 1], largeurBoite, hauteurBoite, 10, 10); // Boite sosa 6
+                gfx.DrawRoundedRectangle(pen, CouleurBloc, Col6, positionBoite[7, 1], largeurBoite, hauteurBoite, 10, 10); // Boite sosa 7
                 int s = sosa * 8;
                 if (s < 512)
                 {
-                    gfx.DrawRoundedRectangle(pen, CouleurBloc, Col8, Ligne[11], largeurBoite, hauteurBoiteMini, 10, 10); // Boite sosa 8
-                    gfx.DrawRoundedRectangle(pen, CouleurBloc, Col8, Ligne[17], largeurBoite, hauteurBoiteMini, 10, 10); // Boite sosa 9
-                    gfx.DrawRoundedRectangle(pen, CouleurBloc, Col8, Ligne[25], largeurBoite, hauteurBoiteMini, 10, 10); // Boite sosa 10
-                    gfx.DrawRoundedRectangle(pen, CouleurBloc, Col8, Ligne[31], largeurBoite, hauteurBoiteMini, 10, 10); // Boite sosa 11
-                    gfx.DrawRoundedRectangle(pen, CouleurBloc, Col8, Ligne[39], largeurBoite, hauteurBoiteMini, 10, 10); // Boite sosa 12
-                    gfx.DrawRoundedRectangle(pen, CouleurBloc, Col8, Ligne[45], largeurBoite, hauteurBoiteMini, 10, 10); // Boite sosa 13
-                    gfx.DrawRoundedRectangle(pen, CouleurBloc, Col8, Ligne[53], largeurBoite, hauteurBoiteMini, 10, 10); // Boite sosa 14
-                    gfx.DrawRoundedRectangle(pen, CouleurBloc, Col8, Ligne[59], largeurBoite, hauteurBoiteMini, 10, 10); // Boite sosa 15
+                    gfx.DrawRoundedRectangle(pen, CouleurBloc, Col8, positionBoite[ 8, 1], largeurBoite, hauteurBoiteMini, 10, 10); // Boite sosa 8
+                    gfx.DrawRoundedRectangle(pen, CouleurBloc, Col8, positionBoite[ 9, 1], largeurBoite, hauteurBoiteMini, 10, 10); // Boite sosa 9
+                    gfx.DrawRoundedRectangle(pen, CouleurBloc, Col8, positionBoite[10, 1], largeurBoite, hauteurBoiteMini, 10, 10); // Boite sosa 10
+                    gfx.DrawRoundedRectangle(pen, CouleurBloc, Col8, positionBoite[11, 1], largeurBoite, hauteurBoiteMini, 10, 10); // Boite sosa 11
+                    gfx.DrawRoundedRectangle(pen, CouleurBloc, Col8, positionBoite[12, 1], largeurBoite, hauteurBoiteMini, 10, 10); // Boite sosa 12
+                    gfx.DrawRoundedRectangle(pen, CouleurBloc, Col8, positionBoite[13, 1], largeurBoite, hauteurBoiteMini, 10, 10); // Boite sosa 13
+                    gfx.DrawRoundedRectangle(pen, CouleurBloc, Col8, positionBoite[14, 1], largeurBoite, hauteurBoiteMini, 10, 10); // Boite sosa 14
+                    gfx.DrawRoundedRectangle(pen, CouleurBloc, Col8, positionBoite[15, 1], largeurBoite, hauteurBoiteMini, 10, 10); // Boite sosa 15
                 }
             }
-            // dessine ligne
+            // dessine ligne entre les boites
             { 
-                gfx.DrawLine(pen, Col3, Ligne[36], Col4 + 8, Ligne[36]); // Horizontal 1
-                gfx.DrawLine(pen, Col5, Ligne[22], Col6 + 8, Ligne[22]); // Horizontal 2
-                gfx.DrawLine(pen, Col5, Ligne[50], Col6 + 8, Ligne[50]); // Horizontal 3
+                gfx.DrawLine(pen, Col3, positionBoite[1, 1] + hauteurBoite / 2, Col4 + 8, positionBoite[1, 1] + hauteurBoite / 2); // Horizontal 1
+                gfx.DrawLine(pen, Col5, positionBoite[2, 1] + hauteurBoite / 2, Col6 + 8, positionBoite[2, 1] + hauteurBoite / 2); // Horizontal 2
+                gfx.DrawLine(pen, Col5, positionBoite[3, 1] + hauteurBoite / 2, Col6 + 8, positionBoite[3, 1] + hauteurBoite / 2); // Horizontal 3
 
                 int s = sosa * 8;
                 if (s < 512)
                 {
-                    gfx.DrawLine(pen, Col7, Ligne[14] + (pouce * .25 / 2), Col8 + 8, Ligne[14] + (pouce * .25 / 2)); // Horizontal 4
-                    gfx.DrawLine(pen, Col7, Ligne[28] + (pouce * .25 / 2), Col8 + 8, Ligne[28] + (pouce * .25 / 2)); // Horizontal 5
-                    gfx.DrawLine(pen, Col7, Ligne[42] + (pouce * .25 / 2), Col8 + 8, Ligne[42] + (pouce * .25 / 2)); // Horizontal 6
-                    gfx.DrawLine(pen, Col7, Ligne[56] + (pouce * .25 / 2), Col8 + 8, Ligne[56] + (pouce * .25 / 2)); // Horizontal 7
+                    gfx.DrawLine(pen, Col7, positionBoite[4, 1] + hauteurBoite / 2, Col8 + 8, positionBoite[4, 1] + hauteurBoite / 2); // Horizontal 4
+                    gfx.DrawLine(pen, Col7, positionBoite[5, 1] + hauteurBoite / 2, Col8 + 8, positionBoite[5, 1] + hauteurBoite / 2); // Horizontal 5
+                    gfx.DrawLine(pen, Col7, positionBoite[6, 1] + hauteurBoite / 2, Col8 + 8, positionBoite[6, 1] + hauteurBoite / 2); // Horizontal 6
+                    gfx.DrawLine(pen, Col7, positionBoite[7, 1] + hauteurBoite / 2, Col8 + 8, positionBoite[7, 1] + hauteurBoite / 2); // Horizontal 7
                 }
                 if(sosa != 1) {
-                    gfx.DrawLine(pen, Col2 + 8, Ligne[38] + 9, Col2 + 8, Ligne[44] - 9); // vertical sosa 1 conjoint
+                    gfx.DrawLine(pen, Col2 + 8, positionBoite[1, 1] + hauteurBoite, Col2 + 8, positionBoite[1, 1] + hauteurBoite + hauteurLigne * 5); // vertical sosa 1 conjoint
                 }
-                gfx.DrawLine(pen, Col4 + 8, Ligne[24] + 9, Col4 + 8, Ligne[48] - 9); // vertical 2 3
-                gfx.DrawLine(pen, Col6 + 8, Ligne[18],  Col6 + 8, Ligne[26]); // vertical 4 5
-                gfx.DrawLine(pen, Col6 + 8, Ligne[46], Col6 + 8, Ligne[54]); // vertical 6 7
+                gfx.DrawLine(pen, Col4 + 8, positionBoite[2, 1] + hauteurBoite, Col4 + 8, positionBoite[3, 1]); // vertical 2 3
+                gfx.DrawLine(pen, Col6 + 8, positionBoite[4, 1] + hauteurBoite, Col6 + 8, positionBoite[5, 1]); // vertical 4 5
+                gfx.DrawLine(pen, Col6 + 8, positionBoite[6, 1] + hauteurBoite, Col6 + 8, positionBoite[7, 1]); // vertical 6 7
 
                 if (s < 512)
                 {
-                    gfx.DrawLine(pen, Col8 + 8, Ligne[13], Col8 + 8, Ligne[17]); // vertical 8 9
-                    gfx.DrawLine(pen, Col8 + 8, Ligne[27], Col8 + 8, Ligne[31]); // vertical 10 11
-                    gfx.DrawLine(pen, Col8 + 8, Ligne[41], Col8 + 8, Ligne[45]); // vertical 12 13
-                    gfx.DrawLine(pen, Col8 + 8, Ligne[55], Col8 + 8, Ligne[59]); // vertical 14 15
+                    gfx.DrawLine(pen, Col8 + 8, positionBoite[8, 1] + hauteurBoiteMini, Col8 + 8, positionBoite[9, 1]); // vertical 8 9
+                    gfx.DrawLine(pen, Col8 + 8, positionBoite[10, 1] + hauteurBoiteMini, Col8 + 8, positionBoite[11, 1]); // vertical 10 11
+                    gfx.DrawLine(pen, Col8 + 8, positionBoite[12, 1] + hauteurBoiteMini, Col8 + 8, positionBoite[13, 1]); // vertical 12 13
+                    gfx.DrawLine(pen, Col8 + 8, positionBoite[14, 1] + hauteurBoiteMini, Col8 + 8, positionBoite[15, 1]); // vertical 14 15
                 }
             }
+            //
             tf.Alignment = XParagraphAlignment.Right;
             int RetraitSosa = 20;
             XRect rect = new XRect();
-            // Dessiner les boites
-            // sosa 1 à 7
-            for (f = 1; f < 8; f++) {
+            
+            // Dessiner les informations des boites
+            // sosa conjoint
+
+            if (sosa > 1)
+            {
+                int sosaConjoint;
+                if (sosa % 2 == 0)
+                {
+                    sosaConjoint = sosa + 1;
+                }
+                else
+                {
+                    sosaConjoint = sosa - 1;
+                }
+                rect = new XRect(positionBoite[1, 0] - RetraitSosa, positionBoite[1, 1] + hauteurLigne * 16, 15, 10);
+                if (sosa < 2)
+                {
+                    gfx.DrawLine(penG, positionBoite[1, 0] - RetraitSosa + 3, positionBoite[1, 1] + 10, positionBoite[1, 0] - RetraitSosa + 11, positionBoite[1, 1] + 10);
+                }
+                else
+                    tf.DrawString(sosaConjoint.ToString(), font8B, XBrushes.Black, rect, XStringFormats.TopLeft);
+
+            }
+
+                // sosa 1 à 7
+                for (f = 1; f < 8; f++)
+            {
                 rect = new XRect(positionBoite[f, 0] - RetraitSosa, positionBoite[f, 1], 15, 10);
                 if ( sosa == 0 )
                 {
@@ -1957,10 +1975,11 @@ namespace WindowsFormsApp1
                 {
                     tf.DrawString(sosaBoite[f], font8B, XBrushes.Black, rect, XStringFormats.TopLeft);
                 }
-                gfx.DrawString("N", font8B, XBrushes.Black, positionBoite[f, 0], positionBoite[f, 1] + 20);
-                gfx.DrawString("L", font8B, XBrushes.Black, positionBoite[f, 0], positionBoite[f, 1] + 30);
-                gfx.DrawString("D", font8B, XBrushes.Black, positionBoite[f, 0], positionBoite[f, 1] + 40);
-                gfx.DrawString("L", font8B, XBrushes.Black, positionBoite[f, 0], positionBoite[f, 1] + 50);
+            
+                gfx.DrawString("N", font8B, XBrushes.Black, positionBoite[f, 0], positionBoite[f, 1] + hauteurLigne * 4);
+                gfx.DrawString("L", font8B, XBrushes.Black, positionBoite[f, 0], positionBoite[f, 1] + hauteurLigne * 6);
+                gfx.DrawString("D", font8B, XBrushes.Black, positionBoite[f, 0], positionBoite[f, 1] + hauteurLigne * 8);
+                gfx.DrawString("L", font8B, XBrushes.Black, positionBoite[f, 0], positionBoite[f, 1] + hauteurLigne * 10);
             }
             // sosa 8 à 15
             for (f = 8; f < 16; f++)
@@ -1979,27 +1998,28 @@ namespace WindowsFormsApp1
                     }
                 }
             }
+
             if (sosa != 1) {
-                gfx.DrawString("M", font8B, XBrushes.Black, Col2 + 10, Ligne[40] + 6, XStringFormats.Default);  // sosa 1 conjoint
-                gfx.DrawString("L", font8B, XBrushes.Black, Col2 + 10, Ligne[40] + 6 + positionLieu, XStringFormats.Default);  // sosa 1 conjoint
+                gfx.DrawString("M", font8B, XBrushes.Black, Col2 + 10, positionBoite[1, 1] + (hauteurLigne * 13), XStringFormats.Default);  // sosa 1 conjoint
+                gfx.DrawString("L", font8B, XBrushes.Black, Col2 + 10, positionBoite[1, 1] + (hauteurLigne * 15), XStringFormats.Default);  // sosa 1 conjoint
             }
-            gfx.DrawString("M", font8B, XBrushes.Black, Col4 + 10, Ligne[35] + 6, XStringFormats.Default);      // sosa 02-03
-            gfx.DrawString("L", font8B, XBrushes.Black, Col4 + 10, Ligne[35] + 6 + positionLieu, XStringFormats.Default);      // sosa 02-03
-            gfx.DrawString("M", font8B, XBrushes.Black, Col6 + 10, Ligne[21] + 6, XStringFormats.Default);      // sosa 04-05
-            gfx.DrawString("L", font8B, XBrushes.Black, Col6 + 10, Ligne[21] + 6 + positionLieu, XStringFormats.Default);      // sosa 04-05
-            gfx.DrawString("M", font8B, XBrushes.Black, Col6 + 10, Ligne[49] + 6, XStringFormats.Default);      // sosa 06-07
-            gfx.DrawString("L", font8B, XBrushes.Black, Col6 + 10, Ligne[49] + 6 + positionLieu, XStringFormats.Default);      // sosa 06-07  
+            gfx.DrawString("M", font8B, XBrushes.Black, Col4 + 10, positionBoite[2, 1] + hauteurLigne * 20, XStringFormats.Default);      // sosa 02-03
+            gfx.DrawString("L", font8B, XBrushes.Black, Col4 + 10, positionBoite[2, 1] + hauteurLigne * 22, XStringFormats.Default);      // sosa 02-03
+            gfx.DrawString("M", font8B, XBrushes.Black, Col6 + 10, positionBoite[4, 1] + hauteurLigne * 13, XStringFormats.Default);      // sosa 04-05
+            gfx.DrawString("L", font8B, XBrushes.Black, Col6 + 10, positionBoite[4, 1] + hauteurLigne * 15, XStringFormats.Default);      // sosa 04-05
+            gfx.DrawString("M", font8B, XBrushes.Black, Col6 + 10, positionBoite[6, 1] + hauteurLigne * 13, XStringFormats.Default);      // sosa 06-07
+            gfx.DrawString("L", font8B, XBrushes.Black, Col6 + 10, positionBoite[6, 1] + hauteurLigne * 15, XStringFormats.Default);      // sosa 06-07  
 
             if (sosa * 8 < 512)
             {
-                gfx.DrawString("M", font8B, XBrushes.Black, Col8 + 10, Ligne[14] + 6, XStringFormats.Default);  // sosa 08-09
-                gfx.DrawString("L", font8B, XBrushes.Black, Col8 + 10, Ligne[14] + 6 + positionLieu, XStringFormats.Default);  // sosa 08-09
-                gfx.DrawString("M", font8B, XBrushes.Black, Col8 + 10, Ligne[28] + 6, XStringFormats.Default);  // sosa 10-11
-                gfx.DrawString("L", font8B, XBrushes.Black, Col8 + 10, Ligne[28] + 6 + positionLieu, XStringFormats.Default);  // sosa 10-11
-                gfx.DrawString("M", font8B, XBrushes.Black, Col8 + 10, Ligne[42] + 6, XStringFormats.Default);  // sosa 12-13
-                gfx.DrawString("L", font8B, XBrushes.Black, Col8 + 10, Ligne[42] + 6 + positionLieu, XStringFormats.Default);  // sosa 12-13
-                gfx.DrawString("M", font8B, XBrushes.Black, Col8 + 10, Ligne[56] + 6, XStringFormats.Default);  // sosa 14-15
-                gfx.DrawString("L", font8B, XBrushes.Black, Col8 + 10, Ligne[56] + 6 + positionLieu, XStringFormats.Default);  // sosa 14-15
+                gfx.DrawString("M", font8B, XBrushes.Black, Col8 + 10, positionBoite[ 8, 1] + hauteurLigne * 6, XStringFormats.Default);  // sosa 08-09
+                gfx.DrawString("L", font8B, XBrushes.Black, Col8 + 10, positionBoite[ 8, 1] + hauteurLigne * 8, XStringFormats.Default);  // sosa 08-09
+                gfx.DrawString("M", font8B, XBrushes.Black, Col8 + 10, positionBoite[10, 1] + hauteurLigne * 6, XStringFormats.Default);  // sosa 10-11
+                gfx.DrawString("L", font8B, XBrushes.Black, Col8 + 10, positionBoite[10, 1] + hauteurLigne * 8, XStringFormats.Default);  // sosa 10-11
+                gfx.DrawString("M", font8B, XBrushes.Black, Col8 + 10, positionBoite[12, 1] + hauteurLigne * 6, XStringFormats.Default);  // sosa 12-13
+                gfx.DrawString("L", font8B, XBrushes.Black, Col8 + 10, positionBoite[12, 1] + hauteurLigne * 8, XStringFormats.Default);  // sosa 12-13
+                gfx.DrawString("M", font8B, XBrushes.Black, Col8 + 10, positionBoite[14, 1] + hauteurLigne * 6, XStringFormats.Default);  // sosa 14-15
+                gfx.DrawString("L", font8B, XBrushes.Black, Col8 + 10, positionBoite[14, 1] + hauteurLigne * 8, XStringFormats.Default);  // sosa 14-15
             }
             //}
 
@@ -2009,35 +2029,30 @@ namespace WindowsFormsApp1
                 int largeurLigne = 135; // 
                 for (f = 1; f < 8; f++)
                 {
-                    gfx.DrawLine(penG, positionBoite[f, 0], positionBoite[f, 1] + 11, positionBoite[f, 0] + 142, positionBoite[f, 1] + 11);
-                    
-                    gfx.DrawLine(penG, positionBoite[f, 0] + xInfo, positionBoite[f, 1] + 21, positionBoite[f, 0] + xInfo + largeurLigne, positionBoite[f, 1] + 21);
-                    
-                    gfx.DrawLine(penG, positionBoite[f, 0] + xInfo, positionBoite[f, 1] + 31, positionBoite[f, 0] + xInfo + largeurLigne, positionBoite[f, 1] + 31);
-                    
-                    gfx.DrawLine(penG, positionBoite[f, 0] + xInfo, positionBoite[f, 1] + 41, positionBoite[f, 0] + xInfo + largeurLigne, positionBoite[f, 1] + 41);
-                    
-                    gfx.DrawLine(penG, positionBoite[f, 0] + xInfo, positionBoite[f, 1] + 51, positionBoite[f, 0] + xInfo + largeurLigne, positionBoite[f, 1] + 51);
+                    gfx.DrawLine(penG, positionBoite[f, 0], positionBoite[f, 1] + hauteurLigne * 1, positionBoite[f, 0] + 142, positionBoite[f, 1] + hauteurLigne * 1);
+                    gfx.DrawLine(penG, positionBoite[f, 0] + xInfo, positionBoite[f, 1] + hauteurLigne * 4, positionBoite[f, 0] + xInfo + largeurLigne, positionBoite[f, 1] + hauteurLigne * 4);
+                    gfx.DrawLine(penG, positionBoite[f, 0] + xInfo, positionBoite[f, 1] + hauteurLigne * 6, positionBoite[f, 0] + xInfo + largeurLigne, positionBoite[f, 1] + hauteurLigne * 6);
+                    gfx.DrawLine(penG, positionBoite[f, 0] + xInfo, positionBoite[f, 1] + hauteurLigne * 8, positionBoite[f, 0] + xInfo + largeurLigne, positionBoite[f, 1] + hauteurLigne * 8);
+                    gfx.DrawLine(penG, positionBoite[f, 0] + xInfo, positionBoite[f, 1] + hauteurLigne * 10, positionBoite[f, 0] + xInfo + largeurLigne, positionBoite[f, 1] + hauteurLigne * 10);
                 }
                 int p = 18;
                 int l = 140;
-                gfx.DrawLine(penG, Col4 + p, Ligne[35], Col4 + l, Ligne[35]);
-                gfx.DrawLine(penG, Col4 + p, Ligne[37], Col4 + l, Ligne[37]);
+                gfx.DrawLine(penG, Col4 + p, Ligne[44], Col4 + l, Ligne[44]);
+                gfx.DrawLine(penG, Col4 + p, Ligne[46], Col4 + l, Ligne[46]);
 
-                gfx.DrawLine(penG, Col6 + p, Ligne[21], Col6 + l, Ligne[21]);
-                gfx.DrawLine(penG, Col6 + p, Ligne[23], Col6 + l, Ligne[23]);
-                gfx.DrawLine(penG, Col6 + p, Ligne[49], Col6 + l, Ligne[49]);
-                gfx.DrawLine(penG, Col6 + p, Ligne[51], Col6 + l, Ligne[51]);
+                gfx.DrawLine(penG, Col6 + p, Ligne[29], Col6 + l, Ligne[29]);
+                gfx.DrawLine(penG, Col6 + p, Ligne[31], Col6 + l, Ligne[31]);
+                gfx.DrawLine(penG, Col6 + p, Ligne[61], Col6 + l, Ligne[61]);
+                gfx.DrawLine(penG, Col6 + p, Ligne[63], Col6 + l, Ligne[63]);
 
-
-                gfx.DrawLine(penG, Col8 + p, Ligne[14] + 5, Col8 + l, Ligne[14] + 5);
-                gfx.DrawLine(penG, Col8 + p, Ligne[16] + 3, Col8 + l, Ligne[16] + 3);
-                gfx.DrawLine(penG, Col8 + p, Ligne[28] + 5, Col8 + l, Ligne[28] + 5);
-                gfx.DrawLine(penG, Col8 + p, Ligne[30] + 3, Col8 + l, Ligne[30] + 3);
-                gfx.DrawLine(penG, Col8 + p, Ligne[42] + 5, Col8 + l, Ligne[42] + 5);
-                gfx.DrawLine(penG, Col8 + p, Ligne[44] + 3, Col8 + l, Ligne[44] + 3);
-                gfx.DrawLine(penG, Col8 + p, Ligne[56] + 5, Col8 + l, Ligne[56] + 5);
-                gfx.DrawLine(penG, Col8 + p, Ligne[58] + 3, Col8 + l, Ligne[58] + 3);
+                gfx.DrawLine(penG, Col8 + p, Ligne[21], Col8 + l, Ligne[21]);
+                gfx.DrawLine(penG, Col8 + p, Ligne[23], Col8 + l, Ligne[23]);
+                gfx.DrawLine(penG, Col8 + p, Ligne[37], Col8 + l, Ligne[37]);
+                gfx.DrawLine(penG, Col8 + p, Ligne[39], Col8 + l, Ligne[39]);
+                gfx.DrawLine(penG, Col8 + p, Ligne[53], Col8 + l, Ligne[53]);
+                gfx.DrawLine(penG, Col8 + p, Ligne[55], Col8 + l, Ligne[55]);
+                gfx.DrawLine(penG, Col8 + p, Ligne[69], Col8 + l, Ligne[69]);
+                gfx.DrawLine(penG, Col8 + p, Ligne[71], Col8 + l, Ligne[71]);
 
             }
             else
@@ -2054,10 +2069,10 @@ namespace WindowsFormsApp1
                         }
                         if (grille[sosaConjoint][NOM] == "")
                         {
-                            gfx.DrawLine(penG, Col2 + 10, Ligne[60], Col2 + 142, Ligne[60]);
+                            gfx.DrawLine(penG, positionBoite[1, 0], positionBoite[1, 1] + hauteurLigne * 19, Col2 + 142, positionBoite[1, 1] + hauteurLigne * 19);
                         }
                         string rt = RacoucirNom(grille[sosaConjoint][NOM], ref gfx);
-                        gfx.DrawString(rt, font8B, XBrushes.Black, Col2 + 2, Ligne[43] + 12, XStringFormats.Default);
+                        gfx.DrawString(rt, font8B, XBrushes.Black, Col2 + 2, positionBoite[1, 1] + hauteurLigne * 19, XStringFormats.Default);
 
                     }
                     for (f = 1; f < 8; f++)
@@ -2066,38 +2081,38 @@ namespace WindowsFormsApp1
                         // Nom
                         if (grille[sosaIndex[f]][NOM] == "")
                         {
-                            gfx.DrawLine(penG, positionBoite[f, 0], positionBoite[f, 1] + 10, positionBoite[f, 0] + 142, positionBoite[f, 1] + 10);
+                            gfx.DrawLine(penG, positionBoite[f, 0], positionBoite[f, 1] + hauteurLigne * 2, positionBoite[f, 0] + 142, positionBoite[f, 1] + hauteurLigne * 2);
                         }
                         string rt = RacoucirNom(grille[sosaIndex[f]][NOM], ref gfx);
-                        gfx.DrawString(rt, font8B, XBrushes.Black, positionBoite[f, 0], positionBoite[f, 1] + 10, XStringFormats.Default);
+                        gfx.DrawString(rt, font8B, XBrushes.Black, positionBoite[f, 0], positionBoite[f, 1] + hauteurLigne * 2, XStringFormats.Default);
                         // Né le 
                         if (grille[sosaIndex[f]][NELE] == "")
                         {
-                            gfx.DrawLine(penG, positionBoite[f, 0] + 9, positionBoite[f, 1] + 20, positionBoite[f, 0] + largeurLigne, positionBoite[f, 1] + 20);
+                            gfx.DrawLine(penG, positionBoite[f, 0] + 9, positionBoite[f, 1] + hauteurLigne * 4, positionBoite[f, 0] + largeurLigne, positionBoite[f, 1] + hauteurLigne * 4);
                         }
                         rt = RacoucirTexte(grille[sosaIndex[f]][NELE], ref gfx);
-                        gfx.DrawString(rt, font8, XBrushes.Black, positionBoite[f, 0] + xInfo, positionBoite[f, 1] + 20, XStringFormats.Default);
+                        gfx.DrawString(rt, font8, XBrushes.Black, positionBoite[f, 0] + xInfo, positionBoite[f, 1] + hauteurLigne * 4, XStringFormats.Default);
                         // Né endroit
                         if (grille[sosaIndex[f]][NELIEU] == "")
                         {
-                            gfx.DrawLine(penG, positionBoite[f, 0] + 9, positionBoite[f, 1] + 30, positionBoite[f, 0] + largeurLigne, positionBoite[f, 1] + 30);
+                            gfx.DrawLine(penG, positionBoite[f, 0] + 9, positionBoite[f, 1] + hauteurLigne * 6, positionBoite[f, 0] + largeurLigne, positionBoite[f, 1] + hauteurLigne * 6);
                         }
                         rt = RacoucirTexte(grille[sosaIndex[f]][NELIEU], ref gfx);
-                        gfx.DrawString(rt, font8, XBrushes.Black, positionBoite[f, 0] + xInfo, positionBoite[f, 1] + 30, XStringFormats.Default);
+                        gfx.DrawString(rt, font8, XBrushes.Black, positionBoite[f, 0] + xInfo, positionBoite[f, 1] + hauteurLigne * 6, XStringFormats.Default);
                         // Décédé le 
                         if (grille[sosaIndex[f]][DELE] == "")
                         {
-                            gfx.DrawLine(penG, positionBoite[f, 0] + 9, positionBoite[f, 1] + 40, positionBoite[f, 0] + largeurLigne, positionBoite[f, 1] + 40);
+                            gfx.DrawLine(penG, positionBoite[f, 0] + 9, positionBoite[f, 1] + hauteurLigne * 8, positionBoite[f, 0] + largeurLigne, positionBoite[f, 1] + hauteurLigne * 8);
                         }
                         rt = RacoucirTexte(grille[sosaIndex[f]][DELE], ref gfx);
-                        gfx.DrawString(rt, font8, XBrushes.Black, positionBoite[f, 0] + xInfo, positionBoite[f, 1] + 40, XStringFormats.Default);
+                        gfx.DrawString(rt, font8, XBrushes.Black, positionBoite[f, 0] + xInfo, positionBoite[f, 1] + hauteurLigne * 8, XStringFormats.Default);
                         // Décédé endroit
                         if (grille[sosaIndex[f]][DELIEU] == "")
                         {
-                            gfx.DrawLine(penG, positionBoite[f, 0] + 9, positionBoite[f, 1] + 50, positionBoite[f, 0] + largeurLigne, positionBoite[f, 1] + 50);
+                            gfx.DrawLine(penG, positionBoite[f, 0] + 9, positionBoite[f, 1] + hauteurLigne * 10, positionBoite[f, 0] + largeurLigne, positionBoite[f, 1] + hauteurLigne * 10);
                         }
                         rt = RacoucirTexte(grille[sosaIndex[f]][DELIEU], ref gfx);
-                        gfx.DrawString(rt, font8, XBrushes.Black, positionBoite[f, 0] + xInfo, positionBoite[f, 1] + 50, XStringFormats.Default);
+                        gfx.DrawString(rt, font8, XBrushes.Black, positionBoite[f, 0] + xInfo, positionBoite[f, 1] + hauteurLigne * 10, XStringFormats.Default);
                     }
                     for (f = 8; f < 16; f++)
                     {
@@ -2105,10 +2120,10 @@ namespace WindowsFormsApp1
                         {
                             if (grille[f][NOM] == "")
                             {
-                                gfx.DrawLine(penG, positionBoite[f, 0] + 2, positionBoite[f, 1] + 15, positionBoite[f, 0] + 2 + 140, positionBoite[f, 1] + 15);
+                                gfx.DrawLine(penG, positionBoite[f, 0] + 2, positionBoite[f, 1] + hauteurLigne * 3, positionBoite[f, 0] + 2 + 140, positionBoite[f, 1] + hauteurLigne * 3);
                             }
                             string rt = RacoucirNom(grille[sosaIndex[f]][NOM], ref gfx);
-                            gfx.DrawString(rt, font8B, XBrushes.Black, positionBoite[f, 0], positionBoite[f, 1] + 12, XStringFormats.Default);
+                            gfx.DrawString(rt, font8B, XBrushes.Black, positionBoite[f, 0], positionBoite[f, 1] + hauteurLigne * 2 + 3, XStringFormats.Default);
                         }
                     }
                     int p = 18;
@@ -2121,25 +2136,25 @@ namespace WindowsFormsApp1
                         
                             if (grille[sosa][MALE] == "")
                             {
-                                gfx.DrawLine(penG, Col2 + p, Ligne[39] + 9 + 6, Col2 + l, Ligne[39] + 9 + 6 );
+                                gfx.DrawLine(penG, Col2 + p, positionBoite[1, 1] + hauteurLigne* 13, Col2 + l, positionBoite[1, 1] + hauteurLigne * 13);
                             }
-                            gfx.DrawString(grille[sosa][MALE], font8, XBrushes.Black, Col2 + p, Ligne[40] + 6, XStringFormats.Default);
+                            gfx.DrawString(grille[sosa][MALE], font8, XBrushes.Black, Col2 + p, positionBoite[1, 1] + hauteurLigne * 13, XStringFormats.Default);
                             if (grille[sosa][MALIEU] == "")
                             {
-                                gfx.DrawLine(penG, Col2 + p, Ligne[42], Col2 + l, Ligne[42]);
+                                gfx.DrawLine(penG, Col2 + p, positionBoite[1, 1] + hauteurLigne * 15, Col2 + l, positionBoite[1, 1] + hauteurLigne * 15);
                             }
-                            gfx.DrawString(grille[sosa][MALIEU], font8, XBrushes.Black, Col2 + p, Ligne[40] + 6 + positionLieu, XStringFormats.Default);
+                            gfx.DrawString(grille[sosa][MALIEU], font8, XBrushes.Black, Col2 + p, positionBoite[1, 1] + hauteurLigne * 15, XStringFormats.Default);
                         } else {
                             if (grille[sosa-1][MALE] == "") 
                             {
-                                gfx.DrawLine(penG, Col2 + p, Ligne[39] + 9 + 6, Col2 + l, Ligne[39] + 9 + 6 );
+                                gfx.DrawLine(penG, Col2 + p, positionBoite[1, 1] + hauteurLigne * 13, Col2 + l, positionBoite[1, 1] + hauteurLigne * 13);
                             }
-                            gfx.DrawString(grille[sosa-1][MALE], font8, XBrushes.Black, Col2 + p, Ligne[40] + 6, XStringFormats.Default);
+                            gfx.DrawString(grille[sosa-1][MALE], font8, XBrushes.Black, Col2 + p, positionBoite[1, 1] + hauteurLigne * 13, XStringFormats.Default);
                             if (grille[sosa-1][MALIEU] == "")
                             {
-                                gfx.DrawLine(penG, Col2 + p, Ligne[42], Col2 + l, Ligne[42]);
+                                gfx.DrawLine(penG, Col2 + p, positionBoite[1, 1] + hauteurLigne * 15, Col2 + l, positionBoite[1, 1] + hauteurLigne * 15);
                             }
-                            gfx.DrawString(grille[sosa-1][MALIEU], font8, XBrushes.Black, Col2 + p, Ligne[40] + 6 + positionLieu, XStringFormats.Default);
+                            gfx.DrawString(grille[sosa-1][MALIEU], font8, XBrushes.Black, Col2 + p, positionBoite[1, 1] + hauteurLigne * 15, XStringFormats.Default);
                         }
 
                     }
@@ -2147,52 +2162,52 @@ namespace WindowsFormsApp1
                     // mariage 2 3
                     if (grille[sosa * 2][MALE] == "")
                     {
-                        gfx.DrawLine(penG, Col4 + p, Ligne[35] + 6, Col4 + l, Ligne[35] + 6 );
+                        gfx.DrawLine(penG, Col4 + p, positionBoite[2, 1] + hauteurLigne * 20, Col4 + l, positionBoite[2, 1] + hauteurLigne * 20);
                     }
-                    gfx.DrawString(grille[sosa * 2][MALE], font8, XBrushes.Black, Col4 + p, Ligne[35] + 6, XStringFormats.Default);
+                    gfx.DrawString(grille[sosa * 2][MALE], font8, XBrushes.Black, Col4 + p, positionBoite[2, 1] + hauteurLigne * 20, XStringFormats.Default);
                     if (grille[sosa * 2][MALIEU] == "")
                     {
-                        gfx.DrawLine(penG, Col4 + p, Ligne[37], Col4 + l, Ligne[37]);
+                        gfx.DrawLine(penG, Col4 + p, positionBoite[2, 1] + hauteurLigne * 22, Col4 + l, positionBoite[2, 1] + hauteurLigne * 22);
                     }
-                    gfx.DrawString(grille[sosa * 2][MALIEU], font8, XBrushes.Black, Col4 + p, Ligne[35] + 6 + positionLieu, XStringFormats.Default);
+                    gfx.DrawString(grille[sosa * 2][MALIEU], font8, XBrushes.Black, Col4 + p, positionBoite[2, 1] + hauteurLigne * 22, XStringFormats.Default);
 
                     // mariage 4 5
                     if (grille[sosa * 4][MALE] == "")
                     {
-                        gfx.DrawLine(penG, Col6 + p, Ligne[21] + 6, Col6 + l, Ligne[21] + 6);
+                        gfx.DrawLine(penG, Col6 + p, positionBoite[4, 1] + hauteurLigne * 13, Col6 + l, positionBoite[4, 1] + hauteurLigne * 13);
                     }
-                    gfx.DrawString(grille[sosa * 4][MALE], font8, XBrushes.Black, Col6 + p , Ligne[21] + 6, XStringFormats.Default);
+                    gfx.DrawString(grille[sosa * 4][MALE], font8, XBrushes.Black, Col6 + p , positionBoite[4, 1] + hauteurLigne * 13, XStringFormats.Default);
 
                     if (grille[sosa * 4][MALIEU] == "")
                     {
-                        gfx.DrawLine(penG, Col6 + p, Ligne[21] + 6 + positionLieu, Col6 + l, Ligne[21] + 6 + positionLieu);
+                        gfx.DrawLine(penG, Col6 + p, positionBoite[4, 1] + hauteurLigne * 15, Col6 + l, positionBoite[4, 1] + hauteurLigne * 15);
                     }
-                    gfx.DrawString(grille[sosa * 4][MALIEU], font8, XBrushes.Black, Col6 + p, Ligne[21] + 6 + positionLieu, XStringFormats.Default);
+                    gfx.DrawString(grille[sosa * 4][MALIEU], font8, XBrushes.Black, Col6 + p, positionBoite[4, 1] + hauteurLigne * 15, XStringFormats.Default);
                     // mariage 6 7
                     if (grille[sosa * 4 + 2][MALE] == "")
                     {
-                        gfx.DrawLine(penG, Col6 + p, Ligne[49] + 6, Col6 + l, Ligne[49] + 6);
+                        gfx.DrawLine(penG, Col6 + p, positionBoite[6, 1] + hauteurLigne * 13, Col6 + l, positionBoite[6, 1] + hauteurLigne * 13);
                     }
-                    gfx.DrawString(grille[sosa * 4 + 2][MALE], font8, XBrushes.Black, Col6 + p, Ligne[49] + 6, XStringFormats.Default);
+                    gfx.DrawString(grille[sosa * 4 + 2][MALE], font8, XBrushes.Black, Col6 + p, positionBoite[6, 1] + hauteurLigne * 13, XStringFormats.Default);
                     if (grille[sosa * 4 + 2][MALIEU] == "")
                     {
-                        gfx.DrawLine(penG, Col6 + p, Ligne[49] + 6 + positionLieu, Col6 + l, Ligne[49] + 6 + positionLieu);
+                        gfx.DrawLine(penG, Col6 + p, positionBoite[6, 1] + hauteurLigne * 15, Col6 + l, positionBoite[6, 1] + hauteurLigne * 15);
                     }
-                    gfx.DrawString(grille[sosa * 4 + 2][MALIEU], font8, XBrushes.Black, Col6 + p, Ligne[49] + 6 + positionLieu, XStringFormats.Default);
+                    gfx.DrawString(grille[sosa * 4 + 2][MALIEU], font8, XBrushes.Black, Col6 + p, positionBoite[6, 1] + hauteurLigne * 15, XStringFormats.Default);
                     // mariage 8 9
                     int s = sosa * 8;
                     if (s < 512)
                     {
                         if (grille[s][MALE] == "")
                         {
-                            gfx.DrawLine(penG, Col8 + p, Ligne[14] + 6, Col8 + l, Ligne[14] + 5);
+                            gfx.DrawLine(penG, Col8 + p, positionBoite[8, 1] + hauteurLigne * 6, Col8 + l, positionBoite[8, 1] + hauteurLigne * 6);
                         }
-                        gfx.DrawString(grille[s][MALE], font8, XBrushes.Black, Col8 + p, Ligne[14] + 6, XStringFormats.Default);
+                        gfx.DrawString(grille[s][MALE], font8, XBrushes.Black, Col8 + p, positionBoite[8, 1] + hauteurLigne * 6, XStringFormats.Default);
                         if (grille[s][MALIEU] == "")
                         {
-                            gfx.DrawLine(penG, Col8 + p, Ligne[14] + 6 + positionLieu, Col8 + l, Ligne[14] + 6 + positionLieu);
+                            gfx.DrawLine(penG, Col8 + p, positionBoite[8, 1] + hauteurLigne * 8, Col8 + l, positionBoite[8, 1] + hauteurLigne * 8);
                         }
-                        gfx.DrawString(grille[s][MALIEU], font8, XBrushes.Black, Col8 + p, Ligne[14] + 6 + positionLieu, XStringFormats.Default);
+                        gfx.DrawString(grille[s][MALIEU], font8, XBrushes.Black, Col8 + p, positionBoite[8, 1] + hauteurLigne * 8, XStringFormats.Default);
                     }
                     // mariage 10 11
                     s = sosa * 8 + 2;
@@ -2200,14 +2215,14 @@ namespace WindowsFormsApp1
                     {
                         if (grille[s][MALE] == "")
                         {
-                            gfx.DrawLine(penG, Col8 + p, Ligne[28] + 6, Col8 + l, Ligne[28] + 6);
+                            gfx.DrawLine(penG, Col8 + p, positionBoite[10, 1] + hauteurLigne * 6, Col8 + l, positionBoite[10, 1] + hauteurLigne * 6);
                         }
-                        gfx.DrawString(grille[s][MALE], font8, XBrushes.Black, Col8 + p, Ligne[28] + 6, XStringFormats.Default);
+                        gfx.DrawString(grille[s][MALE], font8, XBrushes.Black, Col8 + p, positionBoite[10, 1] + hauteurLigne * 6, XStringFormats.Default);
                         if (grille[s][MALIEU] == "")
                         {
-                            gfx.DrawLine(penG, Col8 + p, Ligne[28] + 6 + positionLieu, Col8 + l, Ligne[28] + 6 + positionLieu);
+                            gfx.DrawLine(penG, Col8 + p, positionBoite[10, 1] + hauteurLigne * 8, Col8 + l, positionBoite[10, 1] + hauteurLigne * 8);
                         }
-                        gfx.DrawString(grille[s][MALIEU], font8, XBrushes.Black, Col8 + p, Ligne[28] + 6 + positionLieu, XStringFormats.Default);
+                        gfx.DrawString(grille[s][MALIEU], font8, XBrushes.Black, Col8 + p, positionBoite[10, 1] + hauteurLigne * 8, XStringFormats.Default);
                     }
                     // mariage 12 13
                     s = sosa * 8 + 4;
@@ -2215,14 +2230,14 @@ namespace WindowsFormsApp1
                     {
                         if (grille[s][MALE] == "")
                         {
-                            gfx.DrawLine(penG, Col8 + p, Ligne[42] + 6, Col8 + l, Ligne[42] + 6);
+                            gfx.DrawLine(penG, Col8 + p, positionBoite[12, 1] + hauteurLigne * 6, Col8 + l, positionBoite[12, 1] + hauteurLigne * 6);
                         }
-                        gfx.DrawString(grille[sosa * 8 + 4][MALE], font8, XBrushes.Black, Col8 + p, Ligne[42] + 6, XStringFormats.Default);
+                        gfx.DrawString(grille[s][MALE], font8, XBrushes.Black, Col8 + p, positionBoite[12, 1] + hauteurLigne * 6, XStringFormats.Default);
                         if (grille[s][MALIEU] == "")
                         {
-                            gfx.DrawLine(penG, Col8 + p, Ligne[42] + 6 + positionLieu, Col8 + l, Ligne[42] + 6 + positionLieu);
+                            gfx.DrawLine(penG, Col8 + p, positionBoite[12, 1] + hauteurLigne * 8, Col8 + l, positionBoite[12, 1] + hauteurLigne * 8);
                         }
-                        gfx.DrawString(grille[sosa * 8 + 4][MALIEU], font8, XBrushes.Black, Col8 + p, Ligne[42] + 6 + positionLieu, XStringFormats.Default);
+                        gfx.DrawString(grille[s][MALIEU], font8, XBrushes.Black, Col8 + p, positionBoite[12, 1] + hauteurLigne * 8, XStringFormats.Default);
                     }
                     // mariage 14 15
                     s = sosa * 8 + 6;
@@ -2230,21 +2245,24 @@ namespace WindowsFormsApp1
                     {
                         if (grille[s][MALE] == "") 
                         {
-                            gfx.DrawLine(penG, Col8 + p, Ligne[56] + 6, Col8 + l, Ligne[56] +6);
+                            gfx.DrawLine(penG, Col8 + p, positionBoite[14, 1] + hauteurLigne * 6 , Col8 + l, positionBoite[14, 1] + hauteurLigne * 6);
                         }
-                        gfx.DrawString(grille[s][MALE], font8, XBrushes.Black, Col8 + p, Ligne[56] + 5, XStringFormats.Default);
+                        gfx.DrawString(grille[s][MALE], font8, XBrushes.Black, Col8 + p, positionBoite[14, 1] + hauteurLigne * 6, XStringFormats.Default);
                         if (grille[s][MALIEU] == "")
                         {
-                            gfx.DrawLine(penG, Col8 + p, Ligne[56] + 6 + positionLieu, Col8 + l, Ligne[56] + 6 + positionLieu);
+                            gfx.DrawLine(penG, Col8 + p, positionBoite[14, 1] + hauteurLigne * 8, Col8 + l, positionBoite[14, 1] + hauteurLigne * 8);
                         }
-                        gfx.DrawString(grille[s][MALIEU], font8, XBrushes.Black, Col8 + p, Ligne[56] + 6 + positionLieu, XStringFormats.Default);
+                        gfx.DrawString(grille[s][MALIEU], font8, XBrushes.Black, Col8 + p, positionBoite[14, 1] + hauteurLigne * 8, XStringFormats.Default);
                     }
                 }
             }
             //dessiner  flèche
             if (fleche)
             {
+                // flèche gauche
                 FlecheGauche(gfx, font8, Col1, positionBoite[1, 1], hauteurBoite, sosa);
+
+                // flèche doite
                 if (sosa == 0)
                 {
                     FlecheDroite(gfx, font8, Col10, positionBoite[08, 1], hauteurBoiteMini, 0);
@@ -2253,8 +2271,8 @@ namespace WindowsFormsApp1
                     FlecheDroite(gfx, font8, Col10, positionBoite[11, 1], hauteurBoiteMini, 0);
                     FlecheDroite(gfx, font8, Col10, positionBoite[12, 1], hauteurBoiteMini, 0);
                     FlecheDroite(gfx, font8, Col10, positionBoite[13, 1], hauteurBoiteMini, 0);
-                    FlecheDroite(gfx, font8, Col10, Ligne[53], hauteurBoiteMini, 0);
-                    FlecheDroite(gfx, font8, Col10, Ligne[59], hauteurBoiteMini, 0);
+                    FlecheDroite(gfx, font8, Col10, positionBoite[14, 1], hauteurBoiteMini, 0);
+                    FlecheDroite(gfx, font8, Col10, positionBoite[15, 1], hauteurBoiteMini, 0);
                 }
                 else
                 {
@@ -2264,43 +2282,47 @@ namespace WindowsFormsApp1
                     FlecheDroite(gfx, font8, Col10, positionBoite[11, 1], hauteurBoiteMini, sosa * 8 + 3);
                     FlecheDroite(gfx, font8, Col10, positionBoite[12, 1], hauteurBoiteMini, sosa * 8 + 4);
                     FlecheDroite(gfx, font8, Col10, positionBoite[13, 1], hauteurBoiteMini, sosa * 8 + 5);
-                    FlecheDroite(gfx, font8, Col10, Ligne[53], hauteurBoiteMini, sosa * 8 + 6);
-                    FlecheDroite(gfx, font8, Col10, Ligne[59], hauteurBoiteMini, sosa * 8 + 7);
+                    FlecheDroite(gfx, font8, Col10, positionBoite[14, 1], hauteurBoiteMini, sosa * 8 + 6);
+                    FlecheDroite(gfx, font8, Col10, positionBoite[15, 1], hauteurBoiteMini, sosa * 8 + 7);
                 }
             }
+
             // Note 1
-            rect = new XRect(Col1, Ligne[13], Col3 - Col1, hauteurLigne  * 18);
-            //gfx.DrawRectangle(penB, rect);
+            rect = new XRect(Col1, Ligne[14], Col3 - Col1, hauteurLigne  * 24);
+            //gfx.DrawRectangle(penM, rect);
             tf.Alignment = XParagraphAlignment.Justify;
             tf.DrawString(grille[sosa][NOTE1], font8, XBrushes.Black, rect, XStringFormats.TopLeft);
 
-
-
-
             // Note 2
-            rect = new XRect(Col1, Ligne[46], Col3 - Col1, hauteurLigne  * 18);
-            //gfx.DrawRectangle(penB, rect);
+            rect = new XRect(Col1, Ligne[61], Col3 - Col1, hauteurLigne  * 18);
+            //gfx.DrawRectangle(penM, rect);
             tf.Alignment = XParagraphAlignment.Justify;
             tf.DrawString(grille[sosa][NOTE2], font8, XBrushes.Black, rect, XStringFormats.TopLeft);
+            
             // bas de page
             if (fleche)
             {
                 numeroTableau = grille[sosa][TABLEAU];
-                gfx.DrawString("Tableau", font8, XBrushes.Black, Col8 + 100, Ligne[64], XStringFormats.TopLeft);
+                gfx.DrawString("Tableau", font8, XBrushes.Black, Col8 + 100, Ligne[80], XStringFormats.TopLeft);
 
                 if (numeroTableau != "")
                 {
-                    gfx.DrawString(numeroTableau, font8, XBrushes.Black, Col8 + 135, Ligne[64], XStringFormats.TopLeft);
+                    gfx.DrawString(numeroTableau, font8, XBrushes.Black, Col8 + 135, Ligne[80], XStringFormats.TopLeft);
                 }
                 else
                 {
-                    gfx.DrawString("_____", font8, XBrushes.Black, Col8 + 135, Ligne[64], XStringFormats.TopLeft);
+                    gfx.DrawString("_____", font8, XBrushes.Black, Col8 + 135, Ligne[80], XStringFormats.TopLeft);
                 }
             }
-              if (PreparerPar.Text != "")
+
+            if (PreparerPar.Text != "" && !tous)
             {
-                gfx.DrawString("Préparé par " + PreparerPar.Text + " le " + DateLb.Text, font8, XBrushes.Black, Col1, Ligne[64], XStringFormats.Default);
+                gfx.DrawString("Préparé par " + PreparerPar.Text + " le " + DateLb.Text, font8, XBrushes.Black, Col1, Ligne[81], XStringFormats.Default);
             }
+
+            // version à adfficher pour beta
+            gfx.DrawString("Version " + Application.ProductVersion + "B", font8, XBrushes.Black, Col1, Ligne[82], XStringFormats.Default);
+            // Logo
             XImage img = global::TableauAscendant.Properties.Resources.dapamv5_32png;
             
             XPen penDapam = new XPen(XColor.FromArgb(0, 0, 0), 2);
@@ -2616,7 +2638,7 @@ namespace WindowsFormsApp1
             } while (textInfo.Width  > LARGEURTEXTEFICHE);
             return "..." + text;
         }
-        private void RafraichirData()
+        private void    RafraichirData()
         {
             sosaCourant = Int32.Parse(ChoixSosaComboBox.Text);
             int index;
@@ -3915,7 +3937,7 @@ namespace WindowsFormsApp1
         }
         private void Sosa7NeEndroitTextBox_TextChanged(object sender, EventArgs e)
         {
-            grille[sosaCourant * 4 + 3][NELIEU] = Sosa7NeTextBox.Text;
+            grille[sosaCourant * 4 + 3][NELIEU] = Sosa7NeEndroitTextBox.Text;
             if (!LongeurTextOk(Sosa7NeEndroitTextBox.Text))
             {
                 Sosa7NeEndroitTextBox.BackColor = couleurTextTropLong;
@@ -4067,7 +4089,7 @@ namespace WindowsFormsApp1
             page.Orientation = PdfSharp.PageOrientation.Landscape;
             XGraphics gfx = XGraphics.FromPdfPage(page);
             //NouvellePage(ref document, ref gfx, ref page);
-            string numeroTableau = DessinerPage(ref document, ref gfx, sosa, true);
+            string numeroTableau = DessinerPage(ref document, ref gfx, sosa, true, false);
             string FichierPage = numeroTableau.ToString() + ".pdf";
             if (FichierPage == "0.pdf" || FichierPage == ".pdf")
             {
@@ -4181,7 +4203,7 @@ namespace WindowsFormsApp1
             foreach (int sosa in listePage)
             {
                 NouvellePage(ref document, ref gfx, ref page,"L");
-                DessinerPage(ref document, ref gfx, sosa, true);
+                DessinerPage(ref document, ref gfx, sosa, true, true);
             }
             string FichierPage = "TableauAscendant.pdf";
             string Fichier = DossierPDF + "\\" + FichierPage;
@@ -4483,7 +4505,6 @@ namespace WindowsFormsApp1
                 RechercheID();
             }
         }
-
         private void PrenomRecherche_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
@@ -4491,7 +4512,6 @@ namespace WindowsFormsApp1
                 RechercheID();
             }
         }
-
         private void CouleurDesBlocsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ColorDialog MyDialog = new ColorDialog
@@ -4504,7 +4524,6 @@ namespace WindowsFormsApp1
             if (MyDialog.ShowDialog() == DialogResult.OK)
                 ChangerCouleurBloc(MyDialog.Color);
         }
-
         private void CreerPage4GénérationsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (DossierPDF == "")
@@ -4518,7 +4537,7 @@ namespace WindowsFormsApp1
             page.Size = PageSize.Letter;
             page.Orientation = PdfSharp.PageOrientation.Landscape;
             XGraphics gfx = XGraphics.FromPdfPage(page);
-            string numeroTableau = DessinerPage(ref document, ref gfx, sosa, false);
+            string numeroTableau = DessinerPage(ref document, ref gfx, sosa, false, false);
             string FichierPage = "4Génération.pdf";
             string Fichier = DossierPDF + "\\" + FichierPage;
             try
@@ -4534,7 +4553,6 @@ namespace WindowsFormsApp1
                                  MessageBoxIcon.Warning);
             }
         }
-               
         private void Note1_TextChanged(object sender, EventArgs e)
         {
             grille[sosaCourant][NOTE1] = Note1.Text;

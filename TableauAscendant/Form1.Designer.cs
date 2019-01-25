@@ -299,7 +299,6 @@ namespace WindowsFormsApp1
             this.Sosa5NeEndroitTextBox.TabIndex = 28;
             this.Sosa5NeEndroitTextBox.Visible = false;
             this.Sosa5NeEndroitTextBox.TextChanged += new System.EventHandler(this.Sosa5NeEndroitTextBox_TextChanged);
-            this.Sosa5NeTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Sosa5NeTextBox_KeyPress);
             // 
             // Sosa5DeTextBox
             // 
@@ -441,7 +440,6 @@ namespace WindowsFormsApp1
             this.Sosa45MaLEndroitTextBox.TabIndex = 25;
             this.Sosa45MaLEndroitTextBox.Visible = false;
             this.Sosa45MaLEndroitTextBox.TextChanged += new System.EventHandler(this.Sosa45MaEndroitTextBox_TextChanged);
-            this.Sosa45MaTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Sosa45MaTextBox_KeyPress);
             // 
             // Sosa45MaTextBox
             // 
@@ -543,7 +541,6 @@ namespace WindowsFormsApp1
             this.Sosa6NeEndroitTextBox.TabIndex = 33;
             this.Sosa6NeEndroitTextBox.Visible = false;
             this.Sosa6NeEndroitTextBox.TextChanged += new System.EventHandler(this.Sosa6NeEndroitTextBox_TextChanged);
-            this.Sosa6NeTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Sosa6NeTextBox_KeyPress);
             // 
             // Sosa6NeTextBox
             // 
@@ -733,8 +730,6 @@ namespace WindowsFormsApp1
             this.Sosa23MaEndroitTextBox.TabIndex = 13;
             this.Sosa23MaEndroitTextBox.Visible = false;
             this.Sosa23MaEndroitTextBox.TextChanged += new System.EventHandler(this.Sosa23MaEndroitTextBox_TextChanged);
-            this.Sosa23MaTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Sosa23MaTextBox_KeyPress);
-            
             // 
             // Label24
             // 
@@ -2090,7 +2085,7 @@ namespace WindowsFormsApp1
             this.Note2.Multiline = true;
             this.Note2.Name = "Note2";
             this.Note2.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.Note2.Size = new System.Drawing.Size(301, 101);
+            this.Note2.Size = new System.Drawing.Size(266, 101);
             this.Note2.TabIndex = 155;
             this.Note2.TextChanged += new System.EventHandler(this.Note2_TextChanged);
             this.Note2.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Note2_KeyPress);
@@ -2101,7 +2096,7 @@ namespace WindowsFormsApp1
             this.Note1.Multiline = true;
             this.Note1.Name = "Note1";
             this.Note1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.Note1.Size = new System.Drawing.Size(301, 101);
+            this.Note1.Size = new System.Drawing.Size(266, 101);
             this.Note1.TabIndex = 156;
             this.Note1.TextChanged += new System.EventHandler(this.Note1_TextChanged);
             this.Note1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Note1_KeyPress);
