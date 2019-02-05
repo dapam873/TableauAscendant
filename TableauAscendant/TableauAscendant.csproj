@@ -273,7 +273,6 @@
     <None Include="Resources\DAPAMv5_20.png" />
     <None Include="Resources\DAPAMv5_201.png" />
     <None Include="Resources\dapamv5_32png.png" />
-    <Content Include="Resources\fiche.png" />
     <None Include="Resources\flecheDroite.png" />
     <None Include="Resources\flecheGauche.png" />
     <None Include="Resources\Icon.ico" />
@@ -286,6 +285,7 @@
     <None Include="Resources\male-D_48.png" />
     <None Include="Resources\male-D_64.png" />
     <None Include="Resources\male-D_512.png" />
+    <None Include="Resources\fiche1.png" />
     <Content Include="Resources\recherche.jpg" />
     <None Include="Resources\TA.ico" />
     <None Include="Resources\recherche.png" />

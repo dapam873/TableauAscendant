@@ -143,6 +143,26 @@ namespace TableauAscendant.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap fiche1 {
+            get {
+                object obj = ResourceManager.GetObject("fiche1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap fiche2 {
+            get {
+                object obj = ResourceManager.GetObject("fiche2", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap flecheDroite {
             get {
                 object obj = ResourceManager.GetObject("flecheDroite", resourceCulture);
