@@ -168,9 +168,20 @@ namespace TableauAscendant
             groupeNomlb.Location = new Point(col2, y);
             y = y + 20;
             textNom_lb.Location = new Point(col3, y);
-            hauteur = 40;
+            hauteur = 60;
             textNom_lb.Height = hauteur;
-            textNom_lb.Text = "Si la couleur de l'arrière-plan du champ de nom est jaune, c'est que le texte est trop long. Cela n'empêchera pas de continuer et de faire un rapport. Si c'est jaune, il sera tronqué sur la droite.";
+            textNom_lb.Text = "Si la couleur de l'arrière-plan du champ du patronyme ou du prénom est jaune, c'est que le texte est trop long pour la combinaison du prénom et du patronyme. Cela n'empêchera pas de continuer et de faire un rapport. Si c'est jaune, il sera tronqué sur la droite.";
+
+            // Prenom
+            y = y + hauteur + 20;
+            groupePrenomlb.Location = new Point(col2, y);
+            y = y + 20;
+            textPrenom_lb.Location = new Point(col3, y);
+            hauteur = 60;
+            textPrenom_lb.Height = hauteur;
+            textPrenom_lb.Text = "Si la couleur de l'arrière-plan du champ du patronyme ou du prénom est jaune, c'est que le texte est trop long pour la combinaison du prénom et du patronyme. Cela n'empêchera pas de continuer et de faire un rapport. Si c'est jaune, il sera tronqué sur la droite.";
+
+
             // Date
             y = y + hauteur + 20;
             groupeDatelb.Location = new Point(col2, y);

@@ -62,7 +62,9 @@
             this.menuFichierQuiterDesc_lb = new System.Windows.Forms.Label();
             this.menuEffacerToutDesc_lb = new System.Windows.Forms.Label();
             this.groupeNomlb = new System.Windows.Forms.Label();
+            this.groupePrenomlb = new System.Windows.Forms.Label();
             this.textNom_lb = new System.Windows.Forms.Label();
+            this.textPrenom_lb = new System.Windows.Forms.Label();
             this.fenetre1GEDCOMlb = new System.Windows.Forms.Label();
             this.recherchePb = new System.Windows.Forms.PictureBox();
             this.fichePb = new System.Windows.Forms.PictureBox();
@@ -387,7 +389,16 @@
             this.groupeNomlb.Name = "groupeNomlb";
             this.groupeNomlb.Size = new System.Drawing.Size(706, 26);
             this.groupeNomlb.TabIndex = 37;
-            this.groupeNomlb.Text = "Nom";
+            this.groupeNomlb.Text = "Patronyme";
+            // 
+            // groupePrenomlb
+            // 
+            this.groupePrenomlb.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupePrenomlb.Location = new System.Drawing.Point(23, -593);
+            this.groupePrenomlb.Name = "groupePrenomlb";
+            this.groupePrenomlb.Size = new System.Drawing.Size(706, 26);
+            this.groupePrenomlb.TabIndex = 37;
+            this.groupePrenomlb.Text = "Prénom";
             // 
             // textNom_lb
             // 
@@ -397,6 +408,15 @@
             this.textNom_lb.Size = new System.Drawing.Size(720, 60);
             this.textNom_lb.TabIndex = 38;
             this.textNom_lb.Text = "texte nom";
+            // 
+            // textPrenom_lb
+            // 
+            this.textPrenom_lb.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.textPrenom_lb.Location = new System.Drawing.Point(43, -573);
+            this.textPrenom_lb.Name = "textPrenom_lb";
+            this.textPrenom_lb.Size = new System.Drawing.Size(720, 60);
+            this.textPrenom_lb.TabIndex = 38;
+            this.textPrenom_lb.Text = "texte nom";
             // 
             // fenetre1GEDCOMlb
             // 
@@ -512,7 +532,7 @@
             this.lineShape3,
             this.lineShape2,
             this.lineShape1});
-            this.shapeContainer1.Size = new System.Drawing.Size(862, 444);
+            this.shapeContainer1.Size = new System.Drawing.Size(862, 944);
             this.shapeContainer1.TabIndex = 50;
             this.shapeContainer1.TabStop = false;
             // 
@@ -633,7 +653,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(204)))), ((int)(((byte)(255)))));
-            this.ClientSize = new System.Drawing.Size(849, 461);
+            this.ClientSize = new System.Drawing.Size(849, 961);
             this.Controls.Add(this.menuRapportMatriDesc_lb);
             this.Controls.Add(this.menuRapportMatri_lb);
             this.Controls.Add(this.menuRapportPatriDesc_lb);
@@ -654,7 +674,9 @@
             this.Controls.Add(this.recherchePb);
             this.Controls.Add(this.fenetre1GEDCOMlb);
             this.Controls.Add(this.textNom_lb);
+            this.Controls.Add(this.textPrenom_lb);
             this.Controls.Add(this.groupeNomlb);
+            this.Controls.Add(this.groupePrenomlb);
             this.Controls.Add(this.menuEffacerToutDesc_lb);
             this.Controls.Add(this.menuFichierQuiterDesc_lb);
             this.Controls.Add(this.menuFichierEnregisterSousDesc_lb);
@@ -690,7 +712,7 @@
             this.Controls.Add(this.shapeContainer1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(865, 500);
+            this.MaximumSize = new System.Drawing.Size(865, 1000);
             this.MinimumSize = new System.Drawing.Size(865, 500);
             this.Name = "AideFm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -737,7 +759,9 @@
         private System.Windows.Forms.Label menuFichierQuiterDesc_lb;
         private System.Windows.Forms.Label menuEffacerToutDesc_lb;
         private System.Windows.Forms.Label groupeNomlb;
+        private System.Windows.Forms.Label groupePrenomlb;
         private System.Windows.Forms.Label textNom_lb;
+        private System.Windows.Forms.Label textPrenom_lb;
         private System.Windows.Forms.Label fenetre1GEDCOMlb;
         private System.Windows.Forms.PictureBox recherchePb;
         private System.Windows.Forms.PictureBox fichePb;

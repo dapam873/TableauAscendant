@@ -1,26 +1,22 @@
 ﻿// compile with: -doc:Form1.xml 
-using System; 
-
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Windows.Forms;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
+//using System.Linq;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Text;
+//using System.Text;
 using System.Runtime.CompilerServices;
 using System.Media;
-using System.Reflection;
+//using System.Reflection;
 using PdfSharp;
 using PdfSharp.Drawing;
 using PdfSharp.Drawing.Layout;
 using PdfSharp.Pdf;
-//using PdfSharp.Forms;
-//using PdfSharp.Charting;
-//using PdfSharp.Forms;
-//using PdfSharp.Pdf.IO;
 using TableauAscendant;
 
 namespace WindowsFormsApp1
@@ -47,49 +43,57 @@ namespace WindowsFormsApp1
         /// </summary>
         public const int TABLEAU =           3;
         /// <summary>
-        /// position de la colonne NOM dans le tableau grille
+        /// position de la colonne PATRONYME dans le tableau grille
         /// </summary>
-        public const int NOM =               4;
+        public const int PATRONYME =         4;
+        /// <summary>
+        /// position de la colonne PRENOM dans le tableau grille
+        /// </summary>
+        public const int PRENOM =            5;
+        /// <summary>
+        /// position de la colonne NOMTRI dans le tableau grille
+        /// </summary>
+        public const int NOMTRI =            6;
         /// <summary>
         /// position de la colonne NELE dans le tableau grille
         /// </summary>
-        public const int NELE =              5;
+        public const int NELE =              7;
         /// <summary>
         /// position de la colonne NELIEU dans le tableau grille
         /// </summary>
-        public const int NELIEU =            6;
+        public const int NELIEU =            8;
         /// <summary>
         /// position de la colonne DELE dans le tableau grille
         /// </summary>
-        public const int DELE =              7;
+        public const int DELE =              9;
         /// <summary>
         /// position de la colonne DELIEU dans le tableau grille
         /// </summary>
-        public const int DELIEU =            8;
+        public const int DELIEU =           10;
         /// <summary>
         /// position de la colonne MALE dans le tableau grille
         /// </summary>
-        public const int MALE =              9;
+        public const int MALE =             11;
         /// <summary>
         /// position de la colonne MALIEU dans le tableau grille
         /// </summary>
-        public const int MALIEU =           10;
+        public const int MALIEU =           12;
         /// <summary>
         /// position de la colonne IDg dans le tableau grille
         /// </summary>
-        public const int IDg =              11;
+        public const int IDg =              13;
         /// <summary>
         /// position de la colonne IDFAMILLEENFANT dans le tableau grille
         /// </summary>
-        public const int IDFAMILLEENFANT =  12;
+        public const int IDFAMILLEENFANT =  14;
         /// <summary>
         /// position de la colonne NOTE1 dans le tableau grille
         /// </summary>
-        public const int NOTE1 =            13;
+        public const int NOTE1 =            15;
         /// <summary>
         /// position de la colonne Note2 dans le tableau grille
         /// </summary>
-        public const int NOTE2 =            14;
+        public const int NOTE2 =            16;
         /// <summary>
         /// Nom du programme
         /// </summary>
@@ -106,10 +110,12 @@ namespace WindowsFormsApp1
         /// numero du SOSA courantlargeur maximun de nom dans fiche
         /// </summary>
         public int sosaCourant = 0;
+
         /// <summary>
-        /// grille qui contient toutes les informations pour généré les tableaux
+        /// liste qui contient toutes les informations pour généré les tableaux
         /// </summary>
-        public string[][] grille = new string[512][]; // 512 lignes
+        public string[,] liste = new string[512,17];
+        
         /// <summary>
         /// Vrai si la grille à été modifier
         /// </summary>
@@ -157,18 +163,16 @@ namespace WindowsFormsApp1
 
        GEDCOMClass GEDCOM = new GEDCOMClass();
 
-        //{
-        //    _nomFichier = "";
-        //};
         //  Function **************************************************************************************************************************
 
         private void    AfficherData()
         {
+            ZXCV("IN");
             if (ChoixSosaComboBox.Text == "")
             {
                 // enlève les cases
-
-                Sosa1NomTextBox.Visible = false;
+                Sosa1PatronymeTextBox.Visible = false;
+                Sosa1PrenomTextBox.Visible = false;
                 Sosa1NeTextBox.Visible = false;
                 Sosa1NeEndroitTextBox.Visible = false;
                 Sosa1DeTextBox.Visible = false;
@@ -188,7 +192,8 @@ namespace WindowsFormsApp1
                 RectangleSosa1.BorderColor = Color.Black;
 
                 Sosa2Label.Visible = false;
-                Sosa2NomTextBox.Visible = false;
+                Sosa2PatronymeTextBox.Visible = false;
+                Sosa2PrenomTextBox.Visible = false;
                 Sosa2NeTextBox.Visible = false;
                 Sosa2NeEndroitTextBox.Visible = false;
                 Sosa2DeTextBox.Visible = false;
@@ -198,7 +203,8 @@ namespace WindowsFormsApp1
                 RectangleSosa2.BorderColor = Color.Black;
 
                 Sosa3Label.Visible = false;
-                Sosa3NomTextBox.Visible = false;
+                Sosa3PatronymeTextBox.Visible = false;
+                Sosa3PrenomTextBox.Visible = false;
                 Sosa3NeTextBox.Visible = false;
                 Sosa3NeEndroitTextBox.Visible = false;
                 Sosa3DeTextBox.Visible = false;
@@ -206,7 +212,8 @@ namespace WindowsFormsApp1
                 RectangleSosa3.BorderColor = Color.Black;
 
                 Sosa4Label.Visible = false;
-                Sosa4NomTextBox.Visible = false;
+                Sosa4PatronymeTextBox.Visible = false;
+                Sosa4PrenomTextBox.Visible = false;
                 Sosa4NeTextBox.Visible = false;
                 Sosa4NeEndroitTextBox.Visible = false;
                 Sosa4DeTextBox.Visible = false;
@@ -216,7 +223,7 @@ namespace WindowsFormsApp1
                 RectangleSosa4.BorderColor = Color.Black;
 
                 Sosa5Label.Visible = false;
-                Sosa5NomTextBox.Visible = false;
+                Sosa5PatronymeTextBox.Visible = false;
                 Sosa5NeTextBox.Visible = false;
                 Sosa5NeEndroitTextBox.Visible = false;
                 Sosa5DeTextBox.Visible = false;
@@ -224,7 +231,8 @@ namespace WindowsFormsApp1
                 RectangleSosa5.BorderColor = Color.Black;
 
                 Sosa6Label.Visible = false;
-                Sosa6NomTextBox.Visible = false;
+                Sosa6PatronymeTextBox.Visible = false;
+                Sosa6PrenomTextBox.Visible = false;
                 Sosa6NeTextBox.Visible = false;
                 Sosa6NeEndroitTextBox.Visible = false;
                 Sosa6DeTextBox.Visible = false;
@@ -234,7 +242,8 @@ namespace WindowsFormsApp1
                 RectangleSosa6.BorderColor = Color.Black;
 
                 Sosa7Label.Visible = false;
-                Sosa7NomTextBox.Visible = false;
+                Sosa7PatronymeTextBox.Visible = false;
+                Sosa7PrenomTextBox.Visible = false;
                 Sosa7NeTextBox.Visible = false;
                 Sosa7NeEndroitTextBox.Visible = false;
                 Sosa7DeTextBox.Visible = false;
@@ -252,7 +261,8 @@ namespace WindowsFormsApp1
             {
                 // affiche les cases
                 sosaCourant = Int32.Parse(ChoixSosaComboBox.Text);
-                Sosa1NomTextBox.Visible = true;
+                Sosa1PatronymeTextBox.Visible = true;
+                Sosa1PrenomTextBox.Visible = true;
                 Sosa1NeTextBox.Visible = true;
                 Sosa1NeEndroitTextBox.Visible = true;
                 Sosa1DeTextBox.Visible = true;
@@ -272,7 +282,9 @@ namespace WindowsFormsApp1
                     Sosa1MaEndroitTextBox.Visible = false;
                     sosa1LigneVertical.Visible = false;
                     SosaConjoint1Label.Visible = false;
-                    SosaConjoint1NomTextBox.Visible = false;
+                    SosaConjoint1PatronymeTextBox.Visible = false;
+                    SosaConjoint1PrenomTextBox.Visible = false;
+                    Conjoint1Lbl.Visible = false;
                     RectangleSosaConjoint1.Visible = false;
                     Sosa1MaEtiquettetBox.Visible = false;
                     Sosa1LieuEtiquettetBox.Visible = false;
@@ -285,7 +297,8 @@ namespace WindowsFormsApp1
                 RectangleSosa1.BorderColor = Color.Black;
 
                 Sosa2Label.Visible = true;
-                Sosa2NomTextBox.Visible = true;
+                Sosa2PatronymeTextBox.Visible = true;
+                Sosa2PrenomTextBox.Visible = true;
                 Sosa2NeTextBox.Visible = true;
                 Sosa2NeEndroitTextBox.Visible = true;
                 Sosa2DeTextBox.Visible = true;
@@ -295,7 +308,8 @@ namespace WindowsFormsApp1
                 RectangleSosa2.BorderColor = Color.Black;
 
                 Sosa3Label.Visible = true;
-                Sosa3NomTextBox.Visible = true;
+                Sosa3PatronymeTextBox.Visible = true;
+                Sosa3PrenomTextBox.Visible = true;
                 Sosa3NeTextBox.Visible = true;
                 Sosa3NeEndroitTextBox.Visible = true;
                 Sosa3DeTextBox.Visible = true;
@@ -303,7 +317,8 @@ namespace WindowsFormsApp1
                 RectangleSosa3.BorderColor = Color.Black;
 
                 Sosa4Label.Visible = true;
-                Sosa4NomTextBox.Visible = true;
+                Sosa4PatronymeTextBox.Visible = true;
+                Sosa4PrenomTextBox.Visible = true;
                 Sosa4NeTextBox.Visible = true;
                 Sosa4NeEndroitTextBox.Visible = true;
                 Sosa4DeTextBox.Visible = true;
@@ -313,7 +328,8 @@ namespace WindowsFormsApp1
                 RectangleSosa4.BorderColor = Color.Black;
 
                 Sosa5Label.Visible = true;
-                Sosa5NomTextBox.Visible = true;
+                Sosa5PatronymeTextBox.Visible = true;
+                Sosa5PrenomTextBox.Visible = true;
                 Sosa5NeTextBox.Visible = true;
                 Sosa5NeEndroitTextBox.Visible = true;
                 Sosa5DeTextBox.Visible = true;
@@ -321,7 +337,8 @@ namespace WindowsFormsApp1
                 RectangleSosa5.BorderColor = Color.Black;
 
                 Sosa6Label.Visible = true;
-                Sosa6NomTextBox.Visible = true;
+                Sosa6PatronymeTextBox.Visible = true;
+                Sosa6PrenomTextBox.Visible = true;
                 Sosa6NeTextBox.Visible = true;
                 Sosa6NeEndroitTextBox.Visible = true;
                 Sosa6DeTextBox.Visible = true;
@@ -331,7 +348,8 @@ namespace WindowsFormsApp1
                 RectangleSosa6.BorderColor = Color.Black;
 
                 Sosa7Label.Visible = true;
-                Sosa7NomTextBox.Visible = true;
+                Sosa7PatronymeTextBox.Visible = true;
+                Sosa7PrenomTextBox.Visible = true;
                 Sosa7NeTextBox.Visible = true;
                 Sosa7NeEndroitTextBox.Visible = true;
                 Sosa7DeTextBox.Visible = true;
@@ -411,6 +429,7 @@ namespace WindowsFormsApp1
                 GoSosa7Btn.Visible = false;
             }
             ChoixSosaComboBox.Focus();
+            ZXCV("OUT");
         }
         private void    AvoirDossierrapport()
         {
@@ -424,6 +443,20 @@ namespace WindowsFormsApp1
                 DossierPDF = folderBrowserDialog1.SelectedPath;
                 DossierPDFToolStripMenuItem.Text = "D&ossier PDF -> " + DossierPDF;
             }
+        }
+        private string  AssemblerNom(string prenom, string patronyme)
+        {
+            if (prenom == "" && patronyme =="" ) {
+                return "";
+            }
+            if (prenom == "" && patronyme !="" ) {
+            return patronyme;
+            }
+            if (prenom != "" && patronyme =="" ) {
+                return  prenom;
+            }
+
+            return prenom + " " + patronyme;
         }
         private void    ChangerCouleurBloc(Color rgb)
         {
@@ -447,7 +480,9 @@ namespace WindowsFormsApp1
 
             RectangleSosa1.FillColor = rgb;
             RectangleSosaConjoint1.FillColor = rgb;
-            SosaConjoint1NomTextBox.BackColor = rgb;
+            SosaConjoint1PatronymeTextBox.BackColor = rgb;
+            SosaConjoint1PrenomTextBox.BackColor = rgb;
+            Conjoint1Lbl.BackColor = rgb;
             RectangleSosa2.FillColor = rgb;
             RectangleSosa3.FillColor = rgb;
             RectangleSosa4.FillColor = rgb;
@@ -486,11 +521,10 @@ namespace WindowsFormsApp1
             DeEndroit5Lbl.BackColor = rgb;
             DeEndroit6Lbl.BackColor = rgb;
             DeEndroit7Lbl.BackColor = rgb;
-
         }
         private void    ChoixChanger()
         {
-
+            ZXCV("IN");
             if (ChoixSosaComboBox.Text == "" && sosaCourant == 0)
             {
                 return;
@@ -542,6 +576,7 @@ namespace WindowsFormsApp1
                     ChoixSosaComboBox.BackColor = Color.Red;
                 }
             }
+            ZXCV("OUT");
         }
         private string  ConvertirDate(string date)
         {
@@ -711,14 +746,13 @@ namespace WindowsFormsApp1
                 return;
             }
             //int ID = Int32.Parse(id);
-            grille[1][IDg] = ID;
-
-            string nom = GEDCOM.AvoirPrenom(ID) + " " + GEDCOM.AvoirNom(ID);
-            grille[1][NOM] = nom;
-
+            liste[1, IDg] = ID;
+            liste[1, PATRONYME] = GEDCOM.AvoirPatronyme(ID);
+            liste[1, PRENOM] = GEDCOM.AvoirPrenom(ID);
+            liste[1, NOMTRI] = liste[1, PATRONYME] + " " + liste[1, PRENOM];
             string dateN = ConvertirDate(GEDCOM.AvoirDateNaissance(ID));
-            grille[1][NELE] = dateN;
-            grille[1][NELIEU] = GEDCOM.AvoirEndroitNaissance(ID);
+            liste[1, NELE] = dateN;
+            liste[1, NELIEU] = GEDCOM.AvoirEndroitNaissance(ID);
             string sex = GEDCOM.AvoirSex(ID);
             string IDFamilleEpoux = GEDCOM.AvoirFamilleEpoux(ID);
             string[] IDListeFamilleEpoux = IDFamilleEpoux.Split(' ');
@@ -731,62 +765,91 @@ namespace WindowsFormsApp1
             {
                 IDConjoint = GEDCOM.AvoirEpoux(IDListeFamilleEpoux[0]);
             }
-            grille[1][MALE] = ConvertirDate(GEDCOM.AvoirDateMariage(IDListeFamilleEpoux[0]));
-            grille[1][MALIEU] = GEDCOM.AvoirEndroitMariage(IDListeFamilleEpoux[0]);
-            grille[1][IDg] = ID.ToString();
+            liste[1, MALE] = ConvertirDate(GEDCOM.AvoirDateMariage(IDListeFamilleEpoux[0]));
+            liste[1, MALIEU] = GEDCOM.AvoirEndroitMariage(IDListeFamilleEpoux[0]);
+            liste[1, IDg] = ID.ToString();
             string IDFamilleEnfant = GEDCOM.AvoirFamilleEnfant(ID);
-            grille[1][IDFAMILLEENFANT] = GEDCOM.AvoirFamilleEnfant(ID);
-            grille[0][NOM] = GEDCOM.AvoirPrenom(IDConjoint) + " " + GEDCOM.AvoirNom(IDConjoint);
+            liste[1, IDFAMILLEENFANT] = GEDCOM.AvoirFamilleEnfant(ID);
+            liste[0, PATRONYME] = GEDCOM.AvoirPatronyme(IDConjoint);
+            liste[0, PRENOM] = GEDCOM.AvoirPrenom(IDConjoint);
+            liste[0, NOMTRI] = "";
+            if (liste[0, PATRONYME] != "" && liste[0, PRENOM] != "")
+            {
+                liste[0, NOMTRI] = liste[0, PATRONYME] + " " + liste[0, PRENOM];
+            }
+            if (liste[0, PATRONYME] != "" && liste[0, PRENOM] == "")
+            {
+                liste[0, NOMTRI] = liste[0, PATRONYME] ;
+            }
+            if (liste[0, PATRONYME] == "" && liste[0, PRENOM] != "")
+            {
+                liste[0, NOMTRI] = " " + liste[0, PRENOM];
+            }
+
             for (int f = 2; f < 512; f += 2)
             {
                 int a = f / 2;
-                string ss = grille[f / 2][IDFAMILLEENFANT];
+                string ss = liste[f / 2, IDFAMILLEENFANT];
 
                 //string IDFamilleEnfant = GEDCOM.AvoirFamilleEnfant(ID);
                 if (ss != "")
                 {
-                    grille[f][IDg] = GEDCOM.AvoirEpoux(ss);
-                    grille[f][IDFAMILLEENFANT] = GEDCOM.AvoirFamilleEnfant(grille[f][IDg]);
-                    grille[f + 1][IDg] = GEDCOM.AvoirEpouse(ss);
-                    grille[f + 1][IDFAMILLEENFANT] = GEDCOM.AvoirFamilleEnfant(grille[f + 1][IDg]);
+                    liste[f, IDg] = GEDCOM.AvoirEpoux(ss);
+                    liste[f, IDFAMILLEENFANT] = GEDCOM.AvoirFamilleEnfant(liste[f, IDg]);
+                    liste[f + 1, IDg] = GEDCOM.AvoirEpouse(ss);
+                    liste[f + 1, IDFAMILLEENFANT] = GEDCOM.AvoirFamilleEnfant(liste[f + 1, IDg]);
                 }
             }
             for (int f = 2; f < 512; f += 2)
             {
-                //grille[f, IDg] = sosaID[f].ToString();
-                ID = grille[f][IDg];
-                string n = GEDCOM.AvoirNom(ID);
-                string p = GEDCOM.AvoirPrenom(ID);
-                string np = "";
-                if (n != "" && p != "") np = GEDCOM.AvoirPrenom(ID) + " " + GEDCOM.AvoirNom(ID);
-                if (n != "" && p == "") np = GEDCOM.AvoirNom(ID);
-                if (n == "" && p != "") np = GEDCOM.AvoirPrenom(ID);
-                if (n == "" && p == "") np = "";
-                grille[f][NOM] = np;
-                grille[f][NELE] = ConvertirDate(GEDCOM.AvoirDateNaissance(ID));
-                grille[f][NELIEU] = GEDCOM.AvoirEndroitNaissance(ID);
-                grille[f][DELE] = ConvertirDate(GEDCOM.AvoirDateDeces(ID));
-                grille[f][DELIEU] = GEDCOM.AvoirEndroitDeces(ID);
-                grille[f][IDFAMILLEENFANT] = GEDCOM.AvoirFamilleEnfant(grille[f][IDg]);
-                string ss = grille[f / 2][IDFAMILLEENFANT];
-                grille[f][MALE] = ConvertirDate(GEDCOM.AvoirDateMariage(ss));
-                grille[f][MALIEU] = GEDCOM.AvoirEndroitMariage(ss);
+                //liste[f, IDg] = sosaID[f].ToString();
+                ID = liste[f, IDg];
+                liste[f, PATRONYME] = GEDCOM.AvoirPatronyme(ID);
+                liste[f, PRENOM] = GEDCOM.AvoirPrenom(ID);
+                liste[f, NOMTRI] = "";
+                if (liste[f, PATRONYME] != "" && liste[f, PRENOM] != "")
+                {
+                    liste[f, NOMTRI] = liste[f, PATRONYME] + " " + liste[f, PRENOM];
+                }
+                if (liste[f, PATRONYME] != "" && liste[f, PRENOM] == "")
+                {
+                    liste[f, NOMTRI] = liste[f, PATRONYME];
+                }
+                if (liste[f, PATRONYME] == "" && liste[f, PRENOM] != "")
+                {
+                    liste[f, NOMTRI] = " " + liste[f, PRENOM];
+                }
+                liste[f, NELE] = ConvertirDate(GEDCOM.AvoirDateNaissance(ID));
+                liste[f, NELIEU] = GEDCOM.AvoirEndroitNaissance(ID);
+                liste[f, DELE] = ConvertirDate(GEDCOM.AvoirDateDeces(ID));
+                liste[f, DELIEU] = GEDCOM.AvoirEndroitDeces(ID);
+                liste[f, IDFAMILLEENFANT] = GEDCOM.AvoirFamilleEnfant(liste[f, IDg]);
+                string ss = liste[f / 2, IDFAMILLEENFANT];
+                liste[f, MALE] = ConvertirDate(GEDCOM.AvoirDateMariage(ss));
+                liste[f, MALIEU] = GEDCOM.AvoirEndroitMariage(ss);
                 int ff = f + 1;
-                ID = grille[ff][IDg];
-                n = GEDCOM.AvoirNom(ID);
-                p = GEDCOM.AvoirPrenom(ID);
-                np = "";
-                if (n != "" && p != "") np = GEDCOM.AvoirPrenom(ID) + " " + GEDCOM.AvoirNom(ID);
-                if (n != "" && p == "") np = GEDCOM.AvoirNom(ID);
-                if (n == "" && p != "") np = GEDCOM.AvoirPrenom(ID);
-                if (n == "" && p == "") np = "";
-                grille[ff][NOM] = np;
-                grille[ff][NELE] = ConvertirDate(GEDCOM.AvoirDateNaissance(ID));
-                grille[ff][NELIEU] = GEDCOM.AvoirEndroitNaissance(ID);
-                grille[ff][DELE] = ConvertirDate(GEDCOM.AvoirDateDeces(ID));
-                grille[ff][DELIEU] = GEDCOM.AvoirEndroitDeces(ID);
+                ID = liste[ff, IDg];
+                liste[ff, PATRONYME] = GEDCOM.AvoirPatronyme(ID);
+                liste[ff, PRENOM] = GEDCOM.AvoirPrenom(ID);
+                liste[ff, NOMTRI] = "";
+                if (liste[ff, PATRONYME] != "" && liste[ff, PRENOM] != "")
+                {
+                    liste[ff, NOMTRI] = liste[ff, PATRONYME] + " " + liste[ff, PRENOM];
+                }
+                if (liste[ff, PATRONYME] != "" && liste[ff, PRENOM] == "")
+                {
+                    liste[ff, NOMTRI] = liste[ff, PATRONYME];
+                }
+                if (liste[ff, PATRONYME] == "" && liste[ff, PRENOM] != "")
+                {
+                    liste[ff, NOMTRI] = " " + liste[ff, PRENOM];
+                }
+                liste[ff, NELE] = ConvertirDate(GEDCOM.AvoirDateNaissance(ID));
+                liste[ff, NELIEU] = GEDCOM.AvoirEndroitNaissance(ID);
+                liste[ff, DELE] = ConvertirDate(GEDCOM.AvoirDateDeces(ID));
+                liste[ff, DELIEU] = GEDCOM.AvoirEndroitDeces(ID);
             }
-            NomRecherche.Text = "";
+            PatronymeRecherche.Text = "";
             PrenomRecherche.Text = "";
             RafraichirData();
             AfficherData();
@@ -846,29 +909,30 @@ namespace WindowsFormsApp1
                     ligne.WriteLine("Ver   =3.0");
                     for (index = 0; index < 512; index++)
                     {
-                        if ((grille[index][NOM] != "" || grille[index][NELE] != "" || grille[index][NELIEU] != "" || grille[index][DELE] != ""
-                             || grille[index][DELIEU] != "" || grille[index][MALE] != "" || grille[index][MALIEU] != "" ||
-                             grille[index][NOTE1] != "" || grille[index][NOTE2] != "") && grille[index][SOSA] != "0")
+                        if ((liste[index, PATRONYME] != "" || liste[index, PRENOM] != "" || liste[index, NELE] != "" || liste[index, NELIEU] != "" || liste[index, DELE] != ""
+                             || liste[index, DELIEU] != "" || liste[index, MALE] != "" || liste[index, MALIEU] != "" ||
+                             liste[index, NOTE1] != "" || liste[index, NOTE2] != "") && liste[index, SOSA] != "0")
                         {
                             ligne.WriteLine("[sosa*]");
-                            ligne.WriteLine("No    =" + grille[index][SOSA]);
-                            if (grille[index][NOM] != "") ligne.WriteLine("Nom   =" + grille[index][NOM]);
-                            if (grille[index][NELE] != "") ligne.WriteLine("NeLe  =" + grille[index][NELE]);
-                            if (grille[index][NELIEU] != "") ligne.WriteLine("NeLieu=" + grille[index][NELIEU]);
-                            if (grille[index][DELE] != "") ligne.WriteLine("DeLe  =" + grille[index][DELE]);
-                            if (grille[index][DELIEU] != "") ligne.WriteLine("DeLieu=" + grille[index][DELIEU]);
-                            if (grille[index][MALE] != "") ligne.WriteLine("MaLe  =" + grille[index][MALE]);
-                            if (grille[index][MALIEU] != "") ligne.WriteLine("MaLieu=" + grille[index][MALIEU]);
-                            if (grille[index][NOTE1].Length > 0)
+                            ligne.WriteLine("No    =" + liste[index, SOSA]);
+                            if (liste[index, PATRONYME] != "") ligne.WriteLine("Nom   =" + liste[index, PATRONYME]);
+                            if (liste[index, PRENOM] != "") ligne.WriteLine("Prenom=" + liste[index, PRENOM]);
+                            if (liste[index, NELE] != "") ligne.WriteLine("NeLe  =" + liste[index, NELE]);
+                            if (liste[index, NELIEU] != "") ligne.WriteLine("NeLieu=" + liste[index, NELIEU]);
+                            if (liste[index, DELE] != "") ligne.WriteLine("DeLe  =" + liste[index, DELE]);
+                            if (liste[index, DELIEU] != "") ligne.WriteLine("DeLieu=" + liste[index, DELIEU]);
+                            if (liste[index, MALE] != "") ligne.WriteLine("MaLe  =" + liste[index, MALE]);
+                            if (liste[index, MALIEU] != "") ligne.WriteLine("MaLieu=" + liste[index, MALIEU]);
+                            if (liste[index, NOTE1].Length > 0)
                             {
                                 ligne.WriteLine("NoteH =");
-                                ligne.WriteLine(grille[index][NOTE1]);
+                                ligne.WriteLine(liste[index, NOTE1]);
                                 ligne.WriteLine("##FIN##");
                             }
-                            if (grille[index][NOTE2].Length > 0)
+                            if (liste[index, NOTE2].Length > 0)
                             {
                                 ligne.WriteLine("NoteB =");
-                                ligne.WriteLine(grille[index][NOTE2]);
+                                ligne.WriteLine(liste[index, NOTE2]);
                                 ligne.WriteLine("##FIN##");
                             }
                         }
@@ -900,580 +964,581 @@ namespace WindowsFormsApp1
             int[]pageListe = new int[] { 0,1, 8, 9, 10, 11, 12, 13, 14, 15, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 127 };
             for (int f = 0; f < 512; f++)
             {
-                grille[f] = new string[15];
-                grille[f][SOSA] = f.ToString();
-                grille[f][PAGE] = "";
-                grille[f][GENERATION] = "";
-                grille[f][TABLEAU] = "";
-                grille[f][NOM] = "";
-                grille[f][NELE] = "";
-                grille[f][NELIEU] = "";
-                grille[f][DELE] = "";
-                grille[f][DELIEU] = "";
-                grille[f][MALE] = "";
-                grille[f][MALIEU] = "";
-                grille[f][IDg] = "";
-                grille[f][IDFAMILLEENFANT] = "";
-                grille[f][NOTE1] = "";
-                grille[f][NOTE2] = "";
+                liste[f, SOSA] = f.ToString();
+                liste[f, PAGE] = "";
+                liste[f, GENERATION] = "";
+                liste[f, TABLEAU] = "";
+                liste[f, PATRONYME] = "";
+                liste[f, PRENOM] = "";
+                liste[f, NOMTRI] = "";
+                liste[f, NELE] = "";
+                liste[f, NELIEU] = "";
+                liste[f, DELE] = "";
+                liste[f, DELIEU] = "";
+                liste[f, MALE] = "";
+                liste[f, MALIEU] = "";
+                liste[f, IDg] = "";
+                liste[f, IDFAMILLEENFANT] = "";
+                liste[f, NOTE1] = "";
+                liste[f, NOTE2] = "";
             }
-            grille[1][GENERATION] = "1";
-            grille[2][GENERATION] = "2";
-            grille[3][GENERATION] = "3";
+            liste[1, GENERATION] = "1";
+            liste[2, GENERATION] = "2";
+            liste[3, GENERATION] = "3";
             for (int f = 4; f < 8; f++)
             {
-                grille[f][GENERATION] = "3";
+                liste[f, GENERATION] = "3";
             }
             for (int f = 8; f < 16; f++)
             {
-                grille[f][GENERATION] = "4";
+                liste[f, GENERATION] = "4";
             }
             for (int f = 16; f < 32; f++)
             {
-                grille[f][GENERATION] = "5";
+                liste[f, GENERATION] = "5";
             }
             for (int f = 32; f < 64; f++)
             {
-                grille[f][GENERATION] = "6";
+                liste[f, GENERATION] = "6";
             }
             for (int f = 64; f < 128; f++)
             {
-                grille[f][GENERATION] = "7";
+                liste[f, GENERATION] = "7";
             }
             for (int f = 128; f < 256; f++)
             {
-                grille[f][GENERATION] = "8";
+                liste[f, GENERATION] = "8";
             }
             for (int f = 256; f < 512; f++)
             {
-                grille[f][GENERATION] = "9";
+                liste[f, GENERATION] = "9";
             }
             for (int f = 1; f < 8; f++)
             {
-                grille[f][TABLEAU] = "1";
+                liste[f, TABLEAU] = "1";
 
             }
 
-            grille[ 8][TABLEAU] = "2";
-            grille[ 9][TABLEAU] = "3";
-            grille[10][TABLEAU] = "4";
-            grille[11][TABLEAU] = "5";
-            grille[12][TABLEAU] = "6";
-            grille[13][TABLEAU] = "7";
-            grille[14][TABLEAU] = "8";
-            grille[15][TABLEAU] = "9";
-            grille[16][TABLEAU] = "2";
-            grille[17][TABLEAU] = "2";
-            grille[18][TABLEAU] = "3";
-            grille[19][TABLEAU] = "3";
-            grille[20][TABLEAU] = "4";
-            grille[21][TABLEAU] = "4";
-            grille[22][TABLEAU] = "5";
-            grille[23][TABLEAU] = "5";
-            grille[24][TABLEAU] = "6";
-            grille[25][TABLEAU] = "6";
-            grille[26][TABLEAU] = "7";
-            grille[27][TABLEAU] = "7";
-            grille[28][TABLEAU] = "8";
-            grille[29][TABLEAU] = "8";
-            grille[30][TABLEAU] = "9";
-            grille[31][TABLEAU] = "9";
+            liste[ 8, TABLEAU] = "2";
+            liste[ 9, TABLEAU] = "3";
+            liste[10, TABLEAU] = "4";
+            liste[11, TABLEAU] = "5";
+            liste[12, TABLEAU] = "6";
+            liste[13, TABLEAU] = "7";
+            liste[14, TABLEAU] = "8";
+            liste[15, TABLEAU] = "9";
+            liste[16, TABLEAU] = "2";
+            liste[17, TABLEAU] = "2";
+            liste[18, TABLEAU] = "3";
+            liste[19, TABLEAU] = "3";
+            liste[20, TABLEAU] = "4";
+            liste[21, TABLEAU] = "4";
+            liste[22, TABLEAU] = "5";
+            liste[23, TABLEAU] = "5";
+            liste[24, TABLEAU] = "6";
+            liste[25, TABLEAU] = "6";
+            liste[26, TABLEAU] = "7";
+            liste[27, TABLEAU] = "7";
+            liste[28, TABLEAU] = "8";
+            liste[29, TABLEAU] = "8";
+            liste[30, TABLEAU] = "9";
+            liste[31, TABLEAU] = "9";
 
             for (int f = 32; f < 36; f++)
             {
-                grille[f][TABLEAU] = "2";
+                liste[f, TABLEAU] = "2";
             }
             for (int f = 36; f < 40; f++)
             {
-                grille[f][TABLEAU] = "3";
+                liste[f, TABLEAU] = "3";
             }
             for (int f = 40; f < 44; f++)
             {
-                grille[f][TABLEAU] = "4";
+                liste[f, TABLEAU] = "4";
             }
             for (int f = 44; f < 48; f++)
             {
-                grille[f][TABLEAU] = "5";
+                liste[f, TABLEAU] = "5";
             }
             for (int f = 48; f < 52; f++)
             {
-                grille[f][TABLEAU] = "6";
+                liste[f, TABLEAU] = "6";
             }
             for (int f = 52; f < 56; f++)
             {
-                grille[f][TABLEAU] = "7";
+                liste[f, TABLEAU] = "7";
             }
             for (int f = 56; f < 60; f++)
             {
-                grille[f][TABLEAU] = "8";
+                liste[f, TABLEAU] = "8";
             }
             for (int f = 60; f < 64; f++)
             {
-                grille[f][TABLEAU] = "9";
+                liste[f, TABLEAU] = "9";
             }
-            grille[64][TABLEAU] = "10";
-            grille[65][TABLEAU] = "11";
-            grille[66][TABLEAU] = "12";
-            grille[67][TABLEAU] = "13";
-            grille[68][TABLEAU] = "14";
-            grille[69][TABLEAU] = "15";
-            grille[70][TABLEAU] = "16";
-            grille[71][TABLEAU] = "17";
-            grille[72][TABLEAU] = "18";
-            grille[73][TABLEAU] = "19";
-            grille[74][TABLEAU] = "20";
-            grille[75][TABLEAU] = "21";
-            grille[76][TABLEAU] = "22";
-            grille[77][TABLEAU] = "23";
-            grille[78][TABLEAU] = "24";
-            grille[79][TABLEAU] = "25";
-            grille[80][TABLEAU] = "26";
-            grille[81][TABLEAU] = "27";
-            grille[82][TABLEAU] = "28";
-            grille[83][TABLEAU] = "29";
-            grille[84][TABLEAU] = "30";
-            grille[85][TABLEAU] = "31";
-            grille[86][TABLEAU] = "32";
-            grille[87][TABLEAU] = "33";
-            grille[88][TABLEAU] = "34";
-            grille[89][TABLEAU] = "35";
-            grille[90][TABLEAU] = "36";
-            grille[91][TABLEAU] = "37";
-            grille[92][TABLEAU] = "38";
-            grille[93][TABLEAU] = "39";
-            grille[94][TABLEAU] = "40";
-            grille[95][TABLEAU] = "41";
-            grille[96][TABLEAU] = "42";
-            grille[97][TABLEAU] = "43";
-            grille[98][TABLEAU] = "44";
-            grille[99][TABLEAU] = "45";
-            grille[100][TABLEAU] = "46";
-            grille[101][TABLEAU] = "47";
-            grille[102][TABLEAU] = "48";
-            grille[103][TABLEAU] = "49";
-            grille[104][TABLEAU] = "50";
-            grille[105][TABLEAU] = "51";
-            grille[106][TABLEAU] = "52";
-            grille[107][TABLEAU] = "53";
-            grille[108][TABLEAU] = "54";
-            grille[109][TABLEAU] = "55";
-            grille[110][TABLEAU] = "56";
-            grille[111][TABLEAU] = "57";
-            grille[112][TABLEAU] = "58";
-            grille[113][TABLEAU] = "59";
-            grille[114][TABLEAU] = "60";
-            grille[115][TABLEAU] = "61";
-            grille[116][TABLEAU] = "62";
-            grille[117][TABLEAU] = "63";
-            grille[118][TABLEAU] = "64";
-            grille[119][TABLEAU] = "65";
-            grille[120][TABLEAU] = "66";
-            grille[121][TABLEAU] = "67";
-            grille[122][TABLEAU] = "68";
-            grille[123][TABLEAU] = "69";
-            grille[124][TABLEAU] = "70";
-            grille[125][TABLEAU] = "71";
-            grille[126][TABLEAU] = "72";
-            grille[127][TABLEAU] = "73";
-            grille[128][TABLEAU] = "10";
-            grille[129][TABLEAU] = "10";
-            grille[130][TABLEAU] = "11";
-            grille[131][TABLEAU] = "11";
-            grille[132][TABLEAU] = "12";
-            grille[133][TABLEAU] = "12";
-            grille[134][TABLEAU] = "13";
-            grille[135][TABLEAU] = "13";
-            grille[136][TABLEAU] = "14";
-            grille[137][TABLEAU] = "14";
-            grille[138][TABLEAU] = "15";
-            grille[139][TABLEAU] = "15";
-            grille[140][TABLEAU] = "16";
-            grille[141][TABLEAU] = "16";
-            grille[142][TABLEAU] = "17";
-            grille[143][TABLEAU] = "17";
-            grille[144][TABLEAU] = "18";
-            grille[145][TABLEAU] = "18";
-            grille[146][TABLEAU] = "19";
-            grille[147][TABLEAU] = "19";
-            grille[148][TABLEAU] = "20";
-            grille[149][TABLEAU] = "20";
-            grille[150][TABLEAU] = "21";
-            grille[151][TABLEAU] = "21";
-            grille[152][TABLEAU] = "22";
-            grille[153][TABLEAU] = "22";
-            grille[154][TABLEAU] = "23";
-            grille[155][TABLEAU] = "23";
-            grille[156][TABLEAU] = "24";
-            grille[157][TABLEAU] = "24";
-            grille[158][TABLEAU] = "25";
-            grille[159][TABLEAU] = "25";
-            grille[160][TABLEAU] = "26";
-            grille[161][TABLEAU] = "26";
-            grille[162][TABLEAU] = "27";
-            grille[163][TABLEAU] = "27";
-            grille[164][TABLEAU] = "28";
-            grille[165][TABLEAU] = "28";
-            grille[166][TABLEAU] = "29";
-            grille[167][TABLEAU] = "29";
-            grille[168][TABLEAU] = "30";
-            grille[169][TABLEAU] = "30";
-            grille[170][TABLEAU] = "31";
-            grille[171][TABLEAU] = "31";
-            grille[172][TABLEAU] = "32";
-            grille[173][TABLEAU] = "32";
-            grille[174][TABLEAU] = "33";
-            grille[175][TABLEAU] = "33";
-            grille[176][TABLEAU] = "34";
-            grille[177][TABLEAU] = "34";
-            grille[178][TABLEAU] = "35";
-            grille[179][TABLEAU] = "35";
-            grille[180][TABLEAU] = "36";
-            grille[181][TABLEAU] = "36";
-            grille[182][TABLEAU] = "37";
-            grille[183][TABLEAU] = "37";
-            grille[184][TABLEAU] = "38";
-            grille[185][TABLEAU] = "38";
-            grille[186][TABLEAU] = "39";
-            grille[187][TABLEAU] = "39";
-            grille[188][TABLEAU] = "40";
-            grille[189][TABLEAU] = "40";
-            grille[190][TABLEAU] = "41";
-            grille[191][TABLEAU] = "41";
-            grille[192][TABLEAU] = "42";
-            grille[193][TABLEAU] = "42";
-            grille[194][TABLEAU] = "43";
-            grille[195][TABLEAU] = "43";
-            grille[196][TABLEAU] = "44";
-            grille[197][TABLEAU] = "44";
-            grille[198][TABLEAU] = "45";
-            grille[199][TABLEAU] = "45";
-            grille[200][TABLEAU] = "46";
-            grille[201][TABLEAU] = "46";
-            grille[202][TABLEAU] = "47";
-            grille[203][TABLEAU] = "47";
-            grille[204][TABLEAU] = "48";
-            grille[205][TABLEAU] = "48";
-            grille[206][TABLEAU] = "49";
-            grille[207][TABLEAU] = "49";
-            grille[208][TABLEAU] = "50";
-            grille[209][TABLEAU] = "50";
-            grille[210][TABLEAU] = "51";
-            grille[211][TABLEAU] = "51";
-            grille[212][TABLEAU] = "52";
-            grille[213][TABLEAU] = "52";
-            grille[214][TABLEAU] = "53";
-            grille[215][TABLEAU] = "53";
-            grille[216][TABLEAU] = "54";
-            grille[217][TABLEAU] = "54";
-            grille[218][TABLEAU] = "55";
-            grille[219][TABLEAU] = "55";
-            grille[220][TABLEAU] = "56";
-            grille[221][TABLEAU] = "56";
-            grille[222][TABLEAU] = "57";
-            grille[223][TABLEAU] = "57";
-            grille[224][TABLEAU] = "58";
-            grille[225][TABLEAU] = "58";
-            grille[226][TABLEAU] = "59";
-            grille[227][TABLEAU] = "59";
-            grille[228][TABLEAU] = "60";
-            grille[229][TABLEAU] = "60";
-            grille[230][TABLEAU] = "61";
-            grille[231][TABLEAU] = "61";
-            grille[232][TABLEAU] = "62";
-            grille[233][TABLEAU] = "62";
-            grille[234][TABLEAU] = "63";
-            grille[235][TABLEAU] = "63";
-            grille[236][TABLEAU] = "64";
-            grille[237][TABLEAU] = "64";
-            grille[238][TABLEAU] = "65";
-            grille[239][TABLEAU] = "65";
-            grille[240][TABLEAU] = "66";
-            grille[241][TABLEAU] = "66";
-            grille[242][TABLEAU] = "67";
-            grille[243][TABLEAU] = "67";
-            grille[244][TABLEAU] = "68";
-            grille[245][TABLEAU] = "68";
-            grille[246][TABLEAU] = "69";
-            grille[247][TABLEAU] = "69";
-            grille[248][TABLEAU] = "70";
-            grille[249][TABLEAU] = "70";
-            grille[250][TABLEAU] = "71";
-            grille[251][TABLEAU] = "71";
-            grille[252][TABLEAU] = "72";
-            grille[253][TABLEAU] = "72";
-            grille[254][TABLEAU] = "73";
-            grille[255][TABLEAU] = "73";
+            liste[64, TABLEAU] = "10";
+            liste[65, TABLEAU] = "11";
+            liste[66, TABLEAU] = "12";
+            liste[67, TABLEAU] = "13";
+            liste[68, TABLEAU] = "14";
+            liste[69, TABLEAU] = "15";
+            liste[70, TABLEAU] = "16";
+            liste[71, TABLEAU] = "17";
+            liste[72, TABLEAU] = "18";
+            liste[73, TABLEAU] = "19";
+            liste[74, TABLEAU] = "20";
+            liste[75, TABLEAU] = "21";
+            liste[76, TABLEAU] = "22";
+            liste[77, TABLEAU] = "23";
+            liste[78, TABLEAU] = "24";
+            liste[79, TABLEAU] = "25";
+            liste[80, TABLEAU] = "26";
+            liste[81, TABLEAU] = "27";
+            liste[82, TABLEAU] = "28";
+            liste[83, TABLEAU] = "29";
+            liste[84, TABLEAU] = "30";
+            liste[85, TABLEAU] = "31";
+            liste[86, TABLEAU] = "32";
+            liste[87, TABLEAU] = "33";
+            liste[88, TABLEAU] = "34";
+            liste[89, TABLEAU] = "35";
+            liste[90, TABLEAU] = "36";
+            liste[91, TABLEAU] = "37";
+            liste[92, TABLEAU] = "38";
+            liste[93, TABLEAU] = "39";
+            liste[94, TABLEAU] = "40";
+            liste[95, TABLEAU] = "41";
+            liste[96, TABLEAU] = "42";
+            liste[97, TABLEAU] = "43";
+            liste[98, TABLEAU] = "44";
+            liste[99, TABLEAU] = "45";
+            liste[100, TABLEAU] = "46";
+            liste[101, TABLEAU] = "47";
+            liste[102, TABLEAU] = "48";
+            liste[103, TABLEAU] = "49";
+            liste[104, TABLEAU] = "50";
+            liste[105, TABLEAU] = "51";
+            liste[106, TABLEAU] = "52";
+            liste[107, TABLEAU] = "53";
+            liste[108, TABLEAU] = "54";
+            liste[109, TABLEAU] = "55";
+            liste[110, TABLEAU] = "56";
+            liste[111, TABLEAU] = "57";
+            liste[112, TABLEAU] = "58";
+            liste[113, TABLEAU] = "59";
+            liste[114, TABLEAU] = "60";
+            liste[115, TABLEAU] = "61";
+            liste[116, TABLEAU] = "62";
+            liste[117, TABLEAU] = "63";
+            liste[118, TABLEAU] = "64";
+            liste[119, TABLEAU] = "65";
+            liste[120, TABLEAU] = "66";
+            liste[121, TABLEAU] = "67";
+            liste[122, TABLEAU] = "68";
+            liste[123, TABLEAU] = "69";
+            liste[124, TABLEAU] = "70";
+            liste[125, TABLEAU] = "71";
+            liste[126, TABLEAU] = "72";
+            liste[127, TABLEAU] = "73";
+            liste[128, TABLEAU] = "10";
+            liste[129, TABLEAU] = "10";
+            liste[130, TABLEAU] = "11";
+            liste[131, TABLEAU] = "11";
+            liste[132, TABLEAU] = "12";
+            liste[133, TABLEAU] = "12";
+            liste[134, TABLEAU] = "13";
+            liste[135, TABLEAU] = "13";
+            liste[136, TABLEAU] = "14";
+            liste[137, TABLEAU] = "14";
+            liste[138, TABLEAU] = "15";
+            liste[139, TABLEAU] = "15";
+            liste[140, TABLEAU] = "16";
+            liste[141, TABLEAU] = "16";
+            liste[142, TABLEAU] = "17";
+            liste[143, TABLEAU] = "17";
+            liste[144, TABLEAU] = "18";
+            liste[145, TABLEAU] = "18";
+            liste[146, TABLEAU] = "19";
+            liste[147, TABLEAU] = "19";
+            liste[148, TABLEAU] = "20";
+            liste[149, TABLEAU] = "20";
+            liste[150, TABLEAU] = "21";
+            liste[151, TABLEAU] = "21";
+            liste[152, TABLEAU] = "22";
+            liste[153, TABLEAU] = "22";
+            liste[154, TABLEAU] = "23";
+            liste[155, TABLEAU] = "23";
+            liste[156, TABLEAU] = "24";
+            liste[157, TABLEAU] = "24";
+            liste[158, TABLEAU] = "25";
+            liste[159, TABLEAU] = "25";
+            liste[160, TABLEAU] = "26";
+            liste[161, TABLEAU] = "26";
+            liste[162, TABLEAU] = "27";
+            liste[163, TABLEAU] = "27";
+            liste[164, TABLEAU] = "28";
+            liste[165, TABLEAU] = "28";
+            liste[166, TABLEAU] = "29";
+            liste[167, TABLEAU] = "29";
+            liste[168, TABLEAU] = "30";
+            liste[169, TABLEAU] = "30";
+            liste[170, TABLEAU] = "31";
+            liste[171, TABLEAU] = "31";
+            liste[172, TABLEAU] = "32";
+            liste[173, TABLEAU] = "32";
+            liste[174, TABLEAU] = "33";
+            liste[175, TABLEAU] = "33";
+            liste[176, TABLEAU] = "34";
+            liste[177, TABLEAU] = "34";
+            liste[178, TABLEAU] = "35";
+            liste[179, TABLEAU] = "35";
+            liste[180, TABLEAU] = "36";
+            liste[181, TABLEAU] = "36";
+            liste[182, TABLEAU] = "37";
+            liste[183, TABLEAU] = "37";
+            liste[184, TABLEAU] = "38";
+            liste[185, TABLEAU] = "38";
+            liste[186, TABLEAU] = "39";
+            liste[187, TABLEAU] = "39";
+            liste[188, TABLEAU] = "40";
+            liste[189, TABLEAU] = "40";
+            liste[190, TABLEAU] = "41";
+            liste[191, TABLEAU] = "41";
+            liste[192, TABLEAU] = "42";
+            liste[193, TABLEAU] = "42";
+            liste[194, TABLEAU] = "43";
+            liste[195, TABLEAU] = "43";
+            liste[196, TABLEAU] = "44";
+            liste[197, TABLEAU] = "44";
+            liste[198, TABLEAU] = "45";
+            liste[199, TABLEAU] = "45";
+            liste[200, TABLEAU] = "46";
+            liste[201, TABLEAU] = "46";
+            liste[202, TABLEAU] = "47";
+            liste[203, TABLEAU] = "47";
+            liste[204, TABLEAU] = "48";
+            liste[205, TABLEAU] = "48";
+            liste[206, TABLEAU] = "49";
+            liste[207, TABLEAU] = "49";
+            liste[208, TABLEAU] = "50";
+            liste[209, TABLEAU] = "50";
+            liste[210, TABLEAU] = "51";
+            liste[211, TABLEAU] = "51";
+            liste[212, TABLEAU] = "52";
+            liste[213, TABLEAU] = "52";
+            liste[214, TABLEAU] = "53";
+            liste[215, TABLEAU] = "53";
+            liste[216, TABLEAU] = "54";
+            liste[217, TABLEAU] = "54";
+            liste[218, TABLEAU] = "55";
+            liste[219, TABLEAU] = "55";
+            liste[220, TABLEAU] = "56";
+            liste[221, TABLEAU] = "56";
+            liste[222, TABLEAU] = "57";
+            liste[223, TABLEAU] = "57";
+            liste[224, TABLEAU] = "58";
+            liste[225, TABLEAU] = "58";
+            liste[226, TABLEAU] = "59";
+            liste[227, TABLEAU] = "59";
+            liste[228, TABLEAU] = "60";
+            liste[229, TABLEAU] = "60";
+            liste[230, TABLEAU] = "61";
+            liste[231, TABLEAU] = "61";
+            liste[232, TABLEAU] = "62";
+            liste[233, TABLEAU] = "62";
+            liste[234, TABLEAU] = "63";
+            liste[235, TABLEAU] = "63";
+            liste[236, TABLEAU] = "64";
+            liste[237, TABLEAU] = "64";
+            liste[238, TABLEAU] = "65";
+            liste[239, TABLEAU] = "65";
+            liste[240, TABLEAU] = "66";
+            liste[241, TABLEAU] = "66";
+            liste[242, TABLEAU] = "67";
+            liste[243, TABLEAU] = "67";
+            liste[244, TABLEAU] = "68";
+            liste[245, TABLEAU] = "68";
+            liste[246, TABLEAU] = "69";
+            liste[247, TABLEAU] = "69";
+            liste[248, TABLEAU] = "70";
+            liste[249, TABLEAU] = "70";
+            liste[250, TABLEAU] = "71";
+            liste[251, TABLEAU] = "71";
+            liste[252, TABLEAU] = "72";
+            liste[253, TABLEAU] = "72";
+            liste[254, TABLEAU] = "73";
+            liste[255, TABLEAU] = "73";
 
 
-            grille[256][TABLEAU] = "10";
-            grille[257][TABLEAU] = "10";
-            grille[258][TABLEAU] = "10";
-            grille[259][TABLEAU] = "10";
-            grille[260][TABLEAU] = "11";
-            grille[261][TABLEAU] = "11";
-            grille[262][TABLEAU] = "11";
-            grille[263][TABLEAU] = "11";
-            grille[264][TABLEAU] = "12";
-            grille[265][TABLEAU] = "12";
-            grille[266][TABLEAU] = "12";
-            grille[267][TABLEAU] = "12";
-            grille[268][TABLEAU] = "13";
-            grille[269][TABLEAU] = "13";
-            grille[270][TABLEAU] = "13";
-            grille[271][TABLEAU] = "13";
-            grille[272][TABLEAU] = "14";
-            grille[273][TABLEAU] = "14";
-            grille[274][TABLEAU] = "14";
-            grille[275][TABLEAU] = "14";
-            grille[276][TABLEAU] = "15";
-            grille[277][TABLEAU] = "15";
-            grille[278][TABLEAU] = "15";
-            grille[279][TABLEAU] = "15";
-            grille[280][TABLEAU] = "16";
-            grille[281][TABLEAU] = "16";
-            grille[282][TABLEAU] = "16";
-            grille[283][TABLEAU] = "16";
-            grille[284][TABLEAU] = "17";
-            grille[285][TABLEAU] = "17";
-            grille[286][TABLEAU] = "17";
-            grille[287][TABLEAU] = "17";
-            grille[288][TABLEAU] = "18";
-            grille[289][TABLEAU] = "18";
-            grille[290][TABLEAU] = "18";
-            grille[291][TABLEAU] = "18";
-            grille[292][TABLEAU] = "19";
-            grille[293][TABLEAU] = "19";
-            grille[294][TABLEAU] = "19";
-            grille[295][TABLEAU] = "19";
-            grille[296][TABLEAU] = "20";
-            grille[297][TABLEAU] = "20";
-            grille[298][TABLEAU] = "20";
-            grille[299][TABLEAU] = "20";
-            grille[300][TABLEAU] = "21";
-            grille[301][TABLEAU] = "21";
-            grille[302][TABLEAU] = "21";
-            grille[303][TABLEAU] = "21";
-            grille[304][TABLEAU] = "22";
-            grille[305][TABLEAU] = "22";
-            grille[306][TABLEAU] = "22";
-            grille[307][TABLEAU] = "22";
-            grille[308][TABLEAU] = "23";
-            grille[309][TABLEAU] = "23";
-            grille[310][TABLEAU] = "23";
-            grille[311][TABLEAU] = "23";
-            grille[312][TABLEAU] = "24";
-            grille[313][TABLEAU] = "24";
-            grille[314][TABLEAU] = "24";
-            grille[315][TABLEAU] = "24";
-            grille[316][TABLEAU] = "25";
-            grille[317][TABLEAU] = "25";
-            grille[318][TABLEAU] = "25";
-            grille[319][TABLEAU] = "25";
-            grille[320][TABLEAU] = "26";
-            grille[321][TABLEAU] = "26";
-            grille[322][TABLEAU] = "26";
-            grille[323][TABLEAU] = "26";
-            grille[324][TABLEAU] = "27";
-            grille[325][TABLEAU] = "27";
-            grille[326][TABLEAU] = "27";
-            grille[327][TABLEAU] = "27";
-            grille[328][TABLEAU] = "28";
-            grille[329][TABLEAU] = "28";
-            grille[330][TABLEAU] = "28";
-            grille[331][TABLEAU] = "28";
-            grille[332][TABLEAU] = "29";
-            grille[333][TABLEAU] = "29";
-            grille[334][TABLEAU] = "29";
-            grille[335][TABLEAU] = "29";
-            grille[336][TABLEAU] = "30";
-            grille[337][TABLEAU] = "30";
-            grille[338][TABLEAU] = "30";
-            grille[339][TABLEAU] = "30";
-            grille[340][TABLEAU] = "31";
-            grille[341][TABLEAU] = "31";
-            grille[342][TABLEAU] = "31";
-            grille[343][TABLEAU] = "31";
-            grille[344][TABLEAU] = "32";
-            grille[345][TABLEAU] = "32";
-            grille[346][TABLEAU] = "32";
-            grille[347][TABLEAU] = "32";
-            grille[348][TABLEAU] = "33";
-            grille[349][TABLEAU] = "33";
-            grille[350][TABLEAU] = "33";
-            grille[351][TABLEAU] = "33";
-            grille[352][TABLEAU] = "34";
-            grille[353][TABLEAU] = "34";
-            grille[354][TABLEAU] = "34";
-            grille[355][TABLEAU] = "34";
-            grille[356][TABLEAU] = "35";
-            grille[357][TABLEAU] = "35";
-            grille[358][TABLEAU] = "35";
-            grille[359][TABLEAU] = "35";
-            grille[360][TABLEAU] = "36";
-            grille[361][TABLEAU] = "36";
-            grille[362][TABLEAU] = "36";
-            grille[363][TABLEAU] = "36";
-            grille[364][TABLEAU] = "37";
-            grille[365][TABLEAU] = "37";
-            grille[366][TABLEAU] = "37";
-            grille[367][TABLEAU] = "37";
-            grille[368][TABLEAU] = "38";
-            grille[369][TABLEAU] = "38";
-            grille[370][TABLEAU] = "38";
-            grille[371][TABLEAU] = "38";
-            grille[372][TABLEAU] = "39";
-            grille[373][TABLEAU] = "39";
-            grille[374][TABLEAU] = "39";
-            grille[375][TABLEAU] = "39";
-            grille[376][TABLEAU] = "40";
-            grille[377][TABLEAU] = "40";
-            grille[378][TABLEAU] = "40";
-            grille[379][TABLEAU] = "40";
-            grille[380][TABLEAU] = "41";
-            grille[381][TABLEAU] = "41";
-            grille[382][TABLEAU] = "41";
-            grille[383][TABLEAU] = "41";
-            grille[384][TABLEAU] = "42";
-            grille[385][TABLEAU] = "42";
-            grille[386][TABLEAU] = "42";
-            grille[387][TABLEAU] = "42";
-            grille[388][TABLEAU] = "43";
-            grille[389][TABLEAU] = "43";
-            grille[390][TABLEAU] = "43";
-            grille[391][TABLEAU] = "43";
-            grille[392][TABLEAU] = "44";
-            grille[393][TABLEAU] = "44";
-            grille[394][TABLEAU] = "44";
-            grille[395][TABLEAU] = "44";
-            grille[396][TABLEAU] = "45";
-            grille[397][TABLEAU] = "45";
-            grille[398][TABLEAU] = "45";
-            grille[399][TABLEAU] = "45";
-            grille[400][TABLEAU] = "46";
-            grille[401][TABLEAU] = "46";
-            grille[402][TABLEAU] = "46";
-            grille[403][TABLEAU] = "46";
-            grille[404][TABLEAU] = "47";
-            grille[405][TABLEAU] = "47";
-            grille[406][TABLEAU] = "47";
-            grille[407][TABLEAU] = "47";
-            grille[408][TABLEAU] = "48";
-            grille[409][TABLEAU] = "48";
-            grille[410][TABLEAU] = "48";
-            grille[411][TABLEAU] = "48";
-            grille[412][TABLEAU] = "49";
-            grille[413][TABLEAU] = "49";
-            grille[414][TABLEAU] = "49";
-            grille[415][TABLEAU] = "49";
-            grille[416][TABLEAU] = "50";
-            grille[417][TABLEAU] = "50";
-            grille[418][TABLEAU] = "50";
-            grille[419][TABLEAU] = "50";
-            grille[420][TABLEAU] = "51";
-            grille[421][TABLEAU] = "51";
-            grille[422][TABLEAU] = "51";
-            grille[423][TABLEAU] = "51";
-            grille[424][TABLEAU] = "52";
-            grille[425][TABLEAU] = "52";
-            grille[426][TABLEAU] = "52";
-            grille[427][TABLEAU] = "52";
-            grille[428][TABLEAU] = "53";
-            grille[429][TABLEAU] = "53";
-            grille[430][TABLEAU] = "53";
-            grille[431][TABLEAU] = "53";
-            grille[432][TABLEAU] = "54";
-            grille[433][TABLEAU] = "54";
-            grille[434][TABLEAU] = "54";
-            grille[435][TABLEAU] = "54";
-            grille[436][TABLEAU] = "55";
-            grille[437][TABLEAU] = "55";
-            grille[438][TABLEAU] = "55";
-            grille[439][TABLEAU] = "55";
-            grille[440][TABLEAU] = "56";
-            grille[441][TABLEAU] = "56";
-            grille[442][TABLEAU] = "56";
-            grille[443][TABLEAU] = "56";
-            grille[444][TABLEAU] = "57";
-            grille[445][TABLEAU] = "57";
-            grille[446][TABLEAU] = "57";
-            grille[447][TABLEAU] = "57";
-            grille[448][TABLEAU] = "58";
-            grille[449][TABLEAU] = "58";
-            grille[450][TABLEAU] = "58";
-            grille[451][TABLEAU] = "58";
-            grille[452][TABLEAU] = "59";
-            grille[453][TABLEAU] = "59";
-            grille[454][TABLEAU] = "59";
-            grille[455][TABLEAU] = "59";
-            grille[456][TABLEAU] = "60";
-            grille[457][TABLEAU] = "60";
-            grille[458][TABLEAU] = "60";
-            grille[459][TABLEAU] = "60";
-            grille[460][TABLEAU] = "61";
-            grille[461][TABLEAU] = "61";
-            grille[462][TABLEAU] = "61";
-            grille[463][TABLEAU] = "61";
-            grille[464][TABLEAU] = "62";
-            grille[465][TABLEAU] = "62";
-            grille[466][TABLEAU] = "62";
-            grille[467][TABLEAU] = "62";
-            grille[468][TABLEAU] = "63";
-            grille[469][TABLEAU] = "63";
-            grille[470][TABLEAU] = "63";
-            grille[471][TABLEAU] = "63";
-            grille[472][TABLEAU] = "64";
-            grille[473][TABLEAU] = "64";
-            grille[474][TABLEAU] = "64";
-            grille[475][TABLEAU] = "64";
-            grille[476][TABLEAU] = "65";
-            grille[477][TABLEAU] = "65";
-            grille[478][TABLEAU] = "65";
-            grille[479][TABLEAU] = "65";
-            grille[480][TABLEAU] = "66";
-            grille[481][TABLEAU] = "66";
-            grille[482][TABLEAU] = "66";
-            grille[483][TABLEAU] = "66";
-            grille[484][TABLEAU] = "67";
-            grille[485][TABLEAU] = "67";
-            grille[486][TABLEAU] = "67";
-            grille[487][TABLEAU] = "67";
-            grille[488][TABLEAU] = "68";
-            grille[489][TABLEAU] = "68";
-            grille[490][TABLEAU] = "68";
-            grille[491][TABLEAU] = "68";
-            grille[492][TABLEAU] = "69";
-            grille[493][TABLEAU] = "69";
-            grille[494][TABLEAU] = "69";
-            grille[495][TABLEAU] = "69";
-            grille[496][TABLEAU] = "70";
-            grille[497][TABLEAU] = "70";
-            grille[498][TABLEAU] = "70";
-            grille[499][TABLEAU] = "70";
-            grille[500][TABLEAU] = "71";
-            grille[501][TABLEAU] = "71";
-            grille[502][TABLEAU] = "71";
-            grille[503][TABLEAU] = "71";
-            grille[504][TABLEAU] = "72";
-            grille[505][TABLEAU] = "72";
-            grille[506][TABLEAU] = "72";
-            grille[507][TABLEAU] = "72";
-            grille[508][TABLEAU] = "73";
-            grille[509][TABLEAU] = "73";
-            grille[510][TABLEAU] = "73";
-            grille[511][TABLEAU] = "73";
+            liste[256, TABLEAU] = "10";
+            liste[257, TABLEAU] = "10";
+            liste[258, TABLEAU] = "10";
+            liste[259, TABLEAU] = "10";
+            liste[260, TABLEAU] = "11";
+            liste[261, TABLEAU] = "11";
+            liste[262, TABLEAU] = "11";
+            liste[263, TABLEAU] = "11";
+            liste[264, TABLEAU] = "12";
+            liste[265, TABLEAU] = "12";
+            liste[266, TABLEAU] = "12";
+            liste[267, TABLEAU] = "12";
+            liste[268, TABLEAU] = "13";
+            liste[269, TABLEAU] = "13";
+            liste[270, TABLEAU] = "13";
+            liste[271, TABLEAU] = "13";
+            liste[272, TABLEAU] = "14";
+            liste[273, TABLEAU] = "14";
+            liste[274, TABLEAU] = "14";
+            liste[275, TABLEAU] = "14";
+            liste[276, TABLEAU] = "15";
+            liste[277, TABLEAU] = "15";
+            liste[278, TABLEAU] = "15";
+            liste[279, TABLEAU] = "15";
+            liste[280, TABLEAU] = "16";
+            liste[281, TABLEAU] = "16";
+            liste[282, TABLEAU] = "16";
+            liste[283, TABLEAU] = "16";
+            liste[284, TABLEAU] = "17";
+            liste[285, TABLEAU] = "17";
+            liste[286, TABLEAU] = "17";
+            liste[287, TABLEAU] = "17";
+            liste[288, TABLEAU] = "18";
+            liste[289, TABLEAU] = "18";
+            liste[290, TABLEAU] = "18";
+            liste[291, TABLEAU] = "18";
+            liste[292, TABLEAU] = "19";
+            liste[293, TABLEAU] = "19";
+            liste[294, TABLEAU] = "19";
+            liste[295, TABLEAU] = "19";
+            liste[296, TABLEAU] = "20";
+            liste[297, TABLEAU] = "20";
+            liste[298, TABLEAU] = "20";
+            liste[299, TABLEAU] = "20";
+            liste[300, TABLEAU] = "21";
+            liste[301, TABLEAU] = "21";
+            liste[302, TABLEAU] = "21";
+            liste[303, TABLEAU] = "21";
+            liste[304, TABLEAU] = "22";
+            liste[305, TABLEAU] = "22";
+            liste[306, TABLEAU] = "22";
+            liste[307, TABLEAU] = "22";
+            liste[308, TABLEAU] = "23";
+            liste[309, TABLEAU] = "23";
+            liste[310, TABLEAU] = "23";
+            liste[311, TABLEAU] = "23";
+            liste[312, TABLEAU] = "24";
+            liste[313, TABLEAU] = "24";
+            liste[314, TABLEAU] = "24";
+            liste[315, TABLEAU] = "24";
+            liste[316, TABLEAU] = "25";
+            liste[317, TABLEAU] = "25";
+            liste[318, TABLEAU] = "25";
+            liste[319, TABLEAU] = "25";
+            liste[320, TABLEAU] = "26";
+            liste[321, TABLEAU] = "26";
+            liste[322, TABLEAU] = "26";
+            liste[323, TABLEAU] = "26";
+            liste[324, TABLEAU] = "27";
+            liste[325, TABLEAU] = "27";
+            liste[326, TABLEAU] = "27";
+            liste[327, TABLEAU] = "27";
+            liste[328, TABLEAU] = "28";
+            liste[329, TABLEAU] = "28";
+            liste[330, TABLEAU] = "28";
+            liste[331, TABLEAU] = "28";
+            liste[332, TABLEAU] = "29";
+            liste[333, TABLEAU] = "29";
+            liste[334, TABLEAU] = "29";
+            liste[335, TABLEAU] = "29";
+            liste[336, TABLEAU] = "30";
+            liste[337, TABLEAU] = "30";
+            liste[338, TABLEAU] = "30";
+            liste[339, TABLEAU] = "30";
+            liste[340, TABLEAU] = "31";
+            liste[341, TABLEAU] = "31";
+            liste[342, TABLEAU] = "31";
+            liste[343, TABLEAU] = "31";
+            liste[344, TABLEAU] = "32";
+            liste[345, TABLEAU] = "32";
+            liste[346, TABLEAU] = "32";
+            liste[347, TABLEAU] = "32";
+            liste[348, TABLEAU] = "33";
+            liste[349, TABLEAU] = "33";
+            liste[350, TABLEAU] = "33";
+            liste[351, TABLEAU] = "33";
+            liste[352, TABLEAU] = "34";
+            liste[353, TABLEAU] = "34";
+            liste[354, TABLEAU] = "34";
+            liste[355, TABLEAU] = "34";
+            liste[356, TABLEAU] = "35";
+            liste[357, TABLEAU] = "35";
+            liste[358, TABLEAU] = "35";
+            liste[359, TABLEAU] = "35";
+            liste[360, TABLEAU] = "36";
+            liste[361, TABLEAU] = "36";
+            liste[362, TABLEAU] = "36";
+            liste[363, TABLEAU] = "36";
+            liste[364, TABLEAU] = "37";
+            liste[365, TABLEAU] = "37";
+            liste[366, TABLEAU] = "37";
+            liste[367, TABLEAU] = "37";
+            liste[368, TABLEAU] = "38";
+            liste[369, TABLEAU] = "38";
+            liste[370, TABLEAU] = "38";
+            liste[371, TABLEAU] = "38";
+            liste[372, TABLEAU] = "39";
+            liste[373, TABLEAU] = "39";
+            liste[374, TABLEAU] = "39";
+            liste[375, TABLEAU] = "39";
+            liste[376, TABLEAU] = "40";
+            liste[377, TABLEAU] = "40";
+            liste[378, TABLEAU] = "40";
+            liste[379, TABLEAU] = "40";
+            liste[380, TABLEAU] = "41";
+            liste[381, TABLEAU] = "41";
+            liste[382, TABLEAU] = "41";
+            liste[383, TABLEAU] = "41";
+            liste[384, TABLEAU] = "42";
+            liste[385, TABLEAU] = "42";
+            liste[386, TABLEAU] = "42";
+            liste[387, TABLEAU] = "42";
+            liste[388, TABLEAU] = "43";
+            liste[389, TABLEAU] = "43";
+            liste[390, TABLEAU] = "43";
+            liste[391, TABLEAU] = "43";
+            liste[392, TABLEAU] = "44";
+            liste[393, TABLEAU] = "44";
+            liste[394, TABLEAU] = "44";
+            liste[395, TABLEAU] = "44";
+            liste[396, TABLEAU] = "45";
+            liste[397, TABLEAU] = "45";
+            liste[398, TABLEAU] = "45";
+            liste[399, TABLEAU] = "45";
+            liste[400, TABLEAU] = "46";
+            liste[401, TABLEAU] = "46";
+            liste[402, TABLEAU] = "46";
+            liste[403, TABLEAU] = "46";
+            liste[404, TABLEAU] = "47";
+            liste[405, TABLEAU] = "47";
+            liste[406, TABLEAU] = "47";
+            liste[407, TABLEAU] = "47";
+            liste[408, TABLEAU] = "48";
+            liste[409, TABLEAU] = "48";
+            liste[410, TABLEAU] = "48";
+            liste[411, TABLEAU] = "48";
+            liste[412, TABLEAU] = "49";
+            liste[413, TABLEAU] = "49";
+            liste[414, TABLEAU] = "49";
+            liste[415, TABLEAU] = "49";
+            liste[416, TABLEAU] = "50";
+            liste[417, TABLEAU] = "50";
+            liste[418, TABLEAU] = "50";
+            liste[419, TABLEAU] = "50";
+            liste[420, TABLEAU] = "51";
+            liste[421, TABLEAU] = "51";
+            liste[422, TABLEAU] = "51";
+            liste[423, TABLEAU] = "51";
+            liste[424, TABLEAU] = "52";
+            liste[425, TABLEAU] = "52";
+            liste[426, TABLEAU] = "52";
+            liste[427, TABLEAU] = "52";
+            liste[428, TABLEAU] = "53";
+            liste[429, TABLEAU] = "53";
+            liste[430, TABLEAU] = "53";
+            liste[431, TABLEAU] = "53";
+            liste[432, TABLEAU] = "54";
+            liste[433, TABLEAU] = "54";
+            liste[434, TABLEAU] = "54";
+            liste[435, TABLEAU] = "54";
+            liste[436, TABLEAU] = "55";
+            liste[437, TABLEAU] = "55";
+            liste[438, TABLEAU] = "55";
+            liste[439, TABLEAU] = "55";
+            liste[440, TABLEAU] = "56";
+            liste[441, TABLEAU] = "56";
+            liste[442, TABLEAU] = "56";
+            liste[443, TABLEAU] = "56";
+            liste[444, TABLEAU] = "57";
+            liste[445, TABLEAU] = "57";
+            liste[446, TABLEAU] = "57";
+            liste[447, TABLEAU] = "57";
+            liste[448, TABLEAU] = "58";
+            liste[449, TABLEAU] = "58";
+            liste[450, TABLEAU] = "58";
+            liste[451, TABLEAU] = "58";
+            liste[452, TABLEAU] = "59";
+            liste[453, TABLEAU] = "59";
+            liste[454, TABLEAU] = "59";
+            liste[455, TABLEAU] = "59";
+            liste[456, TABLEAU] = "60";
+            liste[457, TABLEAU] = "60";
+            liste[458, TABLEAU] = "60";
+            liste[459, TABLEAU] = "60";
+            liste[460, TABLEAU] = "61";
+            liste[461, TABLEAU] = "61";
+            liste[462, TABLEAU] = "61";
+            liste[463, TABLEAU] = "61";
+            liste[464, TABLEAU] = "62";
+            liste[465, TABLEAU] = "62";
+            liste[466, TABLEAU] = "62";
+            liste[467, TABLEAU] = "62";
+            liste[468, TABLEAU] = "63";
+            liste[469, TABLEAU] = "63";
+            liste[470, TABLEAU] = "63";
+            liste[471, TABLEAU] = "63";
+            liste[472, TABLEAU] = "64";
+            liste[473, TABLEAU] = "64";
+            liste[474, TABLEAU] = "64";
+            liste[475, TABLEAU] = "64";
+            liste[476, TABLEAU] = "65";
+            liste[477, TABLEAU] = "65";
+            liste[478, TABLEAU] = "65";
+            liste[479, TABLEAU] = "65";
+            liste[480, TABLEAU] = "66";
+            liste[481, TABLEAU] = "66";
+            liste[482, TABLEAU] = "66";
+            liste[483, TABLEAU] = "66";
+            liste[484, TABLEAU] = "67";
+            liste[485, TABLEAU] = "67";
+            liste[486, TABLEAU] = "67";
+            liste[487, TABLEAU] = "67";
+            liste[488, TABLEAU] = "68";
+            liste[489, TABLEAU] = "68";
+            liste[490, TABLEAU] = "68";
+            liste[491, TABLEAU] = "68";
+            liste[492, TABLEAU] = "69";
+            liste[493, TABLEAU] = "69";
+            liste[494, TABLEAU] = "69";
+            liste[495, TABLEAU] = "69";
+            liste[496, TABLEAU] = "70";
+            liste[497, TABLEAU] = "70";
+            liste[498, TABLEAU] = "70";
+            liste[499, TABLEAU] = "70";
+            liste[500, TABLEAU] = "71";
+            liste[501, TABLEAU] = "71";
+            liste[502, TABLEAU] = "71";
+            liste[503, TABLEAU] = "71";
+            liste[504, TABLEAU] = "72";
+            liste[505, TABLEAU] = "72";
+            liste[506, TABLEAU] = "72";
+            liste[507, TABLEAU] = "72";
+            liste[508, TABLEAU] = "73";
+            liste[509, TABLEAU] = "73";
+            liste[510, TABLEAU] = "73";
+            liste[511, TABLEAU] = "73";
             
 
 
             foreach (int s in pageListe)
             {
-                grille[s][PAGE] = s.ToString();
-                grille[s * 1][PAGE] = s.ToString();
-                grille[s * 2][PAGE] = s.ToString();
-                grille[s * 2 + 1][PAGE] = s.ToString();
-                grille[s * 4][PAGE] = s.ToString();
-                grille[s * 4 + 1][PAGE] = s.ToString();
-                grille[s * 4 + 2][PAGE] = s.ToString();
-                grille[s * 4 + 3][PAGE] = s.ToString();
+                liste[s, PAGE] = s.ToString();
+                liste[s * 1, PAGE] = s.ToString();
+                liste[s * 2, PAGE] = s.ToString();
+                liste[s * 2 + 1, PAGE] = s.ToString();
+                liste[s * 4, PAGE] = s.ToString();
+                liste[s * 4 + 1, PAGE] = s.ToString();
+                liste[s * 4 + 2, PAGE] = s.ToString();
+                liste[s * 4 + 3, PAGE] = s.ToString();
             }
             this.Text = NomPrograme;
             ChoixSosaComboBox.Text = "";
@@ -1481,7 +1546,7 @@ namespace WindowsFormsApp1
 
             PreparerPar.Text = "";
             Modifier = false;
-            int rowLength = grille.Length;
+            int rowLength = liste.Length;
 
 
 
@@ -1520,12 +1585,12 @@ namespace WindowsFormsApp1
 
                 for (int f = 0; f < 512; f++)
                 {
-                    ligne.WriteLine(grille[f][SOSA] + " " + grille[f][PAGE] + " " + grille[f][NOM]);
+                    ligne.WriteLine(liste[f, SOSA] + " " + liste[f, PAGE] + " " + liste[f, PATRONYME]);
                 }
 
         }
-/**************************************************************************************************************/
-        private void    Entete(ref PdfDocument document, ref XGraphics gfx, ref PdfPage page)
+        /**************************************************************************************************************/
+        private void    EnteteTableMatiere(ref PdfDocument document, ref XGraphics gfx, ref PdfPage page)
         {
             XFont font8 = new XFont("Arial", 8, XFontStyle.Bold);
             double x = POUCE * .5;
@@ -1533,7 +1598,7 @@ namespace WindowsFormsApp1
             double y = POUCE * 1;
 
             /**************************************************************************/
-            //* Pour le développement marge millieu table matière                     */   
+            /* Pour le développement marge millieu table matière                      */   
             /**************************************************************************/
             /*
             XPen penG = new XPen(XColor.FromArgb(150, 150, 150),1);
@@ -1546,14 +1611,14 @@ namespace WindowsFormsApp1
             rect = new XRect(x, y, 170, 10);
             et.DrawString("SOSA", font8, XBrushes.Black, rect, XStringFormats.TopLeft);
             rect = new XRect(x + 100, y, 170, 10);
-            et.DrawString("Nom", font8, XBrushes.Black, rect, XStringFormats.TopLeft);
+            et.DrawString("Patronyme", font8, XBrushes.Black, rect, XStringFormats.TopLeft);
             rect = new XRect(x + 219, y, 50, 10);
             et.DrawString("Tableau", font8, XBrushes.Black, rect, XStringFormats.TopLeft);
 
             rect = new XRect(xx, y, 170, 10);
             et.DrawString("SOSA", font8, XBrushes.Black, rect, XStringFormats.TopLeft);
             rect = new XRect(xx + 100, y, 170, 10);
-            et.DrawString("Nom", font8, XBrushes.Black, rect, XStringFormats.TopLeft);
+            et.DrawString("Patronyme", font8, XBrushes.Black, rect, XStringFormats.TopLeft);
             rect = new XRect(xx + 219, y, 50, 10);
             et.DrawString("Tableau", font8, XBrushes.Red, rect, XStringFormats.TopLeft);
         }
@@ -1575,7 +1640,8 @@ namespace WindowsFormsApp1
                     {
                         ligne.WriteLine("[sosa*]");
                         ligne.WriteLine("No    =" + index);
-                        ligne.WriteLine("Nom   =" + "Nom " + index.ToString());
+                        ligne.WriteLine("Nom   =" + "Patronyme" + index.ToString());
+                        ligne.WriteLine("Prenom=" + "Prenom" + index.ToString());
                         ligne.WriteLine("NeLe  =" + "Nele " + index.ToString());
                         ligne.WriteLine("NeLieu=" + "NeLieu " + index.ToString());
                         ligne.WriteLine("DeLe  =" + "Dele " + index.ToString());
@@ -1618,7 +1684,7 @@ namespace WindowsFormsApp1
             XRect rect = new XRect(x, y, 25, 10);
             if (sosa > 7 && sosa < 128)
             {
-                gfx.DrawString(grille[sosa][TABLEAU], font, XBrushes.Black, rect, XStringFormats.Center);
+                gfx.DrawString(liste[sosa, TABLEAU], font, XBrushes.Black, rect, XStringFormats.Center);
             }
             return;
         }
@@ -1639,7 +1705,7 @@ namespace WindowsFormsApp1
                 y = y + 11;
                 XRect rect = new XRect(x, y, 25, 10);
                 sosa = Convert.ToInt32(sosaD);
-                gfx.DrawString(grille[sosa][TABLEAU], font, XBrushes.Black, rect, XStringFormats.Center);
+                gfx.DrawString(liste[sosa, TABLEAU], font, XBrushes.Black, rect, XStringFormats.Center);
             }
             return;
         }
@@ -1666,7 +1732,7 @@ namespace WindowsFormsApp1
             //int numeroPage = 0;
             double y = 0;
             /**************************************************************************/
-            //* Pour le développement                                                 */   
+            //  Pour le développement                                                 */   
             /**************************************************************************/
             /*
             gfx.DrawRectangle(pen, pouce * 0.5, 0.5 * pouce, pouce * 10, pouce * 7.5); //' x1,y1,x2,y2  cadrage de page
@@ -1834,9 +1900,9 @@ namespace WindowsFormsApp1
                 //génération 1
                 XRect g = new XRect(Col2, 50, largeurBoite, 20);
                 gfx.DrawRoundedRectangle(pen, CouleurBloc, Col2, Ligne[10], largeurBoite, HauteurGeneration, Rond, Rond);
-                str = "Génération " + grille[sosa][GENERATION];
+                str = "Génération " + liste[sosa, GENERATION];
                 textLargeur = gfx.MeasureString(str, font8);
-                if (grille[sosa][GENERATION] == "")
+                if (liste[sosa, GENERATION] == "")
                 {
                     gfx.DrawLine(penG, Col2 + (largeurBoite / 2) + (textLargeur.Width / 2) +2, Ligne[10] + 12, Col2 + (largeurBoite / 2) + (textLargeur.Width / 2) + 20, Ligne[10] + 12);
                 }
@@ -1845,9 +1911,9 @@ namespace WindowsFormsApp1
                 //génération 2
                 g = new XRect(Col4, 50, largeurBoite, 20);
                 gfx.DrawRoundedRectangle(pen, CouleurBloc, Col4, Ligne[10], largeurBoite, HauteurGeneration, Rond, Rond);
-                str = "Génération " + grille[sosa * 2][GENERATION];
+                str = "Génération " + liste[sosa * 2, GENERATION];
                 textLargeur = gfx.MeasureString(str, font8);
-                if (grille[sosa * 2][GENERATION] == "")
+                if (liste[sosa * 2, GENERATION] == "")
                 {
                     gfx.DrawLine(penG, Col4 + (largeurBoite / 2) + (textLargeur.Width / 2) + 2, Ligne[10] + 12, Col4 + (largeurBoite / 2) + (textLargeur.Width / 2) + 20, Ligne[10] + 12);
                 }
@@ -1856,9 +1922,9 @@ namespace WindowsFormsApp1
                 //génération 3
                 g = new XRect(Col6, 50, largeurBoite, 20);
                 gfx.DrawRoundedRectangle(pen, CouleurBloc, Col6, Ligne[10], largeurBoite, HauteurGeneration, Rond, Rond);
-                str = "Génération " + grille[sosa * 4][GENERATION];
+                str = "Génération " + liste[sosa * 4, GENERATION];
                 textLargeur = gfx.MeasureString(str, font8);
-                if (grille[sosa * 4][GENERATION] == "")
+                if (liste[sosa * 4, GENERATION] == "")
                 {
                     gfx.DrawLine(penG, Col6 + (largeurBoite / 2) + (textLargeur.Width / 2) + 2, Ligne[10] + 12, Col6 + (largeurBoite / 2) + (textLargeur.Width / 2) + 20, Ligne[10] + 12);
                 }
@@ -1870,9 +1936,9 @@ namespace WindowsFormsApp1
                 {
                     g = new XRect(Col8, 50, largeurBoite, 20);
                     gfx.DrawRoundedRectangle(pen, CouleurBloc, Col8, Ligne[10], largeurBoite, HauteurGeneration, Rond, Rond);
-                    str = "Génération " + grille[s][GENERATION];
+                    str = "Génération " + liste[s, GENERATION];
                     textLargeur = gfx.MeasureString(str, font8);
-                    if (grille[s][GENERATION] == "")
+                    if (liste[s, GENERATION] == "")
                     {
                         gfx.DrawLine(penG, Col8 + (largeurBoite / 2) + (textLargeur.Width / 2) + 2, y + 12, Col8 + (largeurBoite / 2) + (textLargeur.Width / 2) + 20, y + 12);
                     }
@@ -2067,11 +2133,12 @@ namespace WindowsFormsApp1
                         } else {
                             sosaConjoint = sosa - 1;
                         }
-                        if (grille[sosaConjoint][NOM] == "")
+                        string nom = AssemblerNom(liste[sosaConjoint, PRENOM], liste[sosaConjoint, PATRONYME]);
+                        if (nom == "" )
                         {
                             gfx.DrawLine(penG, positionBoite[1, 0], positionBoite[1, 1] + hauteurLigne * 19, Col2 + 142, positionBoite[1, 1] + hauteurLigne * 19);
                         }
-                        string rt = RacoucirNom(grille[sosaConjoint][NOM], ref gfx);
+                        string rt = RacoucirNom(nom, ref gfx);
                         gfx.DrawString(rt, font8B, XBrushes.Black, Col2 + 2, positionBoite[1, 1] + hauteurLigne * 19, XStringFormats.Default);
 
                     }
@@ -2079,50 +2146,52 @@ namespace WindowsFormsApp1
                     {
 
                         // Nom
-                        if (grille[sosaIndex[f]][NOM] == "")
+                        string nom = AssemblerNom(liste[sosaIndex[f], PRENOM], liste[sosaIndex[f], PATRONYME]);
+                        if (nom == "")
                         {
                             gfx.DrawLine(penG, positionBoite[f, 0], positionBoite[f, 1] + hauteurLigne * 2, positionBoite[f, 0] + 142, positionBoite[f, 1] + hauteurLigne * 2);
                         }
-                        string rt = RacoucirNom(grille[sosaIndex[f]][NOM], ref gfx);
+                        string rt = RacoucirNom(nom, ref gfx);
                         gfx.DrawString(rt, font8B, XBrushes.Black, positionBoite[f, 0], positionBoite[f, 1] + hauteurLigne * 2, XStringFormats.Default);
                         // Né le 
-                        if (grille[sosaIndex[f]][NELE] == "")
+                        if (liste[sosaIndex[f], NELE] == "")
                         {
                             gfx.DrawLine(penG, positionBoite[f, 0] + 9, positionBoite[f, 1] + hauteurLigne * 4, positionBoite[f, 0] + largeurLigne, positionBoite[f, 1] + hauteurLigne * 4);
                         }
-                        rt = RacoucirTexte(grille[sosaIndex[f]][NELE], ref gfx);
+                        rt = RacoucirTexte(liste[sosaIndex[f], NELE], ref gfx);
                         gfx.DrawString(rt, font8, XBrushes.Black, positionBoite[f, 0] + xInfo, positionBoite[f, 1] + hauteurLigne * 4, XStringFormats.Default);
                         // Né endroit
-                        if (grille[sosaIndex[f]][NELIEU] == "")
+                        if (liste[sosaIndex[f], NELIEU] == "")
                         {
                             gfx.DrawLine(penG, positionBoite[f, 0] + 9, positionBoite[f, 1] + hauteurLigne * 6, positionBoite[f, 0] + largeurLigne, positionBoite[f, 1] + hauteurLigne * 6);
                         }
-                        rt = RacoucirTexte(grille[sosaIndex[f]][NELIEU], ref gfx);
+                        rt = RacoucirTexte(liste[sosaIndex[f], NELIEU], ref gfx);
                         gfx.DrawString(rt, font8, XBrushes.Black, positionBoite[f, 0] + xInfo, positionBoite[f, 1] + hauteurLigne * 6, XStringFormats.Default);
                         // Décédé le 
-                        if (grille[sosaIndex[f]][DELE] == "")
+                        if (liste[sosaIndex[f], DELE] == "")
                         {
                             gfx.DrawLine(penG, positionBoite[f, 0] + 9, positionBoite[f, 1] + hauteurLigne * 8, positionBoite[f, 0] + largeurLigne, positionBoite[f, 1] + hauteurLigne * 8);
                         }
-                        rt = RacoucirTexte(grille[sosaIndex[f]][DELE], ref gfx);
+                        rt = RacoucirTexte(liste[sosaIndex[f], DELE], ref gfx);
                         gfx.DrawString(rt, font8, XBrushes.Black, positionBoite[f, 0] + xInfo, positionBoite[f, 1] + hauteurLigne * 8, XStringFormats.Default);
                         // Décédé endroit
-                        if (grille[sosaIndex[f]][DELIEU] == "")
+                        if (liste[sosaIndex[f], DELIEU] == "")
                         {
                             gfx.DrawLine(penG, positionBoite[f, 0] + 9, positionBoite[f, 1] + hauteurLigne * 10, positionBoite[f, 0] + largeurLigne, positionBoite[f, 1] + hauteurLigne * 10);
                         }
-                        rt = RacoucirTexte(grille[sosaIndex[f]][DELIEU], ref gfx);
+                        rt = RacoucirTexte(liste[sosaIndex[f], DELIEU], ref gfx);
                         gfx.DrawString(rt, font8, XBrushes.Black, positionBoite[f, 0] + xInfo, positionBoite[f, 1] + hauteurLigne * 10, XStringFormats.Default);
                     }
                     for (f = 8; f < 16; f++)
                     {
                         if (sosaIndex[f] < 512)
                         {
-                            if (grille[f][NOM] == "")
+                            string nom = AssemblerNom(liste[sosaIndex[f], PRENOM], liste[sosaIndex[f], PATRONYME]);
+                            if (nom == "")
                             {
                                 gfx.DrawLine(penG, positionBoite[f, 0] + 2, positionBoite[f, 1] + hauteurLigne * 3, positionBoite[f, 0] + 2 + 140, positionBoite[f, 1] + hauteurLigne * 3);
                             }
-                            string rt = RacoucirNom(grille[sosaIndex[f]][NOM], ref gfx);
+                            string rt = RacoucirNom(nom, ref gfx);
                             gfx.DrawString(rt, font8B, XBrushes.Black, positionBoite[f, 0], positionBoite[f, 1] + hauteurLigne * 2 + 3, XStringFormats.Default);
                         }
                     }
@@ -2134,125 +2203,125 @@ namespace WindowsFormsApp1
                     if (sosa != 1 ) {
                         if (sosa%2 == 0 ) {
                         
-                            if (grille[sosa][MALE] == "")
+                            if (liste[sosa, MALE] == "")
                             {
                                 gfx.DrawLine(penG, Col2 + p, positionBoite[1, 1] + hauteurLigne* 13, Col2 + l, positionBoite[1, 1] + hauteurLigne * 13);
                             }
-                            gfx.DrawString(grille[sosa][MALE], font8, XBrushes.Black, Col2 + p, positionBoite[1, 1] + hauteurLigne * 13, XStringFormats.Default);
-                            if (grille[sosa][MALIEU] == "")
+                            gfx.DrawString(liste[sosa, MALE], font8, XBrushes.Black, Col2 + p, positionBoite[1, 1] + hauteurLigne * 13, XStringFormats.Default);
+                            if (liste[sosa, MALIEU] == "")
                             {
                                 gfx.DrawLine(penG, Col2 + p, positionBoite[1, 1] + hauteurLigne * 15, Col2 + l, positionBoite[1, 1] + hauteurLigne * 15);
                             }
-                            gfx.DrawString(grille[sosa][MALIEU], font8, XBrushes.Black, Col2 + p, positionBoite[1, 1] + hauteurLigne * 15, XStringFormats.Default);
+                            gfx.DrawString(liste[sosa, MALIEU], font8, XBrushes.Black, Col2 + p, positionBoite[1, 1] + hauteurLigne * 15, XStringFormats.Default);
                         } else {
-                            if (grille[sosa-1][MALE] == "") 
+                            if (liste[sosa-1, MALE] == "") 
                             {
                                 gfx.DrawLine(penG, Col2 + p, positionBoite[1, 1] + hauteurLigne * 13, Col2 + l, positionBoite[1, 1] + hauteurLigne * 13);
                             }
-                            gfx.DrawString(grille[sosa-1][MALE], font8, XBrushes.Black, Col2 + p, positionBoite[1, 1] + hauteurLigne * 13, XStringFormats.Default);
-                            if (grille[sosa-1][MALIEU] == "")
+                            gfx.DrawString(liste[sosa-1, MALE], font8, XBrushes.Black, Col2 + p, positionBoite[1, 1] + hauteurLigne * 13, XStringFormats.Default);
+                            if (liste[sosa-1, MALIEU] == "")
                             {
                                 gfx.DrawLine(penG, Col2 + p, positionBoite[1, 1] + hauteurLigne * 15, Col2 + l, positionBoite[1, 1] + hauteurLigne * 15);
                             }
-                            gfx.DrawString(grille[sosa-1][MALIEU], font8, XBrushes.Black, Col2 + p, positionBoite[1, 1] + hauteurLigne * 15, XStringFormats.Default);
+                            gfx.DrawString(liste[sosa-1, MALIEU], font8, XBrushes.Black, Col2 + p, positionBoite[1, 1] + hauteurLigne * 15, XStringFormats.Default);
                         }
 
                     }
 
                     // mariage 2 3
-                    if (grille[sosa * 2][MALE] == "")
+                    if (liste[sosa * 2, MALE] == "")
                     {
                         gfx.DrawLine(penG, Col4 + p, positionBoite[2, 1] + hauteurLigne * 20, Col4 + l, positionBoite[2, 1] + hauteurLigne * 20);
                     }
-                    gfx.DrawString(grille[sosa * 2][MALE], font8, XBrushes.Black, Col4 + p, positionBoite[2, 1] + hauteurLigne * 20, XStringFormats.Default);
-                    if (grille[sosa * 2][MALIEU] == "")
+                    gfx.DrawString(liste[sosa * 2, MALE], font8, XBrushes.Black, Col4 + p, positionBoite[2, 1] + hauteurLigne * 20, XStringFormats.Default);
+                    if (liste[sosa * 2, MALIEU] == "")
                     {
                         gfx.DrawLine(penG, Col4 + p, positionBoite[2, 1] + hauteurLigne * 22, Col4 + l, positionBoite[2, 1] + hauteurLigne * 22);
                     }
-                    gfx.DrawString(grille[sosa * 2][MALIEU], font8, XBrushes.Black, Col4 + p, positionBoite[2, 1] + hauteurLigne * 22, XStringFormats.Default);
+                    gfx.DrawString(liste[sosa * 2, MALIEU], font8, XBrushes.Black, Col4 + p, positionBoite[2, 1] + hauteurLigne * 22, XStringFormats.Default);
 
                     // mariage 4 5
-                    if (grille[sosa * 4][MALE] == "")
+                    if (liste[sosa * 4, MALE] == "")
                     {
                         gfx.DrawLine(penG, Col6 + p, positionBoite[4, 1] + hauteurLigne * 13, Col6 + l, positionBoite[4, 1] + hauteurLigne * 13);
                     }
-                    gfx.DrawString(grille[sosa * 4][MALE], font8, XBrushes.Black, Col6 + p , positionBoite[4, 1] + hauteurLigne * 13, XStringFormats.Default);
+                    gfx.DrawString(liste[sosa * 4, MALE], font8, XBrushes.Black, Col6 + p , positionBoite[4, 1] + hauteurLigne * 13, XStringFormats.Default);
 
-                    if (grille[sosa * 4][MALIEU] == "")
+                    if (liste[sosa * 4, MALIEU] == "")
                     {
                         gfx.DrawLine(penG, Col6 + p, positionBoite[4, 1] + hauteurLigne * 15, Col6 + l, positionBoite[4, 1] + hauteurLigne * 15);
                     }
-                    gfx.DrawString(grille[sosa * 4][MALIEU], font8, XBrushes.Black, Col6 + p, positionBoite[4, 1] + hauteurLigne * 15, XStringFormats.Default);
+                    gfx.DrawString(liste[sosa * 4, MALIEU], font8, XBrushes.Black, Col6 + p, positionBoite[4, 1] + hauteurLigne * 15, XStringFormats.Default);
                     // mariage 6 7
-                    if (grille[sosa * 4 + 2][MALE] == "")
+                    if (liste[sosa * 4 + 2, MALE] == "")
                     {
                         gfx.DrawLine(penG, Col6 + p, positionBoite[6, 1] + hauteurLigne * 13, Col6 + l, positionBoite[6, 1] + hauteurLigne * 13);
                     }
-                    gfx.DrawString(grille[sosa * 4 + 2][MALE], font8, XBrushes.Black, Col6 + p, positionBoite[6, 1] + hauteurLigne * 13, XStringFormats.Default);
-                    if (grille[sosa * 4 + 2][MALIEU] == "")
+                    gfx.DrawString(liste[sosa * 4 + 2, MALE], font8, XBrushes.Black, Col6 + p, positionBoite[6, 1] + hauteurLigne * 13, XStringFormats.Default);
+                    if (liste[sosa * 4 + 2, MALIEU] == "")
                     {
                         gfx.DrawLine(penG, Col6 + p, positionBoite[6, 1] + hauteurLigne * 15, Col6 + l, positionBoite[6, 1] + hauteurLigne * 15);
                     }
-                    gfx.DrawString(grille[sosa * 4 + 2][MALIEU], font8, XBrushes.Black, Col6 + p, positionBoite[6, 1] + hauteurLigne * 15, XStringFormats.Default);
+                    gfx.DrawString(liste[sosa * 4 + 2, MALIEU], font8, XBrushes.Black, Col6 + p, positionBoite[6, 1] + hauteurLigne * 15, XStringFormats.Default);
                     // mariage 8 9
                     int s = sosa * 8;
                     if (s < 512)
                     {
-                        if (grille[s][MALE] == "")
+                        if (liste[s, MALE] == "")
                         {
                             gfx.DrawLine(penG, Col8 + p, positionBoite[8, 1] + hauteurLigne * 6, Col8 + l, positionBoite[8, 1] + hauteurLigne * 6);
                         }
-                        gfx.DrawString(grille[s][MALE], font8, XBrushes.Black, Col8 + p, positionBoite[8, 1] + hauteurLigne * 6, XStringFormats.Default);
-                        if (grille[s][MALIEU] == "")
+                        gfx.DrawString(liste[s, MALE], font8, XBrushes.Black, Col8 + p, positionBoite[8, 1] + hauteurLigne * 6, XStringFormats.Default);
+                        if (liste[s, MALIEU] == "")
                         {
                             gfx.DrawLine(penG, Col8 + p, positionBoite[8, 1] + hauteurLigne * 8, Col8 + l, positionBoite[8, 1] + hauteurLigne * 8);
                         }
-                        gfx.DrawString(grille[s][MALIEU], font8, XBrushes.Black, Col8 + p, positionBoite[8, 1] + hauteurLigne * 8, XStringFormats.Default);
+                        gfx.DrawString(liste[s, MALIEU], font8, XBrushes.Black, Col8 + p, positionBoite[8, 1] + hauteurLigne * 8, XStringFormats.Default);
                     }
                     // mariage 10 11
                     s = sosa * 8 + 2;
                     if (s < 512)
                     {
-                        if (grille[s][MALE] == "")
+                        if (liste[s, MALE] == "")
                         {
                             gfx.DrawLine(penG, Col8 + p, positionBoite[10, 1] + hauteurLigne * 6, Col8 + l, positionBoite[10, 1] + hauteurLigne * 6);
                         }
-                        gfx.DrawString(grille[s][MALE], font8, XBrushes.Black, Col8 + p, positionBoite[10, 1] + hauteurLigne * 6, XStringFormats.Default);
-                        if (grille[s][MALIEU] == "")
+                        gfx.DrawString(liste[s, MALE], font8, XBrushes.Black, Col8 + p, positionBoite[10, 1] + hauteurLigne * 6, XStringFormats.Default);
+                        if (liste[s, MALIEU] == "")
                         {
                             gfx.DrawLine(penG, Col8 + p, positionBoite[10, 1] + hauteurLigne * 8, Col8 + l, positionBoite[10, 1] + hauteurLigne * 8);
                         }
-                        gfx.DrawString(grille[s][MALIEU], font8, XBrushes.Black, Col8 + p, positionBoite[10, 1] + hauteurLigne * 8, XStringFormats.Default);
+                        gfx.DrawString(liste[s, MALIEU], font8, XBrushes.Black, Col8 + p, positionBoite[10, 1] + hauteurLigne * 8, XStringFormats.Default);
                     }
                     // mariage 12 13
                     s = sosa * 8 + 4;
                     if (s < 512)
                     {
-                        if (grille[s][MALE] == "")
+                        if (liste[s, MALE] == "")
                         {
                             gfx.DrawLine(penG, Col8 + p, positionBoite[12, 1] + hauteurLigne * 6, Col8 + l, positionBoite[12, 1] + hauteurLigne * 6);
                         }
-                        gfx.DrawString(grille[s][MALE], font8, XBrushes.Black, Col8 + p, positionBoite[12, 1] + hauteurLigne * 6, XStringFormats.Default);
-                        if (grille[s][MALIEU] == "")
+                        gfx.DrawString(liste[s, MALE], font8, XBrushes.Black, Col8 + p, positionBoite[12, 1] + hauteurLigne * 6, XStringFormats.Default);
+                        if (liste[s, MALIEU] == "")
                         {
                             gfx.DrawLine(penG, Col8 + p, positionBoite[12, 1] + hauteurLigne * 8, Col8 + l, positionBoite[12, 1] + hauteurLigne * 8);
                         }
-                        gfx.DrawString(grille[s][MALIEU], font8, XBrushes.Black, Col8 + p, positionBoite[12, 1] + hauteurLigne * 8, XStringFormats.Default);
+                        gfx.DrawString(liste[s, MALIEU], font8, XBrushes.Black, Col8 + p, positionBoite[12, 1] + hauteurLigne * 8, XStringFormats.Default);
                     }
                     // mariage 14 15
                     s = sosa * 8 + 6;
                     if (s < 512)
                     {
-                        if (grille[s][MALE] == "") 
+                        if (liste[s, MALE] == "") 
                         {
                             gfx.DrawLine(penG, Col8 + p, positionBoite[14, 1] + hauteurLigne * 6 , Col8 + l, positionBoite[14, 1] + hauteurLigne * 6);
                         }
-                        gfx.DrawString(grille[s][MALE], font8, XBrushes.Black, Col8 + p, positionBoite[14, 1] + hauteurLigne * 6, XStringFormats.Default);
-                        if (grille[s][MALIEU] == "")
+                        gfx.DrawString(liste[s, MALE], font8, XBrushes.Black, Col8 + p, positionBoite[14, 1] + hauteurLigne * 6, XStringFormats.Default);
+                        if (liste[s, MALIEU] == "")
                         {
                             gfx.DrawLine(penG, Col8 + p, positionBoite[14, 1] + hauteurLigne * 8, Col8 + l, positionBoite[14, 1] + hauteurLigne * 8);
                         }
-                        gfx.DrawString(grille[s][MALIEU], font8, XBrushes.Black, Col8 + p, positionBoite[14, 1] + hauteurLigne * 8, XStringFormats.Default);
+                        gfx.DrawString(liste[s, MALIEU], font8, XBrushes.Black, Col8 + p, positionBoite[14, 1] + hauteurLigne * 8, XStringFormats.Default);
                     }
                 }
             }
@@ -2291,18 +2360,18 @@ namespace WindowsFormsApp1
             rect = new XRect(Col1, Ligne[14], Col3 - Col1, hauteurLigne  * 24);
             //gfx.DrawRectangle(penM, rect);
             tf.Alignment = XParagraphAlignment.Justify;
-            tf.DrawString(grille[sosa][NOTE1], font8, XBrushes.Black, rect, XStringFormats.TopLeft);
+            tf.DrawString(liste[sosa, NOTE1], font8, XBrushes.Black, rect, XStringFormats.TopLeft);
 
             // Note 2
             rect = new XRect(Col1, Ligne[61], Col3 - Col1, hauteurLigne  * 18);
             //gfx.DrawRectangle(penM, rect);
             tf.Alignment = XParagraphAlignment.Justify;
-            tf.DrawString(grille[sosa][NOTE2], font8, XBrushes.Black, rect, XStringFormats.TopLeft);
+            tf.DrawString(liste[sosa, NOTE2], font8, XBrushes.Black, rect, XStringFormats.TopLeft);
             
             // bas de page
             if (fleche)
             {
-                numeroTableau = grille[sosa][TABLEAU];
+                numeroTableau = liste[sosa, TABLEAU];
                 gfx.DrawString("Tableau", font8, XBrushes.Black, Col8 + 100, Ligne[80], XStringFormats.TopLeft);
 
                 if (numeroTableau != "")
@@ -2334,27 +2403,11 @@ namespace WindowsFormsApp1
             
             return numeroTableau;
         }
-        private string  DessinerPatrilineairexxx(ref PdfDocument document, ref XGraphics gfx, int sosa, bool fleche)
-        {
-            //int inch = 72 // 72 pointCreatePage
-            XUnit pouce = XUnit.FromInch(1);
-            XPen pen = new XPen(XColor.FromArgb(0, 0, 0), 2);
-            XPen penG = new XPen(XColor.FromArgb(100, 100, 100), 0.5);
-            XPen penB = new XPen(XColor.FromArgb(255, 255, 255), 0.5);
-            XFont fontT = new XFont("Arial", 14, XFontStyle.Regular);
-            XFont font8 = new XFont("Arial", 8, XFontStyle.Regular);
-            XFont font8B = new XFont("Arial", 8, XFontStyle.Bold);
-            XBrush gris = new XSolidBrush(XColor.FromArgb(255, 255, 255));
-            XBrush CouleurBloc = new XSolidBrush(XColor.FromArgb(RectangleSosa1.FillColor.R, RectangleSosa1.FillColor.G, RectangleSosa1.FillColor.B));
-
-            XTextFormatter tf = new XTextFormatter(gfx);
-            return "";
-        }
-        static void     ZXCV(string message, [CallerLineNumber] int lineNumber = 0, [CallerMemberName] string caller = null)
+        private void     ZXCV(string message, [CallerLineNumber] int lineNumber = 0, [CallerMemberName] string caller = null)
         {
             Console.WriteLine(lineNumber + " " + caller + " " + message);
 
-            string Fichier = "01log.txt";
+            string Fichier = "C:\\Users\\dapam\\Documents\\TableauAscendant" + "\\" + "01log.txt";
             using (StreamWriter ligne = File.AppendText(Fichier))
             {
                 ligne.WriteLine(lineNumber + " " + caller + " " + message);
@@ -2380,6 +2433,7 @@ namespace WindowsFormsApp1
         }
         private Boolean LireData()
         {
+            ZXCV("IN");
             int index=0;
             string s;
             string crochet = "[]";
@@ -2413,42 +2467,48 @@ namespace WindowsFormsApp1
                                     if ( s.Substring ( 0,7) == "No    =")
                                     {
                                         index = Int32.Parse(s.Substring(7));
-                                        if (s.Length > 7) grille[index][SOSA] = s.Substring(7);
+                                        if (s.Length > 7) liste[index, SOSA] = s.Substring(7);
+
                                         s = sr.ReadLine();
                                     }
                                     if (s.Substring(0, 7) == "Nom   =")
                                     {
-                                        if (s.Length > 7 ) grille[index][NOM] = s.Substring(7);
+                                        if (s.Length > 7) liste[index, PATRONYME] = s.Substring(7);
+                                        s = sr.ReadLine();
+                                    }
+                                    if (s.Substring(0, 7) == "Prenom=")
+                                    {
+                                        if (s.Length > 7) liste[index, PRENOM] = s.Substring(7);
                                         s = sr.ReadLine();
                                     }
                                     if ( s.Substring( 0,7) == "NeLe  =")
                                     {
-                                        if (s.Length > 7) grille[index][NELE] = s.Substring(7);
+                                        if (s.Length > 7) liste[index, NELE] = s.Substring(7);
                                         s = sr.ReadLine();
                                     }
                                     if (s.Substring(0, 7) == "NeLieu=")
                                     {
-                                        if (s.Length > 7) grille[index][NELIEU] = s.Substring(7);
+                                        if (s.Length > 7) liste[index, NELIEU] = s.Substring(7);
                                         s = sr.ReadLine();
                                     }
                                     if (s.Substring(0, 7) == "DeLe  =")
                                     {
-                                        if (s.Length > 7) grille[index][DELE] = s.Substring(7);
+                                        if (s.Length > 7) liste[index, DELE] = s.Substring(7);
                                         s = sr.ReadLine();
                                     }
                                     if (s.Substring(0, 7) == "DeLieu=")
                                     {
-                                        if (s.Length > 7) grille[index][DELIEU] = s.Substring(7);
+                                        if (s.Length > 7) liste[index, DELIEU] = s.Substring(7);
                                         s = sr.ReadLine();
                                     }
                                     if (s.Substring(0, 7) == "MaLe  =")
                                     {
-                                        if (s.Length > 7) grille[index][MALE] = s.Substring(7);
+                                        if (s.Length > 7) liste[index, MALE] = s.Substring(7);
                                         s = sr.ReadLine();
                                     }
                                     if (s.Substring(0, 7) == "MaLieu=")
                                     {
-                                        if (s.Length > 7) grille[index][MALIEU] = s.Substring(7);
+                                        if (s.Length > 7) liste[index, MALIEU] = s.Substring(7);
                                         s = sr.ReadLine();
                                     }
                                     if (s.Substring(0, 7) == "NoteH =")
@@ -2456,14 +2516,14 @@ namespace WindowsFormsApp1
                                         s = sr.ReadLine();
                                         while (s != "##FIN##")
                                         {
-                                            if (grille[index][NOTE1] == "")
+                                            if (liste[index, NOTE1] == "")
                                             {
-                                                grille[index][NOTE1] = s;
+                                                liste[index, NOTE1] = s;
                                                 s = sr.ReadLine();
                                             }
                                             else
                                             {
-                                                grille[index][NOTE1] = grille[index][NOTE1] + "\r\n" + s;
+                                                liste[index, NOTE1] = liste[index, NOTE1] + "\r\n" + s;
                                                 s = sr.ReadLine();
                                             }
                                         }
@@ -2474,18 +2534,31 @@ namespace WindowsFormsApp1
                                         s = sr.ReadLine();
                                         while (s != "##FIN##")
                                         {
-                                            if (grille[index][NOTE2] == "")
+                                            if (liste[index, NOTE2] == "")
                                             {
-                                                grille[index][NOTE2] = s;
+                                                liste[index, NOTE2] = s;
                                                 s = sr.ReadLine();
                                             }
                                             else
                                             {
-                                                grille[index][NOTE2] = grille[index][NOTE2] + "\r\n" + s;
+                                                liste[index, NOTE2] = liste[index, NOTE2] + "\r\n" + s;
                                                 s = sr.ReadLine();
                                             }
                                         }
                                         s = sr.ReadLine();
+                                    }
+                                    liste[index, NOMTRI] = "";
+                                    if (liste[index, PATRONYME] != "" && liste[index, PRENOM] != "")
+                                    {
+                                        liste[index, NOMTRI] = liste[index, PATRONYME] + " " + liste[index, PRENOM];
+                                    }
+                                    if (liste[index, PATRONYME] != "" && liste[index, PRENOM] == "")
+                                    {
+                                        liste[index, NOMTRI] = liste[index, PATRONYME];
+                                    }
+                                    if (liste[index, PATRONYME] == "" && liste[index, PRENOM] != "")
+                                    {
+                                        liste[index, NOMTRI] = " " + liste[index, PRENOM];
                                     }
                                 }
                             }
@@ -2515,10 +2588,11 @@ namespace WindowsFormsApp1
                             }
                         }
                     }
-                    
                     ChoixSosaComboBox.Text = "1";
                     Modifier = false;
                     this.Text = NomPrograme + "   " + FichierCourant;
+
+                    ZXCV("OUT");
                     return true;
                 }
                 catch (Exception m)
@@ -2527,10 +2601,12 @@ namespace WindowsFormsApp1
                     MessageBox.Show("Ne peut pas lire le fichier du data.\r\n\r\n" + m.Message, "Problème ?",
                                      MessageBoxButtons.OK,
                                      MessageBoxIcon.Warning);
+                    ZXCV("OUT erreur");
                     return false;
                 }
 
             }
+            ZXCV("OUT");
             return true;
         }
         private Boolean LongeurNomtOk(string nom)
@@ -2640,6 +2716,7 @@ namespace WindowsFormsApp1
         }
         private void    RafraichirData()
         {
+            ZXCV("IN");
             sosaCourant = Int32.Parse(ChoixSosaComboBox.Text);
             int index;
             // affiche les informations
@@ -2650,181 +2727,212 @@ namespace WindowsFormsApp1
                 Note1.Visible = false;
                 Note2.Visible = false;
             }
-            Sosa1NomTextBox.Text = grille[index][NOM];
-            Sosa1NeTextBox.Text = grille[index][NELE];
-            Sosa1NeEndroitTextBox.Text = grille[index][NELIEU];
-            Sosa1DeTextBox.Text = grille[index][DELE];
-            Sosa1DeEndroitTextBox.Text = grille[index][DELIEU];
-            Sosa1MaTextBox.Text = grille[index][MALE];
-            Sosa1MaEndroitTextBox.Text = grille[index][MALIEU];
+            Sosa1PatronymeTextBox.Text = liste[index, PATRONYME];
+            Sosa1PrenomTextBox.Text = liste[index, PRENOM];
+            Sosa1NeTextBox.Text = liste[index, NELE];
+            Sosa1NeEndroitTextBox.Text = liste[index, NELIEU];
+            Sosa1DeTextBox.Text = liste[index, DELE];
+            Sosa1DeEndroitTextBox.Text = liste[index, DELIEU];
+            Sosa1MaTextBox.Text = liste[index, MALE];
+            Sosa1MaEndroitTextBox.Text = liste[index, MALIEU];
             if (index > 1)
             {
                 int i = index % 2;
                 if (index % 2 == 0)
                 {
-                    SosaConjoint1NomTextBox.Text = grille[index + 1][NOM];
-                    SosaConjoint1NomTextBox.Visible = true;
+                    SosaConjoint1PatronymeTextBox.Text = liste[index + 1, PATRONYME];
+                    SosaConjoint1PrenomTextBox.Text = liste[index + 1, PRENOM];
+                    SosaConjoint1PatronymeTextBox.Visible = true;
+                    Conjoint1Lbl.Visible = true;
+                    SosaConjoint1PrenomTextBox.Visible = true;
                     SosaConjoint1Label.Text = (index + 1).ToString();
                     SosaConjoint1Label.Visible = true;
                 }
                 else
                 {
-                    SosaConjoint1NomTextBox.Visible = false;
+                    SosaConjoint1PatronymeTextBox.Visible = false;
+                    SosaConjoint1PrenomTextBox.Visible = false;
                     SosaConjoint1Label.Visible = false;
+                    Conjoint1Lbl.Visible = false;
                 }
             }
-            Note1.Text = grille[index][NOTE1];
-            Note2.Text = grille[index][NOTE2];
-            GenerationAlb.Text = grille[index][GENERATION];
+            Note1.Text = liste[index, NOTE1];
+            Note2.Text = liste[index, NOTE2];
+            GenerationAlb.Text = liste[index, GENERATION];
 
             index = sosaCourant * 2;
-            Sosa2Label.Text = grille[index][SOSA];
-            Sosa2NomTextBox.Text = grille[index][NOM];
-            Sosa2NeTextBox.Text = grille[index][NELE];
-            Sosa2NeEndroitTextBox.Text = grille[index][NELIEU];
-            Sosa2DeTextBox.Text = grille[index][DELE];
-            Sosa2DeEndroitTextBox.Text = grille[index][DELIEU];
-            Sosa23MaTextBox.Text = grille[index][MALE];
-            Sosa23MaEndroitTextBox.Text = grille[index][MALIEU];
-            GenerationBlb.Text = grille[index][GENERATION];
+            Sosa2Label.Text = liste[index, SOSA];
+            Sosa2PatronymeTextBox.Text = liste[index, PATRONYME];
+            Sosa2PrenomTextBox.Text = liste[index, PRENOM];
+            Sosa2NeTextBox.Text = liste[index, NELE];
+            Sosa2NeEndroitTextBox.Text = liste[index, NELIEU];
+            Sosa2DeTextBox.Text = liste[index, DELE];
+            Sosa2DeEndroitTextBox.Text = liste[index, DELIEU];
+            Sosa23MaTextBox.Text = liste[index, MALE];
+            Sosa23MaEndroitTextBox.Text = liste[index, MALIEU];
+            GenerationBlb.Text = liste[index, GENERATION];
 
             index = sosaCourant * 2 + 1;
-            Sosa3Label.Text = grille[index][SOSA];
-            Sosa3NomTextBox.Text = grille[index][NOM];
-            Sosa3NeTextBox.Text = grille[index][NELE];
-            Sosa3NeEndroitTextBox.Text = grille[index][NELIEU];
-            Sosa3DeTextBox.Text = grille[index][DELE];
-            Sosa3DeEndroitTextBox.Text = grille[index][DELIEU];
+            Sosa3Label.Text = liste[index, SOSA];
+            Sosa3PatronymeTextBox.Text = liste[index, PATRONYME];
+            Sosa3PrenomTextBox.Text = liste[index, PRENOM];
+            Sosa3NeTextBox.Text = liste[index, NELE];
+            Sosa3NeEndroitTextBox.Text = liste[index, NELIEU];
+            Sosa3DeTextBox.Text = liste[index, DELE];
+            Sosa3DeEndroitTextBox.Text = liste[index, DELIEU];
 
             index = sosaCourant * 4;
-            Sosa4Label.Text = grille[index][SOSA];
-            Sosa4NomTextBox.Text = grille[index][NOM];
-            Sosa4NeTextBox.Text = grille[index][NELE];
-            Sosa4NeEndroitTextBox.Text = grille[index][NELIEU];
-            Sosa4DeTextBox.Text = grille[index][DELE];
-            Sosa4DeEndroitTextBox.Text = grille[index][DELIEU];
-            Sosa45MaTextBox.Text = grille[index][MALE];
-            Sosa45MaLEndroitTextBox.Text = grille[index][MALIEU];
-            GenerationClb.Text = grille[index][GENERATION];
+            Sosa4Label.Text = liste[index, SOSA];
+            Sosa4PatronymeTextBox.Text = liste[index, PATRONYME];
+            Sosa4PrenomTextBox.Text = liste[index, PRENOM];
+            Sosa4NeTextBox.Text = liste[index, NELE];
+            Sosa4NeEndroitTextBox.Text = liste[index, NELIEU];
+            Sosa4DeTextBox.Text = liste[index, DELE];
+            Sosa4DeEndroitTextBox.Text = liste[index, DELIEU];
+            Sosa45MaTextBox.Text = liste[index, MALE];
+            Sosa45MaLEndroitTextBox.Text = liste[index, MALIEU];
+            GenerationClb.Text = liste[index, GENERATION];
 
             index = sosaCourant * 4 + 1;
-            Sosa5Label.Text = grille[index][SOSA];
-            Sosa5NomTextBox.Text = grille[index][NOM];
-            Sosa5NeTextBox.Text = grille[index][NELE];
-            Sosa5NeEndroitTextBox.Text = grille[index][NELIEU];
-            Sosa5DeTextBox.Text = grille[index][DELE];
-            Sosa5DeEndroitTextBox.Text = grille[index][DELIEU];
+            Sosa5Label.Text = liste[index, SOSA];
+            Sosa5PatronymeTextBox.Text = liste[index, PATRONYME];
+            Sosa5PrenomTextBox.Text = liste[index, PRENOM];
+            Sosa5NeTextBox.Text = liste[index, NELE];
+            Sosa5NeEndroitTextBox.Text = liste[index, NELIEU];
+            Sosa5DeTextBox.Text = liste[index, DELE];
+            Sosa5DeEndroitTextBox.Text = liste[index, DELIEU];
 
             index = sosaCourant * 4 + 2;
-            Sosa6Label.Text = grille[index][SOSA];
-            Sosa6NomTextBox.Text = grille[index][NOM];
-            Sosa6NeTextBox.Text = grille[index][NELE];
-            Sosa6NeEndroitTextBox.Text = grille[index][NELIEU];
-            Sosa6DeTextBox.Text = grille[index][DELE];
-            Sosa6DeEndroitTextBox.Text = grille[index][DELIEU];
-            Sosa67MaTextBox.Text = grille[index][MALE];
-            Sosa67MaEndroitTextBox.Text = grille[index][MALIEU];
+            Sosa6Label.Text = liste[index, SOSA];
+            Sosa6PatronymeTextBox.Text = liste[index, PATRONYME];
+            Sosa6PrenomTextBox.Text = liste[index, PRENOM];
+            Sosa6NeTextBox.Text = liste[index, NELE];
+            Sosa6NeEndroitTextBox.Text = liste[index, NELIEU];
+            Sosa6DeTextBox.Text = liste[index, DELE];
+            Sosa6DeEndroitTextBox.Text = liste[index, DELIEU];
+            Sosa67MaTextBox.Text = liste[index, MALE];
+            Sosa67MaEndroitTextBox.Text = liste[index, MALIEU];
 
             index = sosaCourant * 4 + 3;
-            Sosa7Label.Text = grille[index][SOSA];
-            Sosa7NomTextBox.Text = grille[index][NOM];
-            Sosa7NeTextBox.Text = grille[index][NELE];
-            Sosa7NeEndroitTextBox.Text = grille[index][NELIEU];
-            Sosa7DeTextBox.Text = grille[index][DELE];
-            Sosa7DeEndroitTextBox.Text = grille[index][DELIEU];
+            Sosa7Label.Text = liste[index, SOSA];
+            Sosa7PatronymeTextBox.Text = liste[index, PATRONYME];
+            Sosa7PrenomTextBox.Text = liste[index, PRENOM];
+            Sosa7NeTextBox.Text = liste[index, NELE];
+            Sosa7NeEndroitTextBox.Text = liste[index, NELIEU];
+            Sosa7DeTextBox.Text = liste[index, DELE];
+            Sosa7DeEndroitTextBox.Text = liste[index, DELIEU];
+            ZXCV("OUT");
         }
-        private void    RechercheID()
+        private void RechercheID()
         {
+            DataTable listeAChoisir = new DataTable();
+            listeAChoisir.Columns.Add("ID", typeof(string));
+            listeAChoisir.Columns.Add("Nom", typeof(string));
+            listeAChoisir.Columns.Add("Naissance", typeof(string));
+            listeAChoisir.Columns.Add("Deces", typeof(string));
             ContinuerBtn.Visible = false;
             List<string> IDListe = new List<string>();
-            IDListe = GEDCOM.RechercheIndividu(NomRecherche.Text, PrenomRecherche.Text);
-            string[] ligne = new string[5];
-            ListViewItem itm;
-            ChoixLV.Items.Clear();
+            IDListe = GEDCOM.RechercheIndividu(PatronymeRecherche.Text, PrenomRecherche.Text);
             foreach (string info in IDListe)
             {
-
-                ligne[0] = info;
-                ligne[1] = GEDCOM.AvoirNom(info);
-                ligne[2] = GEDCOM.AvoirPrenom(info);
-                ligne[3] = ConvertirDate(GEDCOM.AvoirDateNaissance(info));
-                ligne[4] = GEDCOM.AvoirEndroitNaissance(info);
+                listeAChoisir.Rows.Add(info, GEDCOM.AvoirPatronyme(info) + " " + GEDCOM.AvoirPrenom(info),
+                    ConvertirDate(GEDCOM.AvoirDateNaissance(info)), ConvertirDate(GEDCOM.AvoirDateDeces(info)));
+            }
+            DataView trier = new DataView(listeAChoisir)
+            {
+                Sort = "Nom ASC"
+            };
+            ListViewItem itm;
+            ChoixLV.Items.Clear();
+            for (int f = 0; f < trier.Count; f++)
+            {
+                string[] ligne = new string[4];
+                ligne[0] = trier[f]["ID"].ToString();
+                ligne[1] = trier[f]["Nom"].ToString();
+                ligne[2] = trier[f]["Naissance"].ToString();
+                ligne[3] = trier[f]["Deces"].ToString();
                 itm = new ListViewItem(ligne);
                 ChoixLV.Items.Add(itm);
             }
         }
         private void    SosaChanger()
         {
+            ZXCV("IN");
             int index;
             if (sosaCourant > 0)
             {
-               
                 index = sosaCourant;
-                grille[index][SOSA] = index.ToString();
-                grille[index][NOM] = Sosa1NomTextBox.Text;
-                grille[index][NELE] = Sosa1NeTextBox.Text;
-                grille[index][NELIEU] = Sosa1NeEndroitTextBox.Text;
-                grille[index][DELE] = Sosa1DeTextBox.Text;
-                grille[index][DELIEU] = Sosa1DeEndroitTextBox.Text;
-                grille[index][NOTE1] = Note1.Text;
-                grille[index][NOTE2] = Note2.Text;
-
+                liste[index, SOSA] = index.ToString();
+                liste[index, PATRONYME] = Sosa1PatronymeTextBox.Text;
+                liste[index, PRENOM] = Sosa1PrenomTextBox.Text;
+                liste[index, NELE] = Sosa1NeTextBox.Text;
+                liste[index, NELIEU] = Sosa1NeEndroitTextBox.Text;
+                liste[index, DELE] = Sosa1DeTextBox.Text;
+                liste[index, DELIEU] = Sosa1DeEndroitTextBox.Text;
+                liste[index, NOTE1] = Note1.Text;
+                liste[index, NOTE2] = Note2.Text;
                 index = sosaCourant * 2;
-                grille[index][SOSA] = index.ToString();
-                grille[index][NOM] = Sosa2NomTextBox.Text;
-                grille[index][NELE] = Sosa2NeTextBox.Text;
-                grille[index][NELIEU] = Sosa2NeEndroitTextBox.Text;
-                grille[index][DELE] = Sosa2DeTextBox.Text;
-                grille[index][DELIEU] = Sosa2DeEndroitTextBox.Text;
-                grille[index][MALE] = Sosa23MaTextBox.Text;
-                grille[index][MALIEU] = Sosa23MaEndroitTextBox.Text;
+                liste[index, SOSA] = index.ToString();
+                liste[index, PATRONYME] = Sosa2PatronymeTextBox.Text;
+                liste[index, PRENOM] = Sosa2PrenomTextBox.Text;
+                liste[index, NELE] = Sosa2NeTextBox.Text;
+                liste[index, NELIEU] = Sosa2NeEndroitTextBox.Text;
+                liste[index, DELE] = Sosa2DeTextBox.Text;
+                liste[index, DELIEU] = Sosa2DeEndroitTextBox.Text;
+                liste[index, MALE] = Sosa23MaTextBox.Text;
+                liste[index, MALIEU] = Sosa23MaEndroitTextBox.Text;
 
                 index = sosaCourant * 2 + 1;
-                grille[index][SOSA] = index.ToString();
-                grille[index][NOM] = Sosa3NomTextBox.Text;
-                grille[index][NELE] = Sosa3NeTextBox.Text;
-                grille[index][NELIEU] = Sosa3NeEndroitTextBox.Text;
-                grille[index][DELE] = Sosa3DeTextBox.Text;
-                grille[index][DELIEU] = Sosa3DeEndroitTextBox.Text;
+                liste[index, SOSA] = index.ToString();
+                liste[index, PATRONYME] = Sosa3PatronymeTextBox.Text;
+                liste[index, PRENOM] = Sosa3PrenomTextBox.Text;
+                liste[index, NELE] = Sosa3NeTextBox.Text;
+                liste[index, NELIEU] = Sosa3NeEndroitTextBox.Text;
+                liste[index, DELE] = Sosa3DeTextBox.Text;
+                liste[index, DELIEU] = Sosa3DeEndroitTextBox.Text;
 
                 index = sosaCourant * 4;
-                grille[index][SOSA] = index.ToString();
-                grille[index][NOM] = Sosa4NomTextBox.Text;
-                grille[index][NELE] = Sosa4NeTextBox.Text;
-                grille[index][NELIEU] = Sosa4NeEndroitTextBox.Text;
-                grille[index][DELE] = Sosa4DeTextBox.Text;
-                grille[index][DELIEU] = Sosa4DeEndroitTextBox.Text;
-                grille[index][MALE] = Sosa45MaTextBox.Text;
-                grille[index][MALIEU] = Sosa45MaLEndroitTextBox.Text;
+                liste[index, SOSA] = index.ToString();
+                liste[index, PATRONYME] = Sosa4PatronymeTextBox.Text;
+                liste[index, PRENOM] = Sosa4PrenomTextBox.Text;
+                liste[index, NELE] = Sosa4NeTextBox.Text;
+                liste[index, NELIEU] = Sosa4NeEndroitTextBox.Text;
+                liste[index, DELE] = Sosa4DeTextBox.Text;
+                liste[index, DELIEU] = Sosa4DeEndroitTextBox.Text;
+                liste[index, MALE] = Sosa45MaTextBox.Text;
+                liste[index, MALIEU] = Sosa45MaLEndroitTextBox.Text;
 
                 index = sosaCourant * 4 + 1;
 
-                grille[index][SOSA] = index.ToString();
-                grille[index][NOM] = Sosa5NomTextBox.Text;
-                grille[index][NELE] = Sosa5NeTextBox.Text;
-                grille[index][NELIEU] = Sosa5NeEndroitTextBox.Text;
-                grille[index][DELE] = Sosa5DeTextBox.Text;
-                grille[index][DELIEU] = Sosa5DeEndroitTextBox.Text;
-                grille[index][MALE] = "";
-                grille[index][MALIEU] = "";
+                liste[index, SOSA] = index.ToString();
+                liste[index, PATRONYME] = Sosa5PatronymeTextBox.Text;
+                liste[index, PRENOM] = Sosa5PrenomTextBox.Text;
+                liste[index, NELE] = Sosa5NeTextBox.Text;
+                liste[index, NELIEU] = Sosa5NeEndroitTextBox.Text;
+                liste[index, DELE] = Sosa5DeTextBox.Text;
+                liste[index, DELIEU] = Sosa5DeEndroitTextBox.Text;
+                liste[index, MALE] = "";
+                liste[index, MALIEU] = "";
 
                 index = sosaCourant * 4 + 2;
-                grille[index][SOSA] = index.ToString();
-                grille[index][NOM] = Sosa6NomTextBox.Text;
-                grille[index][NELE] = Sosa6NeTextBox.Text;
-                grille[index][NELIEU] = Sosa6NeEndroitTextBox.Text;
-                grille[index][DELE] = Sosa6DeTextBox.Text;
-                grille[index][DELIEU] = Sosa6DeEndroitTextBox.Text;
-                grille[index][MALE] = Sosa67MaTextBox.Text;
-                grille[index][MALIEU] = Sosa67MaEndroitTextBox.Text;
+                liste[index, SOSA] = index.ToString();
+                liste[index, PATRONYME] = Sosa6PatronymeTextBox.Text;
+                liste[index, PRENOM] = Sosa6PrenomTextBox.Text;
+                liste[index, NELE] = Sosa6NeTextBox.Text;
+                liste[index, NELIEU] = Sosa6NeEndroitTextBox.Text;
+                liste[index, DELE] = Sosa6DeTextBox.Text;
+                liste[index, DELIEU] = Sosa6DeEndroitTextBox.Text;
+                liste[index, MALE] = Sosa67MaTextBox.Text;
+                liste[index, MALIEU] = Sosa67MaEndroitTextBox.Text;
 
                 index = sosaCourant * 4 + 3;
-                grille[index][SOSA] = index.ToString();
-                grille[index][NOM] = Sosa7NomTextBox.Text;
-                grille[index][NELE] = Sosa7NeTextBox.Text;
-                grille[index][NELIEU] = Sosa7NeEndroitTextBox.Text;
-                grille[index][DELE] = Sosa7DeTextBox.Text;
-                grille[index][DELIEU] = Sosa7DeEndroitTextBox.Text;
+                liste[index, SOSA] = index.ToString();
+                liste[index, PATRONYME] = Sosa7PatronymeTextBox.Text;
+                liste[index, PRENOM] = Sosa7PrenomTextBox.Text;
+                liste[index, NELE] = Sosa7NeTextBox.Text;
+                liste[index, NELIEU] = Sosa7NeEndroitTextBox.Text;
+                liste[index, DELE] = Sosa7DeTextBox.Text;
+                liste[index, DELIEU] = Sosa7DeEndroitTextBox.Text;
             }
             if (ChoixSosaComboBox.Text == "")
             {
@@ -2835,13 +2943,12 @@ namespace WindowsFormsApp1
                 RafraichirData();
             }
             AfficherData();
+            ZXCV("OUT");
         }
         private string  StrDate(string date)
         {
             date = date.ToLower();
             date = date.Replace("and", "et").Replace("bet", "entre").Replace("abt", "vers").Replace("aft", "après").Replace("bef", "avant").Replace("abt", "autour");
-
-
             if (date.Contains("et") || date.Contains("entre") || date.Contains("vers") || date.Contains("après") || date.Contains("avant")  || date.Contains("autour"))
             {
                 return date;
@@ -2852,7 +2959,6 @@ namespace WindowsFormsApp1
             {
                 return date;
             }
-            
                 if (d.Length == 3) {
                 if (d[1] == "jan") d[1] = "01";
                 if (d[1] == "feb") d[1] = "02";
@@ -2868,12 +2974,25 @@ namespace WindowsFormsApp1
                 if (d[1] == "dec") d[1] = "12";
                 return d[2] + "-" + d[1] + d[0];
             }
-
             return "";
-
         }
         private void    TableMatiere(ref PdfDocument document, ref XGraphics gfx, ref PdfPage page)
         {
+            DataTable listeATrier = new DataTable();
+            listeATrier.Columns.Add("Sosa", typeof(string));
+            listeATrier.Columns.Add("Nom", typeof(string));
+            listeATrier.Columns.Add("Tableau", typeof(string));
+            for (int f = 0; f < 512; f++)
+            {
+                if (liste[f, NOMTRI] != "" && liste[f, SOSA] != "0") {
+                    listeATrier.Rows.Add(liste[f, SOSA], liste[f, NOMTRI],liste[f, TABLEAU]);
+                }
+                
+            }
+            DataView trier = new DataView(listeATrier)
+            {
+                Sort = "Nom ASC"
+            };
             XFont font32 = new XFont("arial", 32, XFontStyle.Bold);
             XFont font8 = new XFont("Arial", 8, XFontStyle.Regular);
             XPen pen = new XPen(XColor.FromArgb(0, 0, 0));
@@ -2885,7 +3004,7 @@ namespace WindowsFormsApp1
             double y = POUCE * .5;
             XRect rect = new XRect();
             //string str;
-            Entete(ref document, ref gfx, ref page);
+            EnteteTableMatiere(ref document, ref gfx, ref page);
 
             XTextFormatter tf = new XTextFormatter(gfx)
             {
@@ -2899,39 +3018,40 @@ namespace WindowsFormsApp1
             int NombrePage = 1;
             int NumeroLigne = 0;
             int Col = 1;
-            for (int f = 1; f < (grille.GetLength(0)) ; f++)
+            for (int f = 1; f < trier.Count; f++)
             {
                 tf = new XTextFormatter(gfx);
                 if (Col == 1) x = POUCE * .5;
                 if (Col == 2) x = POUCE * 4.5;
                 tf.Alignment = XParagraphAlignment.Left;
-                //rect = new XRect(x, y, 240, 10);
-                //str = grille[f][NOM];
-                if (grille[f][NOM].Length > 0 && grille[f][SOSA] != "0")
+                string nom = trier[f]["Nom"].ToString();
+                if (nom.Length > 0 && nom != "0")
                 {
                     // largeur maximum nom 240
-                    XSize textLargeur = gfx.MeasureString(grille[f][NOM], font8);
+                    XSize textLargeur = gfx.MeasureString(nom, font8);
                     if (textLargeur.Width > 220)
                     {
                         textLargeur.Width = 220;
                     }
-
+                    
                     // sosa
                     tf.Alignment = XParagraphAlignment.Right;
                     rect = new XRect(x, y, 15, 10);
-                    tf.DrawString(grille[f][SOSA], font8, XBrushes.Black, rect, XStringFormats.TopLeft);
+                    string sosa = trier[f]["Sosa"].ToString();
+                    tf.DrawString(sosa, font8, XBrushes.Black, rect, XStringFormats.TopLeft);
                     gfx.DrawLine(penD, x , y + 8, x + 15, y + 8);
 
                     //nom
                     tf.Alignment = XParagraphAlignment.Left;
                     rect = new XRect(x + 18, y, 220, 10);
-                    tf.DrawString(grille[f][NOM], font8, XBrushes.Black, rect, XStringFormats.TopLeft);
+                    tf.DrawString(nom, font8, XBrushes.Black, rect, XStringFormats.TopLeft);
                     gfx.DrawLine(penD, x + 18 , y + 8, x + 235, y + 8);
 
                     // tableau 
                     tf.Alignment = XParagraphAlignment.Right;
                     rect = new XRect(x + 240, y, 10, 10);
-                    tf.DrawString(grille[f][TABLEAU], font8, XBrushes.Black, rect, XStringFormats.TopLeft);
+                    string tableau = trier[f]["Tableau"].ToString();
+                    tf.DrawString(tableau, font8, XBrushes.Black, rect, XStringFormats.TopLeft);
                     y = y + 10;
                     NumeroLigne++;
                     if ((NumeroLigne > MaxLigne) && Col == 1)
@@ -2955,13 +3075,10 @@ namespace WindowsFormsApp1
                         tf.DrawString(s, font8, XBrushes.Black, rect, XStringFormats.TopLeft);
                         NouvellePage(ref document, ref gfx, ref page, "P");
                         NombrePage++;
-                        Entete(ref document, ref gfx, ref page);
-
+                        EnteteTableMatiere(ref document, ref gfx, ref page);
                         y = Top;
                     }
                 }
-                
-
             }
             string ss = "";
             if (NombrePage == 1) ss = "I";
@@ -2975,20 +3092,6 @@ namespace WindowsFormsApp1
             if (!(NombrePage % 2 == 0))
             {
                 NouvellePage(ref document, ref gfx, ref page, "P");
-            }
-        }
-        private void    Triage(string[][] grille, int col)
-        {
-            Array.Sort(grille, delegate (object[] x, object[] y)
-            {
-                return (x[col] as IComparable).CompareTo(y[col]);
-            }
-            );
-            for (int f = 1; f < 512; f++)
-            {
-
-                grille[f][NOM].TrimStart(" ".ToCharArray());
-                grille[f][SOSA].TrimStart(" ".ToCharArray());
             }
         }
         /// <summary>
@@ -3055,7 +3158,7 @@ namespace WindowsFormsApp1
         /// <summary>
         /// 
         /// </summary>
-        public TableauAscendant(string a)
+        public          TableauAscendant(string a)
         {
             argument = a;
             InitializeComponent();
@@ -3108,16 +3211,10 @@ namespace WindowsFormsApp1
                 }
             }
             ChoixSosaComboBox.Text  = "";
-            /*
-            Sosa1MaLelb.Text = "";
-            Sosa1MaEndroitTextlb.Text = "";
-            Sosa1MaAvecTextlb.Text = "";
-            */
             GenerationAlb.Text = "";
             GenerationBlb.Text = "";
             GenerationClb.Text = "";
 
-            this.ChoixLV.MouseDoubleClick += new MouseEventHandler(ChoixLV_MouseDoubleClick);
             AfficherData();
             if (argument != "")
             {
@@ -3127,8 +3224,9 @@ namespace WindowsFormsApp1
             FlecheGaucheRechercheButton.Visible = false;
             FlecheDroiteRechercheButton.Visible = false ;
 
+            // pour le développement
             //FichierTest();
-
+            ZXCV("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
         }
         private void    TableauAscendant_Paint(object sender, PaintEventArgs e)
         {
@@ -3142,31 +3240,52 @@ namespace WindowsFormsApp1
 
             Pen arrowPen = new Pen(Color.Black, 2);
         }
-        private void    Sosa1NomTextBox_TextChanged(object sender, EventArgs e)
+        private void    Sosa1PatronymeTextBox_TextChanged(object sender, EventArgs e)
         {
-            grille[sosaCourant][NOM] = Sosa1NomTextBox.Text;
-            if (!LongeurNomtOk(grille[sosaCourant][NOM]))
+            liste[sosaCourant, PATRONYME] = Sosa1PatronymeTextBox.Text;
+            if (!LongeurNomtOk(liste[sosaCourant, PATRONYME] + " " + liste[sosaCourant, PRENOM]))
             {
-                Sosa1NomTextBox.BackColor = couleurTextTropLong;
+                Sosa1PatronymeTextBox.BackColor = couleurTextTropLong;
+                Sosa1PrenomTextBox.BackColor = couleurTextTropLong;
             }
             else
             {
-                Sosa1NomTextBox.BackColor = couleurChamp;
+                Sosa1PatronymeTextBox.BackColor = couleurChamp;
+                Sosa1PrenomTextBox.BackColor = couleurChamp;
             }
         }
-        private void Sosa1NomTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        private void    Sosa1PatronymeTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            Modifier = true;
+            this.Text = NomPrograme + "   *" + FichierCourant;
+        }
+        private void    Sosa1PrenomTextBox_TextChanged(object sender, EventArgs e)
+        {
+            liste[sosaCourant, PRENOM] = Sosa1PrenomTextBox.Text;
+            if (!LongeurNomtOk(liste[sosaCourant, PATRONYME] + " " + liste[sosaCourant, PRENOM]))
+            {
+                Sosa1PatronymeTextBox.BackColor = couleurTextTropLong;
+                Sosa1PrenomTextBox.BackColor = couleurTextTropLong;
+            }
+            else
+            {
+                Sosa1PatronymeTextBox.BackColor = couleurChamp;
+                Sosa1PrenomTextBox.BackColor = couleurChamp;
+            }
+        }
+        private void    Sosa1PrenomTextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
             Modifier = true;
             this.Text = NomPrograme + "   *" + FichierCourant;
         }
         private void    Sosa1NeTextBox_TextChanged(object sender, EventArgs e)
         {
-            grille[sosaCourant][NELE] = Sosa1NeTextBox.Text;
+            liste[sosaCourant, NELE] = Sosa1NeTextBox.Text;
             bool rep  = ValiderDate(Sosa1NeTextBox.Text);
             if (rep)
             {
                 Sosa1NeTextBox.BackColor = Color.White;
-                if (!LongeurTextOk(grille[sosaCourant][NELE]))
+                if (!LongeurTextOk(liste[sosaCourant, NELE]))
                 {
                     Sosa1NeTextBox.BackColor = couleurTextTropLong;
                 }
@@ -3180,15 +3299,15 @@ namespace WindowsFormsApp1
                 Sosa1NeTextBox.BackColor = Color.Red;
             }
         }
-        private void Sosa1NeTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        private void    Sosa1NeTextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
             Modifier = true;
             this.Text = NomPrograme + "   *" + FichierCourant;
         }
         private void    Sosa1NeEndroitTextBox_TextChanged(object sender, EventArgs e)
         {
-            grille[sosaCourant][NELIEU] = Sosa1NeEndroitTextBox.Text;
-            if (!LongeurTextOk(grille[sosaCourant][NELIEU]))
+            liste[sosaCourant, NELIEU] = Sosa1NeEndroitTextBox.Text;
+            if (!LongeurTextOk(liste[sosaCourant, NELIEU]))
             {
                 Sosa1NeEndroitTextBox.BackColor = couleurTextTropLong;
             } else
@@ -3196,19 +3315,19 @@ namespace WindowsFormsApp1
                 Sosa1NeEndroitTextBox.BackColor = couleurChamp;
             }
         }
-        private void Sosa1NeEndroitTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        private void    Sosa1NeEndroitTextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
             Modifier = true;
             this.Text = NomPrograme + "   *" + FichierCourant;
         }
         private void    Sosa1DeTextBox_TextChanged(object sender, EventArgs e)
         {
-            grille[sosaCourant][DELE] = Sosa1DeTextBox.Text;
+            liste[sosaCourant, DELE] = Sosa1DeTextBox.Text;
             bool rep = ValiderDate(Sosa1DeTextBox.Text);
             if (rep)
             {
                 Sosa1DeTextBox.BackColor = Color.White;
-                if (!LongeurTextOk(grille[sosaCourant][DELE]))
+                if (!LongeurTextOk(liste[sosaCourant, DELE]))
                 {
                     Sosa1DeTextBox.BackColor = couleurTextTropLong;
                 }
@@ -3222,15 +3341,15 @@ namespace WindowsFormsApp1
                 Sosa1DeTextBox.BackColor = Color.Red;
             }
         }
-        private void Sosa1DeTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        private void    Sosa1DeTextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
             Modifier = true;
             this.Text = NomPrograme + "   *" + FichierCourant;
         }
-        private void Sosa1DeEndroitTextBox_TextChanged(object sender, EventArgs e)
+        private void    Sosa1DeEndroitTextBox_TextChanged(object sender, EventArgs e)
         {
-            grille[sosaCourant][DELIEU] = Sosa1DeEndroitTextBox.Text;
-            if (!LongeurTextOk(grille[sosaCourant][DELIEU]))
+            liste[sosaCourant, DELIEU] = Sosa1DeEndroitTextBox.Text;
+            if (!LongeurTextOk(liste[sosaCourant, DELIEU]))
             {
                 Sosa1DeEndroitTextBox.BackColor = couleurTextTropLong;
             }
@@ -3239,37 +3358,58 @@ namespace WindowsFormsApp1
                 Sosa1DeEndroitTextBox.BackColor = couleurChamp;
             }
         }
-        private void Sosa1DeEndroitTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        private void    Sosa1DeEndroitTextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
             Modifier = true;
             this.Text = NomPrograme + "   *" + FichierCourant;
         }
-        private void Sosa2NomTextBox_TextChanged(object sender, EventArgs e)
+        private void    Sosa2PatronymeTextBox_TextChanged(object sender, EventArgs e)
         {
-            grille[sosaCourant * 2][NOM] = Sosa2NomTextBox.Text;
-            Sosa2NomTextBox.BackColor = Color.White;
-            if (!LongeurNomtOk(grille[sosaCourant * 2][NOM]))
+            liste[sosaCourant * 2, PATRONYME] = Sosa2PatronymeTextBox.Text;
+            Sosa2PatronymeTextBox.BackColor = Color.White;
+            if (!LongeurNomtOk(liste[sosaCourant * 2, PATRONYME] + " " + liste[sosaCourant * 2, PRENOM]))
             {
-                Sosa2NomTextBox.BackColor = couleurTextTropLong;
+                Sosa2PatronymeTextBox.BackColor = couleurTextTropLong;
+                Sosa2PrenomTextBox.BackColor = couleurTextTropLong;
             }
             else
             {
-                Sosa2NomTextBox.BackColor = couleurChamp;
+                Sosa2PatronymeTextBox.BackColor = couleurChamp;
+                Sosa2PrenomTextBox.BackColor = couleurChamp;
             }
         }
-        private void Sosa2NomTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        private void    Sosa2PatronymeTextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
             Modifier = true;
             this.Text = NomPrograme + "   *" + FichierCourant;
         }
-        private void Sosa2NeTextBox_TextChanged(object sender, EventArgs e)
+        private void    Sosa2PrenomTextBox_TextChanged(object sender, EventArgs e)
         {
-            grille[sosaCourant * 2][NELE] = Sosa2NeTextBox.Text;
+            liste[sosaCourant * 2, PRENOM] = Sosa2PrenomTextBox.Text;
+            if (!LongeurNomtOk(liste[sosaCourant * 2, PRENOM] + " " + liste[sosaCourant * 2, PATRONYME]))
+            {
+                Sosa2PrenomTextBox.BackColor = couleurTextTropLong;
+                Sosa2PatronymeTextBox.BackColor = couleurTextTropLong;
+            }
+            else
+            {
+                Sosa2PrenomTextBox.BackColor = couleurChamp;
+                Sosa2PatronymeTextBox.BackColor = couleurChamp;
+            }
+        }
+        private void    Sosa2PrenomTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            Modifier = true;
+            this.Text = NomPrograme + "   *" + FichierCourant;
+        }
+        private void    Sosa2NeTextBox_TextChanged(object sender, EventArgs e)
+        {
+            liste[sosaCourant * 2, NELE] = Sosa2NeTextBox.Text;
             bool rep = ValiderDate(Sosa2NeTextBox.Text);
             if (rep)
             {
                 Sosa2NeTextBox.BackColor = Color.White;
-                if (!LongeurTextOk(grille[sosaCourant][NELE]))
+                if (!LongeurTextOk(liste[sosaCourant * 2, NELE]))
                 {
                     Sosa2NeTextBox.BackColor = couleurTextTropLong;
                 }
@@ -3284,14 +3424,14 @@ namespace WindowsFormsApp1
             }
             
         }
-        private void Sosa2NeTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        private void    Sosa2NeTextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
             Modifier = true;
             this.Text = NomPrograme + "   *" + FichierCourant;
         }
-        private void Sosa2NeEndroitTextBox_TextChanged(object sender, EventArgs e)
+        private void    Sosa2NeEndroitTextBox_TextChanged(object sender, EventArgs e)
         {
-            grille[sosaCourant * 2][NELIEU] = Sosa2NeEndroitTextBox.Text;
+            liste[sosaCourant * 2, NELIEU] = Sosa2NeEndroitTextBox.Text;
             if (!LongeurTextOk(Sosa2NeEndroitTextBox.Text))
             {
                 Sosa2NeEndroitTextBox.BackColor = couleurTextTropLong;
@@ -3301,19 +3441,19 @@ namespace WindowsFormsApp1
                 Sosa2NeEndroitTextBox.BackColor = couleurChamp;
             }
         }
-        private void Sosa2NeEndroitTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        private void    Sosa2NeEndroitTextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
             Modifier = true;
             this.Text = NomPrograme + "   *" + FichierCourant;
         }
-        private void Sosa2DeTextBox_TextChanged(object sender, EventArgs e)
+        private void    Sosa2DeTextBox_TextChanged(object sender, EventArgs e)
         {
-            grille[sosaCourant * 2][DELE] = Sosa2DeTextBox.Text;
+            liste[sosaCourant * 2, DELE] = Sosa2DeTextBox.Text;
             bool rep = ValiderDate(Sosa2DeTextBox.Text);
             if (rep)
             {
                 Sosa2DeTextBox.BackColor = Color.White;
-                if (!LongeurTextOk(grille[sosaCourant][DELE]))
+                if (!LongeurTextOk(liste[sosaCourant, DELE]))
                 {
                     Sosa2DeTextBox.BackColor = couleurTextTropLong;
                 }
@@ -3327,14 +3467,14 @@ namespace WindowsFormsApp1
                 Sosa2DeTextBox.BackColor = Color.Red;
             }
         }
-        private void Sosa2DeTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        private void    Sosa2DeTextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
             Modifier = true;
             this.Text = NomPrograme + "   *" + FichierCourant;
         }
-        private void Sosa2DeEndroitTextBox_TextChanged(object sender, EventArgs e)
+        private void    Sosa2DeEndroitTextBox_TextChanged(object sender, EventArgs e)
         {
-            grille[sosaCourant * 2][DELIEU] = Sosa2DeEndroitTextBox.Text;
+            liste[sosaCourant * 2, DELIEU] = Sosa2DeEndroitTextBox.Text;
             if (!LongeurTextOk(Sosa2DeEndroitTextBox.Text))
             {
                 Sosa2DeEndroitTextBox.BackColor = couleurTextTropLong;
@@ -3344,19 +3484,19 @@ namespace WindowsFormsApp1
                 Sosa2DeEndroitTextBox.BackColor = couleurChamp;
             }
         }
-        private void Sosa2DeEndroitTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        private void    Sosa2DeEndroitTextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
             Modifier = true;
             this.Text = NomPrograme + "   *" + FichierCourant;
         }
-        private void Sosa23MaTextBox_TextChanged(object sender, EventArgs e)
+        private void    Sosa23MaTextBox_TextChanged(object sender, EventArgs e)
         {
-            grille[sosaCourant * 2][MALE] = Sosa23MaTextBox.Text;
+            liste[sosaCourant * 2, MALE] = Sosa23MaTextBox.Text;
             bool rep = ValiderDate(Sosa23MaTextBox.Text);
             if (rep)
             {
                 Sosa23MaTextBox.BackColor = Color.White;
-                if (!LongeurTextOk(grille[sosaCourant * 2][MALE]))
+                if (!LongeurTextOk(liste[sosaCourant * 2, MALE]))
                 {
                     Sosa23MaTextBox.BackColor = couleurTextTropLong;
                 }
@@ -3370,14 +3510,14 @@ namespace WindowsFormsApp1
                 Sosa23MaTextBox.BackColor = Color.Red;
             }
         }
-        private void Sosa23MaTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        private void    Sosa23MaTextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
             Modifier = true;
             this.Text = NomPrograme + "   *" + FichierCourant;
         }
-        private void Sosa23MaEndroitTextBox_TextChanged(object sender, EventArgs e)
+        private void    Sosa23MaEndroitTextBox_TextChanged(object sender, EventArgs e)
         {
-            grille[sosaCourant * 2][MALIEU] = Sosa23MaEndroitTextBox.Text;
+            liste[sosaCourant * 2, MALIEU] = Sosa23MaEndroitTextBox.Text;
             if (!LongeurTextOk(Sosa23MaEndroitTextBox.Text))
             {
                 Sosa23MaEndroitTextBox.BackColor = couleurTextTropLong;
@@ -3387,36 +3527,58 @@ namespace WindowsFormsApp1
                 Sosa23MaEndroitTextBox.BackColor = couleurChamp;
             }
         }
-        private void Sosa23MaEndroitBox_KeyPress(object sender, KeyPressEventArgs e)
+        private void    Sosa23MaEndroitBox_KeyPress(object sender, KeyPressEventArgs e)
         {
             Modifier = true;
             this.Text = NomPrograme + "   *" + FichierCourant;
         }
-        private void Sosa3NomTextBox_TextChanged(object sender, EventArgs e)
+        private void    Sosa3PatronymeTextBox_TextChanged(object sender, EventArgs e)
         {
-            grille[sosaCourant * 2 + 1][NOM] = Sosa3NomTextBox.Text;
-            if (!LongeurNomtOk(grille[sosaCourant * 2 + 1][NOM]))
+            liste[sosaCourant * 2 + 1, PATRONYME] = Sosa3PatronymeTextBox.Text;
+            if (!LongeurNomtOk(liste[sosaCourant * 2 + 1, PATRONYME] + " " + liste[sosaCourant * 2 + 1, PRENOM]))
             {
-                Sosa3NomTextBox.BackColor = couleurTextTropLong;
+                Sosa3PatronymeTextBox.BackColor = couleurTextTropLong;
+                Sosa3PrenomTextBox.BackColor = couleurTextTropLong;
             }
             else
             {
-                Sosa3NomTextBox.BackColor = couleurChamp;
+                Sosa3PatronymeTextBox.BackColor = couleurChamp;
+                Sosa3PrenomTextBox.BackColor = couleurChamp;
             }
         }
-        private void Sosa3NomTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        private void    Sosa3PatronymeTextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
             Modifier = true;
             this.Text = NomPrograme + "   *" + FichierCourant;
         }
-        private void Sosa3NeTextBox_TextChanged(object sender, EventArgs e)
+        private void    Sosa3PrenomTextBox_TextChanged(object sender, EventArgs e)
         {
-            grille[sosaCourant * 2 + 1][NELE] = Sosa3NeTextBox.Text;
+            liste[sosaCourant * 2 + 1, PRENOM] = Sosa3PrenomTextBox.Text;
+            Sosa3PrenomTextBox.BackColor = Color.White;
+            if (!LongeurNomtOk(liste[sosaCourant * 2 + 1, PRENOM] + " " + liste[sosaCourant * 2 + 1, PATRONYME]))
+            {
+                Sosa3PrenomTextBox.BackColor = couleurTextTropLong;
+                Sosa3PatronymeTextBox.BackColor = couleurTextTropLong;
+            }
+            else
+            {
+                Sosa3PrenomTextBox.BackColor = couleurChamp;
+                Sosa3PatronymeTextBox.BackColor = couleurChamp;
+            }
+        }
+        private void    Sosa3PrenomTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            Modifier = true;
+            this.Text = NomPrograme + "   *" + FichierCourant;
+        }
+        private void    Sosa3NeTextBox_TextChanged(object sender, EventArgs e)
+        {
+            liste[sosaCourant * 2 + 1, NELE] = Sosa3NeTextBox.Text;
             bool rep = ValiderDate(Sosa3NeTextBox.Text);
             if (rep)
             {
                 Sosa3NeTextBox.BackColor = Color.White;
-                if (!LongeurTextOk(grille[sosaCourant * 2 + 1][NELE]))
+                if (!LongeurTextOk(liste[sosaCourant * 2 + 1, NELE]))
                 {
                     Sosa3NeTextBox.BackColor = couleurTextTropLong;
                 }
@@ -3430,14 +3592,14 @@ namespace WindowsFormsApp1
                 Sosa3NeTextBox.BackColor = Color.Red;
             }
         }
-        private void Sosa3NeTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        private void    Sosa3NeTextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
             Modifier = true;
             this.Text = NomPrograme + "   *" + FichierCourant;
         }
-        private void Sosa3NeEndroitTextBox_TextChanged(object sender, EventArgs e)
+        private void    Sosa3NeEndroitTextBox_TextChanged(object sender, EventArgs e)
         {
-            grille[sosaCourant * 2 + 1][NELIEU] = Sosa3NeEndroitTextBox.Text;
+            liste[sosaCourant * 2 + 1, NELIEU] = Sosa3NeEndroitTextBox.Text;
             if (!LongeurTextOk(Sosa3NeEndroitTextBox.Text))
             {
                 Sosa3NeEndroitTextBox.BackColor = couleurTextTropLong;
@@ -3447,19 +3609,19 @@ namespace WindowsFormsApp1
                 Sosa3NeEndroitTextBox.BackColor = couleurChamp;
             }
         }
-        private void Sosa3NeEndroitTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        private void    Sosa3NeEndroitTextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
             Modifier = true;
             this.Text = NomPrograme + "   *" + FichierCourant;
         }
-        private void Sosa3DeTextBox_TextChanged(object sender, EventArgs e)
+        private void    Sosa3DeTextBox_TextChanged(object sender, EventArgs e)
         {
-            grille[sosaCourant * 2 + 1][DELE] = Sosa3DeTextBox.Text;
+            liste[sosaCourant * 2 + 1, DELE] = Sosa3DeTextBox.Text;
             bool rep = ValiderDate(Sosa3DeTextBox.Text);
             if (rep)
             {
                 Sosa3DeTextBox.BackColor = Color.White;
-                if (!LongeurTextOk(grille[sosaCourant * 2 + 1][DELE]))
+                if (!LongeurTextOk(liste[sosaCourant * 2 + 1, DELE]))
                 {
                     Sosa3DeTextBox.BackColor = couleurTextTropLong;
                 }
@@ -3473,14 +3635,14 @@ namespace WindowsFormsApp1
                 Sosa3DeTextBox.BackColor = Color.Red;
             }
         }
-        private void Sosa3DeTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        private void    Sosa3DeTextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
             Modifier = true;
             this.Text = NomPrograme + "   *" + FichierCourant;
         }
-        private void Sosa3DeEndroitTextBox_TextChanged(object sender, EventArgs e)
+        private void    Sosa3DeEndroitTextBox_TextChanged(object sender, EventArgs e)
         {
-            grille[sosaCourant * 2 + 1][DELIEU] = Sosa3DeEndroitTextBox.Text;
+            liste[sosaCourant * 2 + 1, DELIEU] = Sosa3DeEndroitTextBox.Text;
             if (!LongeurTextOk(Sosa3DeEndroitTextBox.Text))
             {
                 Sosa3DeEndroitTextBox.BackColor = couleurTextTropLong;
@@ -3490,57 +3652,79 @@ namespace WindowsFormsApp1
                 Sosa3DeEndroitTextBox.BackColor = couleurChamp;
             }
         }
-        private void Sosa3DeEndroitTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        private void    Sosa3DeEndroitTextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
             Modifier = true;
             this.Text = NomPrograme + "   *" + FichierCourant;
         }
-        private void Sosa4NomTextBox_TextChanged(object sender, EventArgs e)
+        private void    Sosa4PatronymeTextBox_TextChanged(object sender, EventArgs e)
         {
-            grille[sosaCourant * 4][NOM] = Sosa4NomTextBox.Text;
-            if (!LongeurNomtOk(grille[sosaCourant * 4][NOM]))
+            liste[sosaCourant * 4, PATRONYME] = Sosa4PatronymeTextBox.Text;
+            if (!LongeurNomtOk(liste[sosaCourant * 4, PATRONYME] + " " + liste[sosaCourant * 4, PRENOM]))
             {
-                Sosa4NomTextBox.BackColor = couleurTextTropLong;
+                Sosa4PatronymeTextBox.BackColor = couleurTextTropLong;
+                Sosa4PrenomTextBox.BackColor = couleurTextTropLong;
             }
             else
             {
-                Sosa4NomTextBox.BackColor = couleurChamp;
+                Sosa4PatronymeTextBox.BackColor = couleurChamp;
+                Sosa4PrenomTextBox.BackColor = couleurChamp;
             }
         }
-        private void Sosa4NomTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        private void    Sosa4PatronymeTextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
             Modifier = true;
             this.Text = NomPrograme + "   *" + FichierCourant;
         }
-        private void Sosa4NeTextBox_TextChanged(object sender, EventArgs e)
+        private void    Sosa4PrenomTextBox_TextChanged(object sender, EventArgs e)
         {
-            grille[sosaCourant * 4][NELE] = Sosa4NeTextBox.Text;
-            bool rep = ValiderDate(Sosa4NeTextBox.Text);
+            liste[sosaCourant * 4, PRENOM] = Sosa4PrenomTextBox.Text;
+            Sosa4PrenomTextBox.BackColor = Color.White;
+            if (!LongeurNomtOk(liste[sosaCourant * 4, PRENOM] + " " + liste[sosaCourant * 4, PATRONYME]))
+            {
+                Sosa4PrenomTextBox.BackColor = couleurTextTropLong;
+                Sosa4PatronymeTextBox.BackColor = couleurTextTropLong;
+            }
+            else
+            {
+                Sosa4PrenomTextBox.BackColor = couleurChamp;
+                Sosa4PatronymeTextBox.BackColor = couleurChamp;
+            }
+        }
+        private void    Sosa4PrenomTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            Modifier = true;
+            this.Text = NomPrograme + "   *" + FichierCourant;
+        }
+        private void    Sosa4NeTextBox_TextChanged(object sender, EventArgs e)
+        {
+            liste[sosaCourant * 4, NELE] = Sosa4PrenomTextBox.Text;
+            bool rep = ValiderDate(Sosa4PrenomTextBox.Text);
             if (rep)
             {
-                Sosa4NeTextBox.BackColor = Color.White;
-                if (!LongeurTextOk(grille[sosaCourant * 4][NELE]))
+                Sosa4PrenomTextBox.BackColor = Color.White;
+                if (!LongeurTextOk(liste[sosaCourant * 4, NELE]))
                 {
-                    Sosa4NeTextBox.BackColor = couleurTextTropLong;
+                    Sosa4PrenomTextBox.BackColor = couleurTextTropLong;
                 }
                 else
                 {
-                    Sosa4NeTextBox.BackColor = couleurChamp;
+                    Sosa4PrenomTextBox.BackColor = couleurChamp;
                 }
             }
             else
             {
-                Sosa4NeTextBox.BackColor = Color.Red;
+                Sosa4PrenomTextBox.BackColor = Color.Red;
             }
         }
-        private void Sosa4NeTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        private void    Sosa4NeTextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
             Modifier = true;
             this.Text = NomPrograme + "   *" + FichierCourant;
         }
-        private void Sosa4NeEndroitTextBox_TextChanged(object sender, EventArgs e)
+        private void    Sosa4NeEndroitTextBox_TextChanged(object sender, EventArgs e)
         {
-            grille[sosaCourant * 4][NELIEU] = Sosa4NeEndroitTextBox.Text;
+            liste[sosaCourant * 4, NELIEU] = Sosa4NeEndroitTextBox.Text;
             if (!LongeurTextOk(Sosa4NeEndroitTextBox.Text))
             {
                 Sosa4NeEndroitTextBox.BackColor = couleurTextTropLong;
@@ -3550,19 +3734,19 @@ namespace WindowsFormsApp1
                 Sosa4NeEndroitTextBox.BackColor = couleurChamp;
             }
         }
-        private void Sosa4NeEndroitTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        private void    Sosa4NeEndroitTextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
             Modifier = true;
             this.Text = NomPrograme + "   *" + FichierCourant;
         }
-        private void Sosa4DeTextBox_TextChanged(object sender, EventArgs e)
+        private void    Sosa4DeTextBox_TextChanged(object sender, EventArgs e)
         {
-            grille[sosaCourant * 4][DELE] = Sosa4DeTextBox.Text;
+            liste[sosaCourant * 4, DELE] = Sosa4DeTextBox.Text;
             bool rep = ValiderDate(Sosa4DeTextBox.Text);
             if (rep)
             {
                 Sosa4DeTextBox.BackColor = Color.White;
-                if (!LongeurTextOk(grille[sosaCourant * 4][DELE]))
+                if (!LongeurTextOk(liste[sosaCourant * 4, DELE]))
                 {
                     Sosa4DeTextBox.BackColor = couleurTextTropLong;
                 }
@@ -3576,14 +3760,14 @@ namespace WindowsFormsApp1
                 Sosa4DeTextBox.BackColor = Color.Red;
             }
         }
-        private void Sosa4DeTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        private void    Sosa4DeTextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
             Modifier = true;
             this.Text = NomPrograme + "   *" + FichierCourant;
         }
-        private void Sosa4DeEndroitTextBox_TextChanged(object sender, EventArgs e)
+        private void    Sosa4DeEndroitTextBox_TextChanged(object sender, EventArgs e)
         {
-            grille[sosaCourant * 4][DELIEU] = Sosa4DeEndroitTextBox.Text;
+            liste[sosaCourant * 4, DELIEU] = Sosa4DeEndroitTextBox.Text;
             if (!LongeurTextOk(Sosa4DeEndroitTextBox.Text))
             {
                 Sosa4DeEndroitTextBox.BackColor = couleurTextTropLong;
@@ -3593,19 +3777,19 @@ namespace WindowsFormsApp1
                 Sosa4DeEndroitTextBox.BackColor = couleurChamp;
             }
         }
-        private void Sosa4DeEndroitTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        private void    Sosa4DeEndroitTextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
             Modifier = true;
             this.Text = NomPrograme + "   *" + FichierCourant;
         }
-        private void Sosa45MaTextBox_TextChanged(object sender, EventArgs e)
+        private void    Sosa45MaTextBox_TextChanged(object sender, EventArgs e)
         {
-            grille[sosaCourant * 4][MALE] = Sosa45MaTextBox.Text;
+            liste[sosaCourant * 4, MALE] = Sosa45MaTextBox.Text;
             bool rep = ValiderDate(Sosa45MaTextBox.Text);
             if (rep)
             {
                 Sosa45MaTextBox.BackColor = Color.White;
-                if (!LongeurTextOk(grille[sosaCourant * 4][MALE]))
+                if (!LongeurTextOk(liste[sosaCourant * 4, MALE]))
                 {
                     Sosa45MaTextBox.BackColor = couleurTextTropLong;
                 }
@@ -3619,14 +3803,14 @@ namespace WindowsFormsApp1
                 Sosa45MaTextBox.BackColor = Color.Red;
             }
         }
-        private void Sosa45MaTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        private void    Sosa45MaTextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
             Modifier = true;
             this.Text = NomPrograme + "   *" + FichierCourant;
         }
-        private void Sosa45MaEndroitTextBox_TextChanged(object sender, EventArgs e)
+        private void    Sosa45MaEndroitTextBox_TextChanged(object sender, EventArgs e)
         {
-            grille[sosaCourant * 4][MALIEU] = Sosa45MaLEndroitTextBox.Text;
+            liste[sosaCourant * 4, MALIEU] = Sosa45MaLEndroitTextBox.Text;
             if (!LongeurTextOk(Sosa45MaLEndroitTextBox.Text))
             {
                 Sosa45MaLEndroitTextBox.BackColor = couleurTextTropLong;
@@ -3636,36 +3820,59 @@ namespace WindowsFormsApp1
                 Sosa45MaLEndroitTextBox.BackColor = couleurChamp;
             }
         }
-        private void Sosa45MaEndroitNomTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        private void    Sosa45MaEndroitNomTextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
             Modifier = true;
             this.Text = NomPrograme + "   *" + FichierCourant;
         }
-        private void Sosa5NomTextBox_TextChanged(object sender, EventArgs e)
+        private void    Sosa5PatronymeTextBox_TextChanged(object sender, EventArgs e)
         {
-            grille[sosaCourant * 4 + 1][NOM] = Sosa5NomTextBox.Text;
-            if (!LongeurNomtOk(grille[sosaCourant * 4 + 1][NOM]))
+            liste[sosaCourant * 4 + 1, PATRONYME] = Sosa5PatronymeTextBox.Text;
+            if (!LongeurNomtOk(liste[sosaCourant * 4 + 1, PATRONYME] + " " + liste[sosaCourant * 4 + 1, PRENOM]))
             {
-                Sosa5NomTextBox.BackColor = couleurTextTropLong;
+                Sosa5PatronymeTextBox.BackColor = couleurTextTropLong;
+                Sosa5PrenomTextBox.BackColor = couleurTextTropLong;
             }
             else
             {
-                Sosa5NomTextBox.BackColor = couleurChamp;
+                Sosa5PatronymeTextBox.BackColor = couleurChamp;
+                Sosa5PrenomTextBox.BackColor = couleurChamp;
             }
         }
-        private void Sosa5NomTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        private void    Sosa5PatronymeTextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
             Modifier = true;
             this.Text = NomPrograme + "   *" + FichierCourant;
         }
-        private void Sosa5NeTextBox_TextChanged(object sender, EventArgs e)
+        private void    Sosa5PrenomTextBox_TextChanged(object sender, EventArgs e)
         {
-            grille[sosaCourant * 4 + 1][NELE] = Sosa5NeTextBox.Text;
+            liste[sosaCourant * 4 + 1, PRENOM] = Sosa5PrenomTextBox.Text;
+            Sosa5PrenomTextBox.BackColor = Color.White;
+            if (!LongeurNomtOk(liste[sosaCourant * 4 + 1, PRENOM] + " " + liste[sosaCourant * 4 + 1, PATRONYME]))
+            {
+                Sosa5PrenomTextBox.BackColor = couleurTextTropLong;
+                Sosa5PatronymeTextBox.BackColor = couleurTextTropLong;
+            }
+            else
+            {
+                Sosa5PrenomTextBox.BackColor = couleurChamp;
+                Sosa5PatronymeTextBox.BackColor = couleurChamp;
+            }
+        }
+        private void    Sosa5PrenomTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            Modifier = true;
+            this.Text = NomPrograme + "   *" + FichierCourant;
+        }
+
+        private void    Sosa5NeTextBox_TextChanged(object sender, EventArgs e)
+        {
+            liste[sosaCourant * 4 + 1, NELE] = Sosa5NeTextBox.Text;
             bool rep = ValiderDate(Sosa5NeTextBox.Text);
             if (rep)
             {
                 Sosa5NeTextBox.BackColor = Color.White;
-                if (!LongeurTextOk(grille[sosaCourant * 4 + 1][NELE]))
+                if (!LongeurTextOk(liste[sosaCourant * 4 + 1, NELE]))
                 {
                     Sosa5NeTextBox.BackColor = couleurTextTropLong;
                 }
@@ -3679,14 +3886,14 @@ namespace WindowsFormsApp1
                 Sosa5NeTextBox.BackColor = Color.Red;
             }
         }
-        private void Sosa5NeTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        private void    Sosa5NeTextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
             Modifier = true;
             this.Text = NomPrograme + "   *" + FichierCourant;
         }
-        private void Sosa5NeEndroitTextBox_TextChanged(object sender, EventArgs e)
+        private void    Sosa5NeEndroitTextBox_TextChanged(object sender, EventArgs e)
         {
-            grille[sosaCourant * 4 + 1][NELIEU] = Sosa5NeEndroitTextBox.Text;
+            liste[sosaCourant * 4 + 1, NELIEU] = Sosa5NeEndroitTextBox.Text;
             if (!LongeurTextOk(Sosa5NeEndroitTextBox.Text))
             {
                 Sosa5NeEndroitTextBox.BackColor = couleurTextTropLong;
@@ -3696,20 +3903,20 @@ namespace WindowsFormsApp1
                 Sosa5NeEndroitTextBox.BackColor = couleurChamp;
             }
         }
-        private void Sosa5NeEndroit1NomTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        private void    Sosa5NeEndroit1NomTextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
             Modifier = true;
             this.Text = NomPrograme + "   *" + FichierCourant;
         }
-        private void Sosa5DeTextBox_TextChanged(object sender, EventArgs e)
+        private void    Sosa5DeTextBox_TextChanged(object sender, EventArgs e)
         {
             {
-                grille[sosaCourant * 4 + 1][DELE] = Sosa5DeTextBox.Text;
+                liste[sosaCourant * 4 + 1, DELE] = Sosa5DeTextBox.Text;
                 bool rep = ValiderDate(Sosa5DeTextBox.Text);
                 if (rep)
                 {
                     Sosa5DeTextBox.BackColor = Color.White;
-                    if (!LongeurTextOk(grille[sosaCourant * 4 + 1][DELE]))
+                    if (!LongeurTextOk(liste[sosaCourant * 4 + 1, DELE]))
                     {
                         Sosa5DeTextBox.BackColor = couleurTextTropLong;
                     }
@@ -3724,14 +3931,14 @@ namespace WindowsFormsApp1
                 }
             }
         }
-        private void Sosa5DeTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        private void    Sosa5DeTextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
             Modifier = true;
             this.Text = NomPrograme + "   *" + FichierCourant;
         }
-        private void Sosa5DeEndroitTextBox_TextChanged(object sender, EventArgs e)
+        private void    Sosa5DeEndroitTextBox_TextChanged(object sender, EventArgs e)
         {
-            grille[sosaCourant * 4 + 1][DELIEU] = Sosa5DeEndroitTextBox.Text;
+            liste[sosaCourant * 4 + 1, DELIEU] = Sosa5DeEndroitTextBox.Text;
             if (!LongeurTextOk(Sosa5DeEndroitTextBox.Text))
             {
                 Sosa5DeEndroitTextBox.BackColor = couleurTextTropLong;
@@ -3741,36 +3948,58 @@ namespace WindowsFormsApp1
                 Sosa5DeEndroitTextBox.BackColor = couleurChamp;
             }
         }
-        private void Sosa5DeEndroitTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        private void    Sosa5DeEndroitTextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
             Modifier = true;
             this.Text = NomPrograme + "   *" + FichierCourant;
         }
-        private void Sosa6NomTextBox_TextChanged(object sender, EventArgs e)
+        private void    Sosa6PatronymeTextBox_TextChanged(object sender, EventArgs e)
         {
-            grille[sosaCourant * 4 + 2][NOM] = Sosa6NomTextBox.Text;
-            if (!LongeurNomtOk(grille[sosaCourant * 4 + 2][NOM]))
+            liste[sosaCourant * 4 + 2, PATRONYME] = Sosa6PatronymeTextBox.Text;
+            if (!LongeurNomtOk(liste[sosaCourant * 4 + 2, PATRONYME] + " " + liste[sosaCourant * 4 + 2, PRENOM]))
             {
-                Sosa6NomTextBox.BackColor = couleurTextTropLong;
+                Sosa6PatronymeTextBox.BackColor = couleurTextTropLong;
+                Sosa6PrenomTextBox.BackColor = couleurTextTropLong;
             }
             else
             {
-                Sosa6NomTextBox.BackColor = couleurChamp;
+                Sosa6PatronymeTextBox.BackColor = couleurChamp;
+                Sosa6PrenomTextBox.BackColor = couleurChamp;
             }
         }
-        private void Sosa6NomTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        private void    Sosa6PatronymeTextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
             Modifier = true;
             this.Text = NomPrograme + "   *" + FichierCourant;
         }
-        private void Sosa6NeTextBox_TextChanged(object sender, EventArgs e)
+        private void    Sosa6PrenomTextBox_TextChanged(object sender, EventArgs e)
         {
-            grille[sosaCourant * 4 + 2][NELE] = Sosa6NeTextBox.Text;
+            liste[sosaCourant * 4 + 2, PRENOM] = Sosa6PrenomTextBox.Text;
+            Sosa6PrenomTextBox.BackColor = Color.White;
+            if (!LongeurNomtOk(liste[sosaCourant * 4 + 2, PRENOM] + " " + liste[sosaCourant * 4 + 2, PATRONYME]))
+            {
+                Sosa6PrenomTextBox.BackColor = couleurTextTropLong;
+                Sosa6PatronymeTextBox.BackColor = couleurTextTropLong;
+            }
+            else
+            {
+                Sosa6PrenomTextBox.BackColor = couleurChamp;
+                Sosa6PatronymeTextBox.BackColor = couleurChamp;
+            }
+        }
+        private void    Sosa6PrenomTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            Modifier = true;
+            this.Text = NomPrograme + "   *" + FichierCourant;
+        }
+        private void    Sosa6NeTextBox_TextChanged(object sender, EventArgs e)
+        {
+            liste[sosaCourant * 4 + 2, NELE] = Sosa6NeTextBox.Text;
             bool rep = ValiderDate(Sosa6NeTextBox.Text);
             if (rep)
             {
                 Sosa6NeTextBox.BackColor = Color.White;
-                if (!LongeurTextOk(grille[sosaCourant * 4 + 2][NELE]))
+                if (!LongeurTextOk(liste[sosaCourant * 4 + 2, NELE]))
                 {
                     Sosa6NeTextBox.BackColor = couleurTextTropLong;
                 }
@@ -3784,14 +4013,14 @@ namespace WindowsFormsApp1
                 Sosa6NeTextBox.BackColor = Color.Red;
             }
         }
-        private void Sosa6NeTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        private void    Sosa6NeTextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
             Modifier = true;
             this.Text = NomPrograme + "   *" + FichierCourant;
         }
-        private void Sosa6NeEndroitTextBox_TextChanged(object sender, EventArgs e)
+        private void    Sosa6NeEndroitTextBox_TextChanged(object sender, EventArgs e)
         {
-            grille[sosaCourant * 4 + 2][NELIEU] = Sosa6NeEndroitTextBox.Text;
+            liste[sosaCourant * 4 + 2, NELIEU] = Sosa6NeEndroitTextBox.Text;
             if (!LongeurTextOk(Sosa6NeEndroitTextBox.Text))
             {
                 Sosa6NeEndroitTextBox.BackColor = couleurTextTropLong;
@@ -3801,19 +4030,19 @@ namespace WindowsFormsApp1
                 Sosa6NeEndroitTextBox.BackColor = couleurChamp;
             }
         }
-        private void Sosa6NeEndroitTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        private void    Sosa6NeEndroitTextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
             Modifier = true;
             this.Text = NomPrograme + "   *" + FichierCourant;
         }
-        private void Sosa6DeTextBox_TextChanged(object sender, EventArgs e)
+        private void    Sosa6DeTextBox_TextChanged(object sender, EventArgs e)
         {
-            grille[sosaCourant * 4 + 2][DELE] = Sosa6DeTextBox.Text;
+            liste[sosaCourant * 4 + 2, DELE] = Sosa6DeTextBox.Text;
             bool rep = ValiderDate(Sosa6DeTextBox.Text);
             if (rep)
             {
                 Sosa6DeTextBox.BackColor = Color.White;
-                if (!LongeurTextOk(grille[sosaCourant * 4 + 2][DELE]))
+                if (!LongeurTextOk(liste[sosaCourant * 4 + 2, DELE]))
                 {
                     Sosa6DeTextBox.BackColor = couleurTextTropLong;
                 }
@@ -3827,14 +4056,14 @@ namespace WindowsFormsApp1
                 Sosa6DeTextBox.BackColor = Color.Red;
             }
         }
-        private void Sosa6DeTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        private void    Sosa6DeTextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
             Modifier = true;
             this.Text = NomPrograme + "   *" + FichierCourant;
         }
-        private void Sosa6DeEndroitTextBox_TextChanged(object sender, EventArgs e)
+        private void    Sosa6DeEndroitTextBox_TextChanged(object sender, EventArgs e)
         {
-            grille[sosaCourant * 4 + 2][DELIEU] = Sosa6DeEndroitTextBox.Text;
+            liste[sosaCourant * 4 + 2, DELIEU] = Sosa6DeEndroitTextBox.Text;
             if (!LongeurTextOk(Sosa6DeEndroitTextBox.Text))
             {
                 Sosa6DeEndroitTextBox.BackColor = couleurTextTropLong;
@@ -3844,19 +4073,19 @@ namespace WindowsFormsApp1
                 Sosa6DeEndroitTextBox.BackColor = couleurChamp;
             }
         }
-        private void Sosa6DeEndroitTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        private void    Sosa6DeEndroitTextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
             Modifier = true;
             this.Text = NomPrograme + "   *" + FichierCourant;
         }
-        private void Sosa67MaTextBox_TextChanged(object sender, EventArgs e)
+        private void    Sosa67MaTextBox_TextChanged(object sender, EventArgs e)
         {
-            grille[sosaCourant * 4 + 2][MALE] = Sosa67MaTextBox.Text;
+            liste[sosaCourant * 4 + 2, MALE] = Sosa67MaTextBox.Text;
             bool rep = ValiderDate(Sosa67MaTextBox.Text);
             if (rep)
             {
                 Sosa67MaTextBox.BackColor = Color.White;
-                if (!LongeurTextOk(grille[sosaCourant * 2][MALE]))
+                if (!LongeurTextOk(liste[sosaCourant * 2, MALE]))
                 {
                     Sosa67MaTextBox.BackColor = couleurTextTropLong;
                 }
@@ -3870,14 +4099,14 @@ namespace WindowsFormsApp1
                 Sosa67MaTextBox.BackColor = Color.Red;
             }
         }
-        private void Sosa67MaTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        private void    Sosa67MaTextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
             Modifier = true;
             this.Text = NomPrograme + "   *" + FichierCourant;
         }
-        private void Sosa67MaEndroitTextBox_TextChanged(object sender, EventArgs e)
+        private void    Sosa67MaEndroitTextBox_TextChanged(object sender, EventArgs e)
         {
-            grille[sosaCourant * 4 + 2][MALIEU] = Sosa67MaEndroitTextBox.Text;
+            liste[sosaCourant * 4 + 2, MALIEU] = Sosa67MaEndroitTextBox.Text;
             if (!LongeurTextOk(Sosa67MaEndroitTextBox.Text))
             {
                 Sosa67MaEndroitTextBox.BackColor = couleurTextTropLong;
@@ -3887,36 +4116,57 @@ namespace WindowsFormsApp1
                 Sosa67MaEndroitTextBox.BackColor = couleurChamp;
             }
         }
-        private void Sosa67MAEndroitTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        private void    Sosa67MAEndroitTextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
             Modifier = true;
             this.Text = NomPrograme + "   *" + FichierCourant;
         }
-        private void Sosa7NomTextBox_TextChanged(object sender, EventArgs e)
+        private void    Sosa7PatronymeTextBox_TextChanged(object sender, EventArgs e)
         {
-            grille[sosaCourant * 4 + 3][NOM] = Sosa7NomTextBox.Text;
-            if (!LongeurNomtOk(grille[sosaCourant * 4 + 3][NOM]))
+            liste[sosaCourant * 4 + 3, PATRONYME] = Sosa7PatronymeTextBox.Text;
+            if (!LongeurNomtOk(liste[sosaCourant * 4 + 3, PATRONYME] + " " + liste[sosaCourant * 4 + 3, PRENOM]))
             {
-                Sosa7NomTextBox.BackColor = couleurTextTropLong;
+                Sosa7PatronymeTextBox.BackColor = couleurTextTropLong;
+                Sosa7PrenomTextBox.BackColor = couleurTextTropLong;
             }
             else
             {
-                Sosa7NomTextBox.BackColor = couleurChamp;
+                Sosa7PatronymeTextBox.BackColor = couleurChamp;
+                Sosa7PrenomTextBox.BackColor = couleurChamp;
             }
         }
-        private void Sosa7NomTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        private void    Sosa7PatronymeTextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
             Modifier = true;
             this.Text = NomPrograme + "   *" + FichierCourant;
         }
-        private void Sosa7NeTextBox_TextChanged(object sender, EventArgs e)
+        private void    Sosa7PrenomTextBox_TextChanged(object sender, EventArgs e)
         {
-            grille[sosaCourant * 4 + 3][NELE] = Sosa7NeTextBox.Text;
+            Sosa7PrenomTextBox.BackColor = Color.White;
+            if (!LongeurNomtOk(liste[sosaCourant * 4 + 3, PRENOM] + " " + liste[sosaCourant * 4 + 3, PATRONYME]))
+            {
+                Sosa7PrenomTextBox.BackColor = couleurTextTropLong;
+                Sosa7PatronymeTextBox.BackColor = couleurTextTropLong;
+            }
+            else
+            {
+                Sosa7PrenomTextBox.BackColor = couleurChamp;
+                Sosa7PatronymeTextBox.BackColor = couleurChamp;
+            }
+        }
+        private void    Sosa7PrenomTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            Modifier = true;
+            this.Text = NomPrograme + "   *" + FichierCourant;
+        }
+        private void    Sosa7NeTextBox_TextChanged(object sender, EventArgs e)
+        {
+            liste[sosaCourant * 4 + 3, NELE] = Sosa7NeTextBox.Text;
             bool rep = ValiderDate(Sosa7NeTextBox.Text);
             if (rep)
             {
                 Sosa7NeTextBox.BackColor = Color.White;
-                if (!LongeurTextOk(grille[sosaCourant * 4 + 3][NELE]))
+                if (!LongeurTextOk(liste[sosaCourant * 4 + 3, NELE]))
                 {
                     Sosa7NeTextBox.BackColor = couleurTextTropLong;
                 }
@@ -3930,14 +4180,14 @@ namespace WindowsFormsApp1
                 Sosa7NeTextBox.BackColor = Color.Red;
             }
         }
-        private void Sosa7NeTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        private void    Sosa7NeTextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
             Modifier = true;
             this.Text = NomPrograme + "   *" + FichierCourant;
         }
-        private void Sosa7NeEndroitTextBox_TextChanged(object sender, EventArgs e)
+        private void    Sosa7NeEndroitTextBox_TextChanged(object sender, EventArgs e)
         {
-            grille[sosaCourant * 4 + 3][NELIEU] = Sosa7NeEndroitTextBox.Text;
+            liste[sosaCourant * 4 + 3, NELIEU] = Sosa7NeEndroitTextBox.Text;
             if (!LongeurTextOk(Sosa7NeEndroitTextBox.Text))
             {
                 Sosa7NeEndroitTextBox.BackColor = couleurTextTropLong;
@@ -3947,19 +4197,19 @@ namespace WindowsFormsApp1
                 Sosa7NeEndroitTextBox.BackColor = couleurChamp;
             }
         }
-        private void Sosa7NeEndroitTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        private void    Sosa7NeEndroitTextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
             Modifier = true;
             this.Text = NomPrograme + "   *" + FichierCourant;
         }
-        private void Sosa7DeTextBox_TextChanged(object sender, EventArgs e)
+        private void    Sosa7DeTextBox_TextChanged(object sender, EventArgs e)
         {
-            grille[sosaCourant * 4 + 3][DELE] = Sosa7DeTextBox.Text;
+            liste[sosaCourant * 4 + 3, DELE] = Sosa7DeTextBox.Text;
             bool rep = ValiderDate(Sosa7DeTextBox.Text);
             if (rep)
             {
                 Sosa7DeTextBox.BackColor = Color.White;
-                if (!LongeurTextOk(grille[sosaCourant * 4 + 3][DELE]))
+                if (!LongeurTextOk(liste[sosaCourant * 4 + 3, DELE]))
                 {
                     Sosa7DeTextBox.BackColor = couleurTextTropLong;
                 }
@@ -3973,14 +4223,14 @@ namespace WindowsFormsApp1
                 Sosa7DeTextBox.BackColor = Color.Red;
             }
         }
-        private void Sosa7DeTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        private void    Sosa7DeTextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
             Modifier = true;
             this.Text = NomPrograme + "   *" + FichierCourant;
         }
-        private void Sosa7DeEndroitTextBox_TextChanged(object sender, EventArgs e)
+        private void    Sosa7DeEndroitTextBox_TextChanged(object sender, EventArgs e)
         {
-            grille[sosaCourant * 4 + 3][DELIEU] = Sosa7DeEndroitTextBox.Text;
+            liste[sosaCourant * 4 + 3, DELIEU] = Sosa7DeEndroitTextBox.Text;
             if (!LongeurTextOk(Sosa7DeEndroitTextBox.Text))
             {
                 Sosa7DeEndroitTextBox.BackColor = couleurTextTropLong;
@@ -3990,7 +4240,7 @@ namespace WindowsFormsApp1
                 Sosa7DeEndroitTextBox.BackColor = couleurChamp;
             }
         }
-        private void Sosa7DeEndroitTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        private void    Sosa7DeEndroitTextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
             Modifier = true;
             this.Text = NomPrograme + "   *" + FichierCourant;
@@ -4142,7 +4392,6 @@ namespace WindowsFormsApp1
             gfx.DrawString(str, font32, XBrushes.Black, page.Width / 2 - textLargeur.Width / 2, POUCE * 5);
             if (AscendantDeTb.Text != "")
             {
-                //str = grille[1][ NOM];
                 textLargeur = gfx.MeasureString(AscendantDeTb.Text, font32);
                 tm.Alignment = XParagraphAlignment.Center;
                 XRect rect = new XRect();
@@ -4181,30 +4430,16 @@ namespace WindowsFormsApp1
 
             NouvellePage(ref document, ref gfx, ref page, "P");
             NouvellePage(ref document, ref gfx, ref page, "P");
-            // trier par nom si sosa défini
-            if (ChoixSosaComboBox.Text != "")
-            {
-                Triage(grille, NOM);
-            }
+
+            
             TableMatiere(ref document, ref gfx, ref page);
-            for (int f = 0; f < 512; f++)
-            {
-                grille[f][SOSA] = grille[f][SOSA].PadLeft(5, '0');
-            }
-            // trier pas SOSA
-            Triage(grille, SOSA);
-            //Trier(grille, SOSA, "ASC");
-            for (int f = 0; f < 512; f++)
-            {
-                //Console.WriteLine("3614>" + grille[f, SOSA]);
-                grille[f][SOSA] =    grille[f][SOSA].TrimStart('0');
-                //Console.WriteLine("3617>" + grille[f, SOSA]);
-            }
+
             foreach (int sosa in listePage)
             {
                 NouvellePage(ref document, ref gfx, ref page,"L");
                 DessinerPage(ref document, ref gfx, sosa, true, true);
             }
+
             string FichierPage = "TableauAscendant.pdf";
             string Fichier = DossierPDF + "\\" + FichierPage;
             try
@@ -4464,10 +4699,9 @@ namespace WindowsFormsApp1
                 }
                 ChoixLV.Items.Clear();
                 ChoixLV.Columns.Add("ID", 50);
-                ChoixLV.Columns.Add("Nom", 80);
-                ChoixLV.Columns.Add("Prénom", 150);
-                ChoixLV.Columns.Add("Date naissance", 100);
-                ChoixLV.Columns.Add("Lieu naissance", 100);
+                ChoixLV.Columns.Add("Nom", 200);
+                ChoixLV.Columns.Add("Naissance", 58);
+                ChoixLV.Columns.Add("Décès", 58);
                 ChoixPersonne.Visible = true;
                 ChoixPersonne.Enabled = true;
                 FichierCourant = "";
@@ -4498,7 +4732,7 @@ namespace WindowsFormsApp1
             Modifier = true;
             this.Text = NomPrograme + "   *" + FichierCourant;
         }
-        private void NomRecherche_KeyDown(object sender, KeyEventArgs e)
+        private void PatronymeRecherche_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
             {
@@ -4555,7 +4789,7 @@ namespace WindowsFormsApp1
         }
         private void Note1_TextChanged(object sender, EventArgs e)
         {
-            grille[sosaCourant][NOTE1] = Note1.Text;
+            liste[sosaCourant, NOTE1] = Note1.Text;
         }
         private void Note1_KeyPress(object sender, KeyPressEventArgs e)
         {
@@ -4564,7 +4798,7 @@ namespace WindowsFormsApp1
         }
         private void Note2_TextChanged(object sender, EventArgs e)
         {
-            grille[sosaCourant][NOTE2] = Note2.Text;
+            liste[sosaCourant, NOTE2] = Note2.Text;
         }
         private void Note2_KeyPress(object sender, KeyPressEventArgs e)
         {
@@ -4573,6 +4807,7 @@ namespace WindowsFormsApp1
         }
         private void RechercheSosaButton_Click(object sender, EventArgs e)
         {
+            ZXCV("IN");
             DummyButton.Focus();
             RectangleSosa1.BorderColor = Color.Black;
             RectangleSosa2.BorderColor = Color.Black;
@@ -4581,7 +4816,6 @@ namespace WindowsFormsApp1
             RectangleSosa5.BorderColor = Color.Black;
             RectangleSosa6.BorderColor = Color.Black;
             RectangleSosa7.BorderColor = Color.Black;
-
             if (RechercheSosaTextBox.Text == "")
             {
                 FlecheGaucheRechercheButton.Visible = false;
@@ -4596,17 +4830,17 @@ namespace WindowsFormsApp1
                     ChoixSosaComboBox.Text = "";
                     return;
                 }
-                ChoixSosaComboBox.Text = grille[sosa][PAGE];
+                ChoixSosaComboBox.Text = liste[sosa, PAGE];
                 FlecheGaucheRechercheButton.Visible = false;
                 FlecheDroiteRechercheButton.Visible = false;
 
-                if (grille[rechercheListe[0]][SOSA] == grille[sosa][PAGE]) RectangleSosa1.BorderColor = Color.White;
-                if (Int32.Parse(grille[sosa][SOSA]) == Int32.Parse(grille[sosa][PAGE]) * 2) RectangleSosa2.BorderColor = Color.White;
-                if (Int32.Parse(grille[sosa][SOSA]) == Int32.Parse(grille[sosa][PAGE]) * 2 + 1) RectangleSosa3.BorderColor = Color.White;
-                if (Int32.Parse(grille[sosa][SOSA]) == Int32.Parse(grille[sosa][PAGE]) * 4) RectangleSosa4.BorderColor = Color.White;
-                if (Int32.Parse(grille[sosa][SOSA]) == Int32.Parse(grille[sosa][PAGE]) * 4 + 1) RectangleSosa5.BorderColor = Color.White;
-                if (Int32.Parse(grille[sosa][SOSA]) == Int32.Parse(grille[sosa][PAGE]) * 4 + 2) RectangleSosa6.BorderColor = Color.White;
-                if (Int32.Parse(grille[sosa][SOSA]) == Int32.Parse(grille[sosa][PAGE]) * 4 + 3) RectangleSosa7.BorderColor = Color.White;
+                if (liste[rechercheListe[0], SOSA] == liste[sosa, PAGE]) RectangleSosa1.BorderColor = Color.White;
+                if (Int32.Parse(liste[sosa, SOSA]) == Int32.Parse(liste[sosa, PAGE]) * 2) RectangleSosa2.BorderColor = Color.White;
+                if (Int32.Parse(liste[sosa, SOSA]) == Int32.Parse(liste[sosa, PAGE]) * 2 + 1) RectangleSosa3.BorderColor = Color.White;
+                if (Int32.Parse(liste[sosa, SOSA]) == Int32.Parse(liste[sosa, PAGE]) * 4) RectangleSosa4.BorderColor = Color.White;
+                if (Int32.Parse(liste[sosa, SOSA]) == Int32.Parse(liste[sosa, PAGE]) * 4 + 1) RectangleSosa5.BorderColor = Color.White;
+                if (Int32.Parse(liste[sosa, SOSA]) == Int32.Parse(liste[sosa, PAGE]) * 4 + 2) RectangleSosa6.BorderColor = Color.White;
+                if (Int32.Parse(liste[sosa, SOSA]) == Int32.Parse(liste[sosa, PAGE]) * 4 + 3) RectangleSosa7.BorderColor = Color.White;
 
             } else
             {
@@ -4621,31 +4855,29 @@ namespace WindowsFormsApp1
 
                 rechercheListe[0] = 0;
                 trouver = 0;
-                foreach (string[] info in grille)
+                for (int f = 1; f < 512; f++)
                 {
                     rep = true;
-                    
                     foreach (string m in mots)
                     {
-                        if (!info[NOM].ToLower().Contains(m.ToLower())) rep = false;
+                        if (!liste[f, NOMTRI].ToLower().Contains(m.ToLower())) rep = false;
                     }
                     if (rep)
                     {
-                        rechercheListe[Int32.Parse(info[SOSA])] = 1;
-                        if (rechercheListe[0] == 0) rechercheListe[0] = Int32.Parse(info[SOSA]);
+                        rechercheListe[Int32.Parse(liste[f,SOSA])] = 1;
+                        if (rechercheListe[0] == 0) rechercheListe[0] = Int32.Parse(liste[f,SOSA]);
                         trouver = trouver + 1;
                     }
                 }
                 if (trouver == 0) return;
-
-                ChoixSosaComboBox.Text = grille[rechercheListe[0]][PAGE];
-                if (grille[rechercheListe[0]][SOSA] == grille[rechercheListe[0]][PAGE]) RectangleSosa1.BorderColor = Color.White;
-                if (Int32.Parse(grille[rechercheListe[0]][SOSA]) == Int32.Parse(grille[rechercheListe[0]][PAGE]) * 2) RectangleSosa2.BorderColor = Color.White;
-                if (Int32.Parse(grille[rechercheListe[0]][SOSA]) == Int32.Parse(grille[rechercheListe[0]][PAGE]) * 2 + 1) RectangleSosa3.BorderColor = Color.White;
-                if (Int32.Parse(grille[rechercheListe[0]][SOSA]) == Int32.Parse(grille[rechercheListe[0]][PAGE]) * 4) RectangleSosa4.BorderColor = Color.White;
-                if (Int32.Parse(grille[rechercheListe[0]][SOSA]) == Int32.Parse(grille[rechercheListe[0]][PAGE]) * 4 + 1) RectangleSosa5.BorderColor = Color.White;
-                if (Int32.Parse(grille[rechercheListe[0]][SOSA]) == Int32.Parse(grille[rechercheListe[0]][PAGE]) * 4 + 2) RectangleSosa6.BorderColor = Color.White;
-                if (Int32.Parse(grille[rechercheListe[0]][SOSA]) == Int32.Parse(grille[rechercheListe[0]][PAGE]) * 4 + 3) RectangleSosa7.BorderColor = Color.White;
+                ChoixSosaComboBox.Text = liste[rechercheListe[0], PAGE];
+                if (liste[rechercheListe[0], SOSA] == liste[rechercheListe[0], PAGE]) RectangleSosa1.BorderColor = Color.White;
+                if (Int32.Parse(liste[rechercheListe[0], SOSA]) == Int32.Parse(liste[rechercheListe[0], PAGE]) * 2) RectangleSosa2.BorderColor = Color.White;
+                if (Int32.Parse(liste[rechercheListe[0], SOSA]) == Int32.Parse(liste[rechercheListe[0], PAGE]) * 2 + 1) RectangleSosa3.BorderColor = Color.White;
+                if (Int32.Parse(liste[rechercheListe[0], SOSA]) == Int32.Parse(liste[rechercheListe[0], PAGE]) * 4) RectangleSosa4.BorderColor = Color.White;
+                if (Int32.Parse(liste[rechercheListe[0], SOSA]) == Int32.Parse(liste[rechercheListe[0], PAGE]) * 4 + 1) RectangleSosa5.BorderColor = Color.White;
+                if (Int32.Parse(liste[rechercheListe[0], SOSA]) == Int32.Parse(liste[rechercheListe[0], PAGE]) * 4 + 2) RectangleSosa6.BorderColor = Color.White;
+                if (Int32.Parse(liste[rechercheListe[0], SOSA]) == Int32.Parse(liste[rechercheListe[0], PAGE]) * 4 + 3) RectangleSosa7.BorderColor = Color.White;
                 if (trouver > 1)
                 {
                     FlecheGaucheRechercheButton.Visible = true;
@@ -4653,6 +4885,7 @@ namespace WindowsFormsApp1
                 }
                 return;
             }
+            ZXCV("OUT");
         }
         private void RechercheSosaTextBox_KeyDown(object sender, KeyEventArgs e)
         {
@@ -4673,14 +4906,14 @@ namespace WindowsFormsApp1
 
                     rechercheListe[0] = f;
                     ChoixSosaComboBox.Text = "";
-                    ChoixSosaComboBox.Text = grille[f][PAGE];
-                    if (grille[f][SOSA] == grille[f][PAGE]) RectangleSosa1.BorderColor = Color.White;
-                    if (Int32.Parse(grille[f][SOSA]) == Int32.Parse(grille[f][PAGE]) * 2) RectangleSosa2.BorderColor = Color.White;
-                    if (Int32.Parse(grille[f][SOSA]) == Int32.Parse(grille[f][PAGE]) * 2 + 1) RectangleSosa3.BorderColor = Color.White;
-                    if (Int32.Parse(grille[f][SOSA]) == Int32.Parse(grille[f][PAGE]) * 4) RectangleSosa4.BorderColor = Color.White;
-                    if (Int32.Parse(grille[f][SOSA]) == Int32.Parse(grille[f][PAGE]) * 4 + 1) RectangleSosa5.BorderColor = Color.White;
-                    if (Int32.Parse(grille[f][SOSA]) == Int32.Parse(grille[f][PAGE]) * 4 + 2) RectangleSosa6.BorderColor = Color.White;
-                    if (Int32.Parse(grille[f][SOSA]) == Int32.Parse(grille[f][PAGE]) * 4 + 3) RectangleSosa7.BorderColor = Color.White;
+                    ChoixSosaComboBox.Text = liste[f, PAGE];
+                    if (liste[f, SOSA] == liste[f, PAGE]) RectangleSosa1.BorderColor = Color.White;
+                    if (Int32.Parse(liste[f, SOSA]) == Int32.Parse(liste[f, PAGE]) * 2) RectangleSosa2.BorderColor = Color.White;
+                    if (Int32.Parse(liste[f, SOSA]) == Int32.Parse(liste[f, PAGE]) * 2 + 1) RectangleSosa3.BorderColor = Color.White;
+                    if (Int32.Parse(liste[f, SOSA]) == Int32.Parse(liste[f, PAGE]) * 4) RectangleSosa4.BorderColor = Color.White;
+                    if (Int32.Parse(liste[f, SOSA]) == Int32.Parse(liste[f, PAGE]) * 4 + 1) RectangleSosa5.BorderColor = Color.White;
+                    if (Int32.Parse(liste[f, SOSA]) == Int32.Parse(liste[f, PAGE]) * 4 + 2) RectangleSosa6.BorderColor = Color.White;
+                    if (Int32.Parse(liste[f, SOSA]) == Int32.Parse(liste[f, PAGE]) * 4 + 3) RectangleSosa7.BorderColor = Color.White;
                     return;
                 }
             }
@@ -4695,14 +4928,14 @@ namespace WindowsFormsApp1
                 {
                     rechercheListe[0] = f;
                     ChoixSosaComboBox.Text = "";
-                    ChoixSosaComboBox.Text = grille[f][PAGE];
-                    if (grille[f][SOSA] == grille[f][PAGE]) RectangleSosa1.BorderColor = Color.White;
-                    if (Int32.Parse(grille[f][SOSA]) == Int32.Parse(grille[f][PAGE]) * 2) RectangleSosa2.BorderColor = Color.White;
-                    if (Int32.Parse(grille[f][SOSA]) == Int32.Parse(grille[f][PAGE]) * 2 + 1) RectangleSosa3.BorderColor = Color.White;
-                    if (Int32.Parse(grille[f][SOSA]) == Int32.Parse(grille[f][PAGE]) * 4) RectangleSosa4.BorderColor = Color.White;
-                    if (Int32.Parse(grille[f][SOSA]) == Int32.Parse(grille[f][PAGE]) * 4 + 1) RectangleSosa5.BorderColor = Color.White;
-                    if (Int32.Parse(grille[f][SOSA]) == Int32.Parse(grille[f][PAGE]) * 4 + 2) RectangleSosa6.BorderColor = Color.White;
-                    if (Int32.Parse(grille[f][SOSA]) == Int32.Parse(grille[f][PAGE]) * 4 + 3) RectangleSosa7.BorderColor = Color.White;
+                    ChoixSosaComboBox.Text = liste[f, PAGE];
+                    if (liste[f, SOSA] == liste[f, PAGE]) RectangleSosa1.BorderColor = Color.White;
+                    if (Int32.Parse(liste[f, SOSA]) == Int32.Parse(liste[f, PAGE]) * 2) RectangleSosa2.BorderColor = Color.White;
+                    if (Int32.Parse(liste[f, SOSA]) == Int32.Parse(liste[f, PAGE]) * 2 + 1) RectangleSosa3.BorderColor = Color.White;
+                    if (Int32.Parse(liste[f, SOSA]) == Int32.Parse(liste[f, PAGE]) * 4) RectangleSosa4.BorderColor = Color.White;
+                    if (Int32.Parse(liste[f, SOSA]) == Int32.Parse(liste[f, PAGE]) * 4 + 1) RectangleSosa5.BorderColor = Color.White;
+                    if (Int32.Parse(liste[f, SOSA]) == Int32.Parse(liste[f, PAGE]) * 4 + 2) RectangleSosa6.BorderColor = Color.White;
+                    if (Int32.Parse(liste[f, SOSA]) == Int32.Parse(liste[f, PAGE]) * 4 + 3) RectangleSosa7.BorderColor = Color.White;
                     return;
                 }
             }
@@ -4762,7 +4995,7 @@ namespace WindowsFormsApp1
             string str = "Titre d'ascendance de";
             XSize textLargeur = gfx.MeasureString(str, font32);
             gfx.DrawString(str, font32, XBrushes.Black, page.Width / 2 - textLargeur.Width / 2, 1.1 * POUCE);
-            str = grille[1][NOM];
+            str = liste[1, PATRONYME];
             textLargeur = gfx.MeasureString(str, font32);
             gfx.DrawString(str, font32, XBrushes.Black, page.Width / 2 - textLargeur.Width / 2, 1.5 * POUCE);
             str = "patrilinéaire";
@@ -4780,9 +5013,9 @@ namespace WindowsFormsApp1
             // col 1 ligne 1 nom
             gfx.DrawString("Non", fontNom, XBrushes.Black, col1 + padding, Y + hauteurLigne);
             // col 1 ligne 2 Date et lieu de naissance
-            // gfx.DrawString("Date et lieu de naissance", font8, XBrushes.Black, col1 + padding, Y + hauteurLigne * 2);
+            gfx.DrawString("Date et lieu de naissance", font8, XBrushes.Black, col1 + padding, Y + hauteurLigne * 2);
             // col 1 ligne 3 Date et lieu du décès
-            //gfx.DrawString("Date et lieu du décès", font8, XBrushes.Black, col1 + padding, Y + hauteurLigne * 3);
+            gfx.DrawString("Date et lieu du décès", font8, XBrushes.Black, col1 + padding, Y + hauteurLigne * 3);
             // col 3 ligne 1 Date du mariage
             PDFEcrireCentrer(ref gfx, "Date du mariage", col3, Y + hauteurLigne, col4);
             // col 3 ligne 2 Lieu du mariage
@@ -4815,45 +5048,52 @@ namespace WindowsFormsApp1
                 gfx.DrawLine(pen1, col3, Y, col3, Y + hauteur);
                 gfx.DrawLine(pen1, col4, Y, col4, Y + hauteur);
                 // col 1 ligne 1 nom
-                gfx.DrawString(grille[sosa][NOM], fontNom, XBrushes.Black, col1 + padding, Y + hauteurLigne);
+                string nom = AssemblerNom(liste[sosa, PRENOM], liste[sosa, PATRONYME]);
+                gfx.DrawString(nom, fontNom, XBrushes.Black, col1 + padding, Y + hauteurLigne);
                 // col 1 ligne 2
-                if (grille[sosa][NELE] != "" || grille[sosa][NELIEU] != "")
+                if (liste[sosa, NELE] != "" || liste[sosa, NELIEU] != "")
                     gfx.DrawString("°", fontDate, XBrushes.Black, col1 + padding + 1, Y + hauteurLigne * 2);
-                PDFEcrire(ref gfx, grille[sosa][NELE], col1 + padding + 6, Y + hauteurLigne * 2, .5 * pouce);
-                PDFEcrire(ref gfx, grille[sosa][NELIEU], col2, Y + hauteurLigne * 2, 1 * pouce);
+                PDFEcrire(ref gfx, liste[sosa, NELE], col1 + padding + 6, Y + hauteurLigne * 2, .5 * pouce);
+                PDFEcrire(ref gfx, liste[sosa, NELIEU], col2, Y + hauteurLigne * 2, 1 * pouce);
                 // col 1 ligne3
-                if (grille[sosa][DELE] != "" || grille[sosa][DELIEU] != "")
+                if (liste[sosa, DELE] != "" || liste[sosa, DELIEU] != "")
                     gfx.DrawString("+", fontDate, XBrushes.Black, col1 + padding, Y + hauteurLigne * 3);
-                PDFEcrire(ref gfx, grille[sosa][DELE], col1 + padding + 6, Y + hauteurLigne * 3, .5 * pouce);
-                PDFEcrire(ref gfx, grille[sosa][DELIEU], col2, Y + hauteurLigne * 3, 1.5 * pouce);
+                PDFEcrire(ref gfx, liste[sosa, DELE], col1 + padding + 6, Y + hauteurLigne * 3, .5 * pouce);
+                PDFEcrire(ref gfx, liste[sosa, DELIEU], col2, Y + hauteurLigne * 3, 1.5 * pouce);
 
                 if (sosa > 1)
                 {
                     // col 3 ligne 1
-                    if (grille[sosa][MALE] != "")
+                    if (liste[sosa, MALE] != "")
                     {
-                        gfx.DrawString("X", fontDate, XBrushes.Black, col3 + .83 * pouce, Y + hauteurLigne);
-                        gfx.DrawString(grille[sosa][MALE], fontDate, XBrushes.Black, col3 + 6 + .83 * pouce, Y + hauteurLigne);
+                        gfx.DrawString("X ", fontDate, XBrushes.Black, col3 + .83 * pouce, Y + hauteurLigne);
+                        gfx.DrawString(liste[sosa, MALE], fontDate, XBrushes.Black, col3 + 6 + .83 * pouce, Y + hauteurLigne);
                     }
                     // col 3 ligne 2
-                    PDFEcrireCentrer(ref gfx, grille[sosa][MALIEU], col3, Y + hauteurLigne * 2, col4);
+                    PDFEcrireCentrer(ref gfx, liste[sosa, MALIEU], col3, Y + hauteurLigne * 2, col4);
 
                 }
                 if (sosa > 1)
                 {
                     // col 4 ligne 1 // nom conjoint
-                    PDFEcrire(ref gfx, grille[sosa + 1][NOM], col4 + padding, Y + hauteurLigne, 2.3 * pouce);
+                    //PDFEcrire(ref gfx, liste[sosa + 1][PATRONYME], col4 + padding, Y + hauteurLigne, 2.3 * pouce);
+                    nom = AssemblerNom(liste[sosa + 1, PRENOM], liste[sosa + 1, PATRONYME]);
+                    gfx.DrawString(nom, fontNom, XBrushes.Black, col4 + padding, Y + hauteurLigne);
                     // col 4 ligne 2 ET 3
                     int sosaParent = (sosa + 1) * 2;
-                    if ((sosaParent < 512 && sosaParent > 0) && grille[sosaParent][NOM] != "" && grille[(sosaParent + 1)][NOM] != "")
+                    if (sosaParent < 512 && sosaParent > 0) 
                     {
-                        nomParent = grille[sosaParent][NOM] + " et " + grille[(sosaParent + 1)][NOM];
-                        PDFEcrire(ref gfx, nomParent, col4 + padding, Y + hauteurLigne * 2, 2.3 * pouce);
-                        if (grille[sosaParent][MALE] != "" || grille[sosaParent][MALIEU] != "")
-                        {
-                            gfx.DrawString("X", fontDate, XBrushes.Black, col4 + padding + 1, Y + hauteurLigne * 3);
-                            PDFEcrire(ref gfx, grille[sosaParent][MALE], col4 + padding + 6, Y + hauteurLigne * 3, .5 * pouce);
-                            PDFEcrire(ref gfx, grille[sosaParent][MALIEU], col5, Y + hauteurLigne * 3, 1 * pouce);
+                        string nomPere = AssemblerNom(liste[sosaParent, PRENOM], liste[sosaParent, PATRONYME]);
+                        string nomMere = AssemblerNom(liste[sosaParent + 1, PRENOM], liste[sosaParent + 1, PATRONYME]);
+                        if (nomPere != "" && nomMere != "") {
+                            nomParent = nomPere + " et " + nomMere;
+                            PDFEcrire(ref gfx, nomParent, col4 + padding, Y + hauteurLigne * 2, 2.3 * pouce);
+                            if (liste[sosaParent, MALE] != "" || liste[sosaParent, MALIEU] != "")
+                            {
+                                gfx.DrawString("X", fontDate, XBrushes.Black, col4 + padding + 1, Y + hauteurLigne * 3);
+                                PDFEcrire(ref gfx, liste[sosaParent, MALE], col4 + padding + 8, Y + hauteurLigne * 3, .5 * pouce);
+                                PDFEcrire(ref gfx, liste[sosaParent, MALIEU], col5, Y + hauteurLigne * 3, 1 * pouce);
+                            }
                         }
                     }
                 }
@@ -4925,7 +5165,7 @@ namespace WindowsFormsApp1
             string str = "Titre d'ascendance de";
             XSize textLargeur = gfx.MeasureString(str, font32);
             gfx.DrawString(str, font32, XBrushes.Black, page.Width / 2 - textLargeur.Width / 2, 1.1 * POUCE);
-            str = grille[1][NOM];
+            str = liste[1, PATRONYME];
             textLargeur = gfx.MeasureString(str, font32);
             gfx.DrawString(str, font32, XBrushes.Black, page.Width / 2 - textLargeur.Width / 2, 1.5 * POUCE);
             str = "matrilinéaire";
@@ -4957,8 +5197,6 @@ namespace WindowsFormsApp1
             // col 4 ligne 3 Date et lieu du mariage des parents du conjoint
             PDFEcrire(ref gfx, "Date et lieu du mariage des parents du conjoint", col4 + padding, Y + hauteurLigne * 3, 2.3 * pouce);
 
-
-
             int[] sosaListe = new int[] { 511, 255, 127, 63, 31, 15, 7, 3, 1 };
             foreach (int sosa in sosaListe)
             {
@@ -4978,44 +5216,53 @@ namespace WindowsFormsApp1
                 gfx.DrawLine(pen1, col3, Y, col3, Y + hauteur);
                 gfx.DrawLine(pen1, col4, Y, col4, Y + hauteur);
                 // col 1 ligne 1 nom
-                gfx.DrawString(grille[sosa][NOM], fontNom, XBrushes.Black, col1 + padding, Y + hauteurLigne);
+                string nom = AssemblerNom(liste[sosa, PRENOM], liste[sosa, PATRONYME]);
+                gfx.DrawString(nom, fontNom, XBrushes.Black, col1 + padding, Y + hauteurLigne);
                 // col 1 ligne 2
-                if (grille[sosa][NELE] != "" || grille[sosa][NELIEU] != "")
+                if (liste[sosa, NELE] != "" || liste[sosa, NELIEU] != "")
                     gfx.DrawString("°", fontDate, XBrushes.Black, col1 + padding + 1, Y + hauteurLigne * 2);
-                PDFEcrire(ref gfx, grille[sosa][NELE], col1 + padding + 6, Y + hauteurLigne * 2, .5 * pouce);
-                PDFEcrire(ref gfx, grille[sosa][NELIEU], col2, Y + hauteurLigne * 2, 1 * pouce);
+                PDFEcrire(ref gfx, liste[sosa, NELE], col1 + padding + 6, Y + hauteurLigne * 2, .5 * pouce);
+                PDFEcrire(ref gfx, liste[sosa, NELIEU], col2, Y + hauteurLigne * 2, 1 * pouce);
                 // col 1 ligne3
-                if (grille[sosa][DELE] != "" || grille[sosa][DELIEU] != "")
+                if (liste[sosa, DELE] != "" || liste[sosa, DELIEU] != "")
                     gfx.DrawString("+", fontDate, XBrushes.Black, col1 + padding, Y + hauteurLigne * 3);
-                PDFEcrire(ref gfx, grille[sosa][DELE], col1 + padding + 6, Y + hauteurLigne * 3, .5 * pouce);
-                PDFEcrire(ref gfx, grille[sosa][DELIEU], col2, Y + hauteurLigne * 3, 1.5 * pouce);
+                PDFEcrire(ref gfx, liste[sosa, DELE], col1 + padding + 6, Y + hauteurLigne * 3, .5 * pouce);
+                PDFEcrire(ref gfx, liste[sosa, DELIEU], col2, Y + hauteurLigne * 3, 1.5 * pouce);
                 
                 // col 3 ligne 1
                 if (sosa > 1)
                 {
-                    if (grille[sosa-1][MALE] != "")
+                    if (liste[sosa-1, MALE] != "")
                     {
-                        gfx.DrawString("X", fontDate, XBrushes.Black, col3 + .83 * pouce, Y + hauteurLigne);
-                        gfx.DrawString(grille[sosa-1][MALE], fontDate, XBrushes.Black, col3 + 6 + .83 * pouce, Y + hauteurLigne);
+                        gfx.DrawString("X ", fontDate, XBrushes.Black, col3 + .83 * pouce, Y + hauteurLigne);
+                        gfx.DrawString(liste[sosa-1, MALE], fontDate, XBrushes.Black, col3 + 6 + .83 * pouce, Y + hauteurLigne);
                     }
                     // col 3 ligne 2
-                    PDFEcrireCentrer(ref gfx, grille[sosa-1][MALIEU], col3, Y + hauteurLigne * 2, col4);
+                    PDFEcrireCentrer(ref gfx, liste[sosa-1, MALIEU], col3, Y + hauteurLigne * 2, col4);
                 }
                 if (sosa > 1)
                 {
                 // col 4 ligne 1 // nom conjoint
-                    PDFEcrire(ref gfx, grille[sosa - 1][NOM], col4 + padding, Y + hauteurLigne, 2.3 * pouce);
-                // col 4 ligne 2 ET 3
+                    //PDFEcrire(ref gfx, liste[sosa - 1][PATRONYME], col4 + padding, Y + hauteurLigne, 2.3 * pouce);
+                    nom = AssemblerNom(liste[sosa - 1, PRENOM], liste[sosa - 1, PATRONYME]);
+                    gfx.DrawString(nom, fontNom, XBrushes.Black, col4 + padding, Y + hauteurLigne);
+                    // col 4 ligne 2 ET 3
 
                     int sosaParent = (sosa - 1) * 2;
-                    if ((sosaParent < 512 && sosaParent > 0) && grille[sosaParent][NOM] != "" && grille[(sosaParent + 1)][NOM] != "")
+                    if ((sosaParent < 512 && sosaParent > 0))
                     {
-                        nomParent = grille[sosaParent][NOM] + " et " + grille[(sosaParent + 1)][NOM];
-                        PDFEcrire(ref gfx, nomParent, col4 + padding, Y + hauteurLigne * 2, 2.3 * pouce);
-                        if (grille[sosaParent][MALE] != "" || grille[sosaParent][MALIEU] != "") {
-                            gfx.DrawString("X", fontDate, XBrushes.Black, col4 + padding + 1, Y + hauteurLigne * 3);
-                            PDFEcrire(ref gfx, grille[sosaParent][MALE], col4 + padding + 6, Y + hauteurLigne * 3, .5 * pouce);
-                            PDFEcrire(ref gfx, grille[sosaParent][MALIEU], col5, Y + hauteurLigne * 3, 1 * pouce);
+                        string nomPere = AssemblerNom(liste[sosaParent, PRENOM], liste[sosaParent, PATRONYME]);
+                        string nomMere = AssemblerNom(liste[sosaParent + 1, PRENOM], liste[sosaParent + 1, PATRONYME]);
+                        if (nomPere != "" && nomMere != "")
+                        {
+                            nomParent = nomPere + " et " + nomMere;
+                            PDFEcrire(ref gfx, nomParent, col4 + padding, Y + hauteurLigne * 2, 2.3 * pouce);
+                            if (liste[sosaParent, MALE] != "" || liste[sosaParent, MALIEU] != "")
+                            {
+                                gfx.DrawString("X", fontDate, XBrushes.Black, col4 + padding + 1, Y + hauteurLigne * 3);
+                                PDFEcrire(ref gfx, liste[sosaParent, MALE], col4 + padding + 8, Y + hauteurLigne * 3, .5 * pouce);
+                                PDFEcrire(ref gfx, liste[sosaParent, MALIEU], col5, Y + hauteurLigne * 3, 1 * pouce);
+                            }
                         }
                     }
                 }
@@ -5048,4 +5295,8 @@ namespace WindowsFormsApp1
             ChoixSosaComboBox.Text = Convert.ToString(a);
         }
     }
- }
+
+    internal class List<T1, T2>
+    {
+    }
+}

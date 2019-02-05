@@ -21,7 +21,7 @@ namespace TableauAscendant
         {
             public int Reference { get; set; }
             public string ID { get; set; }
-            public string Nom { get; set; }
+            public string Patronyme { get; set; }
             public string Prenom { get; set; }
             public string Sex { get; set; }
             public string Titre { get; set; }
@@ -46,7 +46,7 @@ namespace TableauAscendant
 
             public override string ToString()
             {
-                return "ID: " + ID + "   Prenom: " + Prenom + "   Nom: " + Nom;
+                return "ID: " + ID + "   Prenom: " + Prenom + "   Patronyme: " + Patronyme;
             }
             public override bool Equals(object obj)
             {
@@ -117,7 +117,7 @@ namespace TableauAscendant
             }
         }
 
-        private string[] ExtraireNom(string s)
+        private string[] ExtrairePatronyme(string s)
         {
             // 1 NAME Nnn Nnnn  /Nnnnnnnn/
             int p1 = s.IndexOf("/");
@@ -152,7 +152,7 @@ namespace TableauAscendant
                 {
                     if (dataGEDCOM[i].Contains("0 @I"))                                                    // Individu
                     {
-                        string nom = "";
+                        string patronyme = "";
                         string prenom = "";
                         string sex = "";
                         string titre;
@@ -211,11 +211,11 @@ namespace TableauAscendant
                                 if (loop)
                                     i--;
                             }
-                            if (dataGEDCOM[i].Contains("1 NAME") && nom == "" && prenom == ""  )                // Nom
+                            if (dataGEDCOM[i].Contains("1 NAME") && patronyme == "" && prenom == ""  )                // Nom
                             {
-                                string[] temp = ExtraireNom(dataGEDCOM[i]);
+                                string[] temp = ExtrairePatronyme(dataGEDCOM[i]);
                                 prenom = temp[0];
-                                nom = temp[1];
+                                patronyme = temp[1];
                             }
                             if (dataGEDCOM[i].Contains("1 SEX") && dataGEDCOM[i].Length > 6 )                   // Sex
                             {
@@ -405,7 +405,7 @@ namespace TableauAscendant
                         listeIndividu.Add(new ListeIndividu() {
                             ID = ID,
                             Prenom = prenom,
-                            Nom = nom,
+                            Patronyme = patronyme,
                             Sex = sex,
                             DateNaissance = dateNaissance,
                             LieuNaissance = lieuNaissance,
@@ -679,13 +679,13 @@ namespace TableauAscendant
             return "";
         }
 
-        public string AvoirNom(string ID)
+        public string AvoirPatronyme(string ID)
         {
             foreach (ListeIndividu info in listeIndividu)
             {
                 if (info.ID == ID)
                 {
-                    return info.Nom;
+                    return info.Patronyme;
                 }
             }
             return "";
@@ -875,7 +875,7 @@ namespace TableauAscendant
             string p = prenom.ToLower();
             foreach (ListeIndividu info in listeIndividu)
             {
-                string nn = info.Nom.ToLower();
+                string nn = info.Patronyme.ToLower();
                 string pp = info.Prenom.ToLower();
                 if (nn.Contains(n) && pp.Contains(p))
                 {
