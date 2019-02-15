@@ -18,6 +18,7 @@ using PdfSharp.Drawing;
 using PdfSharp.Drawing.Layout;
 using PdfSharp.Pdf;
 using TableauAscendant;
+using Microsoft.Win32;
 
 namespace WindowsFormsApp1
 {
@@ -25,7 +26,10 @@ namespace WindowsFormsApp1
     /// 
     ///</Summary>
     public partial class TableauAscendant : Form
-    {
+    {   /// <summary>
+        /// nom du fichier de log
+        /// </summary>
+        public bool LOGACTIF = true;
         /// <summary>
         /// position de la colonne SOSA dans le tableau grille
         /// </summary>
@@ -107,9 +111,19 @@ namespace WindowsFormsApp1
         /// </summary>
         public const int LARGEURTEXTEFICHE = 138;
         /// <summary>
-        /// numero du SOSA courantlargeur maximun de nom dans fiche
+        /// numero du SOSA courant
         /// </summary>
         public int sosaCourant = 0;
+        /// <summary>
+        /// nom du fichier de log
+        /// </summary>
+        public string  FICHIERLOG = "01TA-szUejmCjMh.log";
+        /// <summary>
+        /// nom du fichier de la grille
+        /// </summary>
+        public string FICHIERGRILLE = "01TA-grille.txt";
+
+
 
         /// <summary>
         /// liste qui contient toutes les informations pour généré les tableaux
@@ -167,7 +181,6 @@ namespace WindowsFormsApp1
 
         private void    AfficherData()
         {
-            ZXCV("IN");
             if (ChoixSosaComboBox.Text == "")
             {
                 // enlève les cases
@@ -429,7 +442,6 @@ namespace WindowsFormsApp1
                 GoSosa7Btn.Visible = false;
             }
             ChoixSosaComboBox.Focus();
-            ZXCV("OUT");
         }
         private void    AvoirDossierrapport()
         {
@@ -524,7 +536,6 @@ namespace WindowsFormsApp1
         }
         private void    ChoixChanger()
         {
-            ZXCV("IN");
             if (ChoixSosaComboBox.Text == "" && sosaCourant == 0)
             {
                 return;
@@ -576,7 +587,6 @@ namespace WindowsFormsApp1
                     ChoixSosaComboBox.BackColor = Color.Red;
                 }
             }
-            ZXCV("OUT");
         }
         private string  ConvertirDate(string date)
         {
@@ -1579,15 +1589,34 @@ namespace WindowsFormsApp1
         **************************************************************************************************************/
         private void    EnregisterGrille()
         {
-            string Fichier = "grille.txt";
-            using (StreamWriter ligne = File.CreateText(Fichier))
-                //ligne.WriteLine("SOSA" + " " + "PAGE");
-
-                for (int f = 0; f < 512; f++)
+            try
+            {
+                string fichier;
+                if (Directory.Exists(DossierPDF))
                 {
-                    ligne.WriteLine(liste[f, SOSA] + " " + liste[f, PAGE] + " " + liste[f, PATRONYME]);
+                    fichier = DossierPDF + "\\" + FICHIERGRILLE;
+                }
+                else
+                {
+                    fichier = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\" + FICHIERGRILLE;
                 }
 
+                
+                using (StreamWriter ligne = File.CreateText(fichier))
+                    //ligne.WriteLine("SOSA" + " " + "PAGE");
+
+                    for (int f = 0; f < 512; f++)
+                    {
+                        ligne.WriteLine(
+                            "SOSA " + liste[f, SOSA] + " " + 
+                            "PAGE " + liste[f, PAGE] + " " + 
+                            liste[f, PATRONYME] +  " " + 
+                            liste[f, PRENOM] + " " +
+                            "MALE " + liste[f, MALE]  +" " +
+                            "MALIEU " + liste[f, MALIEU ] + " " 
+                            );
+                    }
+            } catch {}
         }
         /**************************************************************************************************************/
         private void    EnteteTableMatiere(ref PdfDocument document, ref XGraphics gfx, ref PdfPage page)
@@ -2403,18 +2432,28 @@ namespace WindowsFormsApp1
             
             return numeroTableau;
         }
-        private void     ZXCV(string message, [CallerLineNumber] int lineNumber = 0, [CallerMemberName] string caller = null)
+        private void ZXCV(string message, [CallerLineNumber] int lineNumber = 0, [CallerMemberName] string caller = null)
         {
-            Console.WriteLine(lineNumber + " " + caller + " " + message);
-
-            string Fichier = "C:\\Users\\dapam\\Documents\\TableauAscendant" + "\\" + "01log.txt";
-            using (StreamWriter ligne = File.AppendText(Fichier))
+            if (LOGACTIF) { 
+                string fichier;
+            try
             {
-                ligne.WriteLine(lineNumber + " " + caller + " " + message);
-                
-            }
-            
+                if (Directory.Exists(DossierPDF))
+                {
+                    fichier = DossierPDF + "\\" + FICHIERLOG;
+                }
+                else
+                {
+                    fichier = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\" + FICHIERLOG;
+                }
 
+                using (StreamWriter ligne = File.AppendText(fichier))
+                {
+                    ligne.WriteLine(lineNumber + " " + caller + " " + message);
+                }
+            }
+            catch { }
+            }
         }
         private void    NouvellePage(ref PdfDocument document, ref XGraphics gfx, ref PdfPage page, string Orientation)
         {
@@ -2433,7 +2472,6 @@ namespace WindowsFormsApp1
         }
         private Boolean LireData()
         {
-            ZXCV("IN");
             int index=0;
             string s;
             string crochet = "[]";
@@ -2591,8 +2629,6 @@ namespace WindowsFormsApp1
                     ChoixSosaComboBox.Text = "1";
                     Modifier = false;
                     this.Text = NomPrograme + "   " + FichierCourant;
-
-                    ZXCV("OUT");
                     return true;
                 }
                 catch (Exception m)
@@ -2601,12 +2637,10 @@ namespace WindowsFormsApp1
                     MessageBox.Show("Ne peut pas lire le fichier du data.\r\n\r\n" + m.Message, "Problème ?",
                                      MessageBoxButtons.OK,
                                      MessageBoxIcon.Warning);
-                    ZXCV("OUT erreur");
                     return false;
                 }
 
             }
-            ZXCV("OUT");
             return true;
         }
         private Boolean LongeurNomtOk(string nom)
@@ -2716,7 +2750,6 @@ namespace WindowsFormsApp1
         }
         private void    RafraichirData()
         {
-            ZXCV("IN");
             sosaCourant = Int32.Parse(ChoixSosaComboBox.Text);
             int index;
             // affiche les informations
@@ -2821,9 +2854,8 @@ namespace WindowsFormsApp1
             Sosa7NeEndroitTextBox.Text = liste[index, NELIEU];
             Sosa7DeTextBox.Text = liste[index, DELE];
             Sosa7DeEndroitTextBox.Text = liste[index, DELIEU];
-            ZXCV("OUT");
         }
-        private void RechercheID()
+        private void    RechercheID()
         {
             DataTable listeAChoisir = new DataTable();
             listeAChoisir.Columns.Add("ID", typeof(string));
@@ -2857,7 +2889,6 @@ namespace WindowsFormsApp1
         }
         private void    SosaChanger()
         {
-            ZXCV("IN");
             int index;
             if (sosaCourant > 0)
             {
@@ -2943,7 +2974,6 @@ namespace WindowsFormsApp1
                 RafraichirData();
             }
             AfficherData();
-            ZXCV("OUT");
         }
         private string  StrDate(string date)
         {
@@ -3171,13 +3201,12 @@ namespace WindowsFormsApp1
             DateTime Maintenant = DateTime.Today;
             DateLb.Text = Maintenant.ToString("yyyy/MM/dd");
             
-            string Fichier = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\TableauAscendant\\TableauAscendant.ini";
-  
-            if (File.Exists(Fichier))
+            string fichier = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\TableauAscendant\\TableauAscendant.ini";
+            if (File.Exists(fichier))
             {
                 try
                 {
-                    using (StreamReader sr = File.OpenText(Fichier))
+                    using (StreamReader sr = File.OpenText(fichier))
                     {
                         while ((Ligne = sr.ReadLine()) != null)
                         {
@@ -3190,7 +3219,7 @@ namespace WindowsFormsApp1
                                 byte r = Convert.ToByte(sr.ReadLine());
                                 byte g = Convert.ToByte(sr.ReadLine());
                                 byte b = Convert.ToByte(sr.ReadLine());
-                                
+
                                 Color c = Color.FromArgb(r, g, b);
                                 ChangerCouleurBloc(c);
                             }
@@ -3209,12 +3238,65 @@ namespace WindowsFormsApp1
                                      MessageBoxButtons.OK,
                                      MessageBoxIcon.Warning);
                 }
+                if (LOGACTIF)
+                {
+                    try
+                    {
+                        fichier = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\" + FICHIERGRILLE;
+                        if (File.Exists(fichier))
+                        {
+                            File.Delete(fichier);
+                        }
+                        fichier = DossierPDF + "\\" + FICHIERGRILLE;
+                        if (File.Exists(fichier))
+                        {
+                            File.Delete(fichier);
+                        }
+
+
+                        fichier = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\" + FICHIERLOG;
+                        if (File.Exists(fichier))
+                        {
+                            File.Delete(fichier);
+                        }
+                        fichier = DossierPDF + "\\" + FICHIERLOG;
+                        if (File.Exists(fichier))
+                        {
+                            File.Delete(fichier);
+                        }
+
+
+
+                        if (Directory.Exists(DossierPDF))
+                        {
+                            fichier = fichier = DossierPDF + "\\" + FICHIERLOG;
+                        }
+                        else
+                        {
+                            fichier = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\" + FICHIERLOG;
+                        }
+                        using (StreamWriter ligne = File.AppendText(fichier))
+                        {
+                            ligne.WriteLine("************************************************");
+                            ligne.WriteLine("  Log de TableauAscendant");
+                            ligne.WriteLine("  " + "Version " + Application.ProductVersion + "B");
+                            ligne.WriteLine("  " + DateTime.Now);
+                            RegistryKey registryKey = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion");
+                            string ProductName = registryKey.GetValue("ProductName").ToString(); //Windows Home
+                            string ReleaseId = registryKey.GetValue("ReleaseId").ToString(); //1809
+                            string CurrentBuild = registryKey.GetValue("CurrentBuild").ToString(); //17763
+                            string buildNumber = registryKey.GetValue("UBR").ToString(); //316
+                            ligne.WriteLine("  " + ProductName  + " " + ReleaseId + " " +  CurrentBuild + "." + buildNumber); 
+                            ligne.WriteLine("************************************************");
+                        }
+                    }
+                    catch { }
+                }
             }
             ChoixSosaComboBox.Text  = "";
             GenerationAlb.Text = "";
             GenerationBlb.Text = "";
             GenerationClb.Text = "";
-
             AfficherData();
             if (argument != "")
             {
@@ -3225,8 +3307,7 @@ namespace WindowsFormsApp1
             FlecheDroiteRechercheButton.Visible = false ;
 
             // pour le développement
-            //FichierTest();
-            ZXCV("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+            // FichierTest();
         }
         private void    TableauAscendant_Paint(object sender, PaintEventArgs e)
         {
@@ -3359,6 +3440,52 @@ namespace WindowsFormsApp1
             }
         }
         private void    Sosa1DeEndroitTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            Modifier = true;
+            this.Text = NomPrograme + "   *" + FichierCourant;
+        }
+        private void Sosa1MaTextBox_TextChanged(object sender, EventArgs e)
+        {
+            liste[sosaCourant, MALE] = Sosa1MaTextBox.Text;
+            bool rep = ValiderDate(Sosa1MaTextBox.Text);
+            if (rep)
+            {
+                Sosa1MaTextBox.BackColor = Color.White;
+                if (!LongeurTextOk(liste[sosaCourant, MALE]))
+                {
+                    Sosa1MaTextBox.BackColor = couleurTextTropLong;
+                }
+                else
+                {
+                    Sosa1MaTextBox.BackColor = couleurChamp;
+                }
+            }
+            else
+            {
+                Sosa1MaTextBox.BackColor = Color.Red;
+            }
+        }
+
+        private void Sosa1MaTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            Modifier = true;
+            this.Text = NomPrograme + "   *" + FichierCourant;
+        }
+
+        private void Sosa1MaEndroitTextBox_TextChanged(object sender, EventArgs e)
+        {
+            liste[sosaCourant, MALIEU] = Sosa1MaEndroitTextBox.Text;
+            if (!LongeurTextOk(Sosa1MaEndroitTextBox.Text))
+            {
+                Sosa1MaEndroitTextBox.BackColor = couleurTextTropLong;
+            }
+            else
+            {
+                Sosa1MaEndroitTextBox.BackColor = couleurChamp;
+            }
+        }
+
+        private void Sosa1MaEndroitTextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
             Modifier = true;
             this.Text = NomPrograme + "   *" + FichierCourant;
@@ -3802,6 +3929,7 @@ namespace WindowsFormsApp1
             {
                 Sosa45MaTextBox.BackColor = Color.Red;
             }
+            EnregisterGrille();
         }
         private void    Sosa45MaTextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
@@ -4807,7 +4935,6 @@ namespace WindowsFormsApp1
         }
         private void RechercheSosaButton_Click(object sender, EventArgs e)
         {
-            ZXCV("IN");
             DummyButton.Focus();
             RectangleSosa1.BorderColor = Color.Black;
             RectangleSosa2.BorderColor = Color.Black;
@@ -4885,7 +5012,6 @@ namespace WindowsFormsApp1
                 }
                 return;
             }
-            ZXCV("OUT");
         }
         private void RechercheSosaTextBox_KeyDown(object sender, KeyEventArgs e)
         {
@@ -5294,6 +5420,8 @@ namespace WindowsFormsApp1
             //int b = System.Convert.ToInt32(a);
             ChoixSosaComboBox.Text = Convert.ToString(a);
         }
+
+        
     }
 
     internal class List<T1, T2>

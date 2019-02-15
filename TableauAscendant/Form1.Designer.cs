@@ -1110,6 +1110,7 @@ namespace WindowsFormsApp1
             this.RectangleSosaConjoint1.BackStyle = Microsoft.VisualBasic.PowerPacks.BackStyle.Opaque;
             this.RectangleSosaConjoint1.BorderColor = System.Drawing.Color.Black;
             this.RectangleSosaConjoint1.BorderWidth = 3;
+            this.RectangleSosaConjoint1.CornerRadius = 4;
             this.RectangleSosaConjoint1.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
             this.RectangleSosaConjoint1.FillStyle = Microsoft.VisualBasic.PowerPacks.FillStyle.Solid;
             this.RectangleSosaConjoint1.Location = new System.Drawing.Point(64, 473);
@@ -1136,7 +1137,7 @@ namespace WindowsFormsApp1
             this.RectangleGénérationA.BackStyle = Microsoft.VisualBasic.PowerPacks.BackStyle.Opaque;
             this.RectangleGénérationA.BorderColor = System.Drawing.Color.Black;
             this.RectangleGénérationA.BorderWidth = 3;
-            this.RectangleGénérationA.CornerRadius = 7;
+            this.RectangleGénérationA.CornerRadius = 4;
             this.RectangleGénérationA.Location = new System.Drawing.Point(63, 29);
             this.RectangleGénérationA.Name = "RectangleGénérationA";
             this.RectangleGénérationA.Size = new System.Drawing.Size(275, 25);
@@ -1147,7 +1148,7 @@ namespace WindowsFormsApp1
             this.RectangleGénérationB.BackStyle = Microsoft.VisualBasic.PowerPacks.BackStyle.Opaque;
             this.RectangleGénérationB.BorderColor = System.Drawing.Color.Black;
             this.RectangleGénérationB.BorderWidth = 3;
-            this.RectangleGénérationB.CornerRadius = 7;
+            this.RectangleGénérationB.CornerRadius = 4;
             this.RectangleGénérationB.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
             this.RectangleGénérationB.Location = new System.Drawing.Point(421, 29);
             this.RectangleGénérationB.Name = "RectangleGénérationB";
@@ -1159,7 +1160,7 @@ namespace WindowsFormsApp1
             this.RectangleGénérationC.BackStyle = Microsoft.VisualBasic.PowerPacks.BackStyle.Opaque;
             this.RectangleGénérationC.BorderColor = System.Drawing.Color.Black;
             this.RectangleGénérationC.BorderWidth = 3;
-            this.RectangleGénérationC.CornerRadius = 7;
+            this.RectangleGénérationC.CornerRadius = 4;
             this.RectangleGénérationC.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
             this.RectangleGénérationC.FillGradientColor = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
             this.RectangleGénérationC.Location = new System.Drawing.Point(740, 29);
@@ -1233,6 +1234,7 @@ namespace WindowsFormsApp1
             this.RectangleSosa1.BackStyle = Microsoft.VisualBasic.PowerPacks.BackStyle.Opaque;
             this.RectangleSosa1.BorderColor = System.Drawing.Color.Black;
             this.RectangleSosa1.BorderWidth = 3;
+            this.RectangleSosa1.CornerRadius = 4;
             this.RectangleSosa1.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
             this.RectangleSosa1.FillStyle = Microsoft.VisualBasic.PowerPacks.FillStyle.Solid;
             this.RectangleSosa1.Location = new System.Drawing.Point(63, 300);
@@ -1245,6 +1247,7 @@ namespace WindowsFormsApp1
             this.RectangleSosa7.BackStyle = Microsoft.VisualBasic.PowerPacks.BackStyle.Opaque;
             this.RectangleSosa7.BorderColor = System.Drawing.Color.Black;
             this.RectangleSosa7.BorderWidth = 3;
+            this.RectangleSosa7.CornerRadius = 4;
             this.RectangleSosa7.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
             this.RectangleSosa7.FillGradientColor = System.Drawing.Color.Transparent;
             this.RectangleSosa7.FillStyle = Microsoft.VisualBasic.PowerPacks.FillStyle.Solid;
@@ -1257,6 +1260,7 @@ namespace WindowsFormsApp1
             this.RectangleSosa5.BackStyle = Microsoft.VisualBasic.PowerPacks.BackStyle.Opaque;
             this.RectangleSosa5.BorderColor = System.Drawing.Color.Black;
             this.RectangleSosa5.BorderWidth = 3;
+            this.RectangleSosa5.CornerRadius = 4;
             this.RectangleSosa5.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
             this.RectangleSosa5.FillStyle = Microsoft.VisualBasic.PowerPacks.FillStyle.Solid;
             this.RectangleSosa5.Location = new System.Drawing.Point(740, 234);
@@ -1269,6 +1273,7 @@ namespace WindowsFormsApp1
             this.RectangleSosa6.BackStyle = Microsoft.VisualBasic.PowerPacks.BackStyle.Opaque;
             this.RectangleSosa6.BorderColor = System.Drawing.Color.Black;
             this.RectangleSosa6.BorderWidth = 3;
+            this.RectangleSosa6.CornerRadius = 4;
             this.RectangleSosa6.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
             this.RectangleSosa6.FillStyle = Microsoft.VisualBasic.PowerPacks.FillStyle.Solid;
             this.RectangleSosa6.Location = new System.Drawing.Point(740, 368);
@@ -1281,6 +1286,7 @@ namespace WindowsFormsApp1
             this.RectangleSosa4.BackStyle = Microsoft.VisualBasic.PowerPacks.BackStyle.Opaque;
             this.RectangleSosa4.BorderColor = System.Drawing.Color.Black;
             this.RectangleSosa4.BorderWidth = 3;
+            this.RectangleSosa4.CornerRadius = 4;
             this.RectangleSosa4.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
             this.RectangleSosa4.FillStyle = Microsoft.VisualBasic.PowerPacks.FillStyle.Solid;
             this.RectangleSosa4.Location = new System.Drawing.Point(740, 60);
@@ -1292,6 +1298,7 @@ namespace WindowsFormsApp1
             this.RectangleSosa3.BackStyle = Microsoft.VisualBasic.PowerPacks.BackStyle.Opaque;
             this.RectangleSosa3.BorderColor = System.Drawing.Color.Black;
             this.RectangleSosa3.BorderWidth = 3;
+            this.RectangleSosa3.CornerRadius = 4;
             this.RectangleSosa3.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
             this.RectangleSosa3.FillStyle = Microsoft.VisualBasic.PowerPacks.FillStyle.Solid;
             this.RectangleSosa3.Location = new System.Drawing.Point(421, 453);
@@ -1304,6 +1311,7 @@ namespace WindowsFormsApp1
             this.RectangleSosa2.BackStyle = Microsoft.VisualBasic.PowerPacks.BackStyle.Opaque;
             this.RectangleSosa2.BorderColor = System.Drawing.Color.Black;
             this.RectangleSosa2.BorderWidth = 3;
+            this.RectangleSosa2.CornerRadius = 4;
             this.RectangleSosa2.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
             this.RectangleSosa2.FillStyle = Microsoft.VisualBasic.PowerPacks.FillStyle.Solid;
             this.RectangleSosa2.Location = new System.Drawing.Point(421, 150);
@@ -2163,6 +2171,8 @@ namespace WindowsFormsApp1
             this.Sosa1MaEndroitTextBox.Name = "Sosa1MaEndroitTextBox";
             this.Sosa1MaEndroitTextBox.Size = new System.Drawing.Size(226, 20);
             this.Sosa1MaEndroitTextBox.TabIndex = 9;
+            this.Sosa1MaEndroitTextBox.TextChanged += new System.EventHandler(this.Sosa1MaEndroitTextBox_TextChanged);
+            this.Sosa1MaEndroitTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Sosa1MaEndroitTextBox_KeyPress);
             // 
             // Sosa1MaTextBox
             // 
@@ -2171,6 +2181,8 @@ namespace WindowsFormsApp1
             this.Sosa1MaTextBox.Name = "Sosa1MaTextBox";
             this.Sosa1MaTextBox.Size = new System.Drawing.Size(226, 20);
             this.Sosa1MaTextBox.TabIndex = 8;
+            this.Sosa1MaTextBox.TextChanged += new System.EventHandler(this.Sosa1MaTextBox_TextChanged);
+            this.Sosa1MaTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Sosa1MaTextBox_KeyPress);
             // 
             // Sosa1LieuEtiquettetBox
             // 
