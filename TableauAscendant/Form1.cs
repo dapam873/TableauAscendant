@@ -2401,35 +2401,35 @@ namespace WindowsFormsApp1
             if (fleche)
             {
                 numeroTableau = liste[sosa, TABLEAU];
-                gfx.DrawString("Tableau", font8, XBrushes.Black, Col8 + 100, Ligne[80], XStringFormats.TopLeft);
+                gfx.DrawString("Tableau", font8, XBrushes.Black, Col8 + 100, Ligne[78], XStringFormats.TopLeft);
 
                 if (numeroTableau != "")
                 {
-                    gfx.DrawString(numeroTableau, font8, XBrushes.Black, Col8 + 135, Ligne[80], XStringFormats.TopLeft);
+                    gfx.DrawString(numeroTableau, font8, XBrushes.Black, Col8 + 135, Ligne[78], XStringFormats.TopLeft);
                 }
                 else
                 {
-                    gfx.DrawString("_____", font8, XBrushes.Black, Col8 + 135, Ligne[80], XStringFormats.TopLeft);
+                    gfx.DrawString("_____", font8, XBrushes.Black, Col8 + 135, Ligne[78], XStringFormats.TopLeft);
                 }
             }
 
             if (PreparerPar.Text != "" && !tous)
             {
-                gfx.DrawString("Préparé par " + PreparerPar.Text + " le " + DateLb.Text, font8, XBrushes.Black, Col1, Ligne[81], XStringFormats.Default);
+                gfx.DrawString("Préparé par " + PreparerPar.Text + " le " + DateLb.Text, font8, XBrushes.Black, Col1, Ligne[79], XStringFormats.Default);
             }
 
             // version à adfficher pour beta
-            gfx.DrawString("Version " + Application.ProductVersion + "B", font8, XBrushes.Black, Col1, Ligne[82], XStringFormats.Default);
+            gfx.DrawString("Version " + Application.ProductVersion + "B", font8, XBrushes.Black, Col1, Ligne[80], XStringFormats.Default);
             // Logo
             XImage img = global::TableauAscendant.Properties.Resources.dapamv5_32png;
-            
+            /*
             XPen penDapam = new XPen(XColor.FromArgb(0, 0, 0), 2);
             XFont fontDapam = new XFont("Arial", 14, XFontStyle.Bold);
             XFont fontDesign = new XFont("Arial", 5.5, XFontStyle.Italic);
-            gfx.DrawRoundedRectangle(penDapam,gris, pouce * 8.03, pouce * 7.82, 59, 20, 15, 15);
-            gfx.DrawString("DAPAM", fontDapam, XBrushes.Black, pouce * 8.08, pouce * 8.025);
-            gfx.DrawString("Design", fontDesign, XBrushes.Black, pouce * 7.75, pouce * 7.9);
-            
+            gfx.DrawRoundedRectangle(penDapam,gris, pouce * 8.03, pouce * 7.66, 59, 20, 15, 15);
+            gfx.DrawString("DAPAM", fontDapam, XBrushes.Black, pouce * 8.08, pouce * 7.87);
+            gfx.DrawString("Design", fontDesign, XBrushes.Black, pouce * 7.75, pouce * 7.75);
+            */
             return numeroTableau;
         }
         private void ZXCV(string message, [CallerLineNumber] int lineNumber = 0, [CallerMemberName] string caller = null)
@@ -3929,7 +3929,6 @@ namespace WindowsFormsApp1
             {
                 Sosa45MaTextBox.BackColor = Color.Red;
             }
-            EnregisterGrille();
         }
         private void    Sosa45MaTextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
@@ -5121,7 +5120,7 @@ namespace WindowsFormsApp1
             string str = "Titre d'ascendance de";
             XSize textLargeur = gfx.MeasureString(str, font32);
             gfx.DrawString(str, font32, XBrushes.Black, page.Width / 2 - textLargeur.Width / 2, 1.1 * POUCE);
-            str = liste[1, PATRONYME];
+            str = liste[1, PRENOM] + " " +  liste[1, PATRONYME];
             textLargeur = gfx.MeasureString(str, font32);
             gfx.DrawString(str, font32, XBrushes.Black, page.Width / 2 - textLargeur.Width / 2, 1.5 * POUCE);
             str = "patrilinéaire";
@@ -5248,7 +5247,7 @@ namespace WindowsFormsApp1
             }
             XUnit pouce = XUnit.FromInch(1);
             XPen pen1 = new XPen(XColor.FromArgb(0, 0, 0), 1);
-            XFont fontNom = new XFont("Arial", 10, XFontStyle.Regular);
+            XFont fontNom = new XFont("Arial", 10, XFontStyle.Bold);
             XFont fontDate = new XFont("Arial", 8, XFontStyle.Regular);
             XFont fontB = new XFont("Arial", 8, XFontStyle.Bold);
             XFont font32 = new XFont("arial", 24, XFontStyle.Bold);
@@ -5291,7 +5290,7 @@ namespace WindowsFormsApp1
             string str = "Titre d'ascendance de";
             XSize textLargeur = gfx.MeasureString(str, font32);
             gfx.DrawString(str, font32, XBrushes.Black, page.Width / 2 - textLargeur.Width / 2, 1.1 * POUCE);
-            str = liste[1, PATRONYME];
+            str = liste[1, PRENOM] + " " +  liste[1, PATRONYME];
             textLargeur = gfx.MeasureString(str, font32);
             gfx.DrawString(str, font32, XBrushes.Black, page.Width / 2 - textLargeur.Width / 2, 1.5 * POUCE);
             str = "matrilinéaire";
