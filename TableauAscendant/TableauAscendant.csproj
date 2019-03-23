@@ -132,11 +132,11 @@
     <Reference Include="PA.Utilities.AssemblyMetadata, Version=6.1.0.0, Culture=neutral, PublicKeyToken=efe7f84d28b0579c, processorArchitecture=MSIL">
       <HintPath>..\packages\PA.Utilities.AssemblyMetadata.6.1.0\lib\net45\PA.Utilities.AssemblyMetadata.dll</HintPath>
     </Reference>
-    <Reference Include="PdfSharp, Version=1.32.3057.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
-      <HintPath>..\packages\PDFsharp.1.32.3057.0\lib\net20\PdfSharp.dll</HintPath>
+    <Reference Include="PdfSharp, Version=1.50.5147.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\PDFsharp.1.50.5147\lib\net20\PdfSharp.dll</HintPath>
     </Reference>
-    <Reference Include="PdfSharp.Charting, Version=1.32.3057.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
-      <HintPath>..\packages\PDFsharp.1.32.3057.0\lib\net20\PdfSharp.Charting.dll</HintPath>
+    <Reference Include="PdfSharp.Charting, Version=1.50.5147.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\PDFsharp.1.50.5147\lib\net20\PdfSharp.Charting.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Collections.Immutable, Version=1.2.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -151,8 +151,8 @@
       <Private>True</Private>
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.Runtime, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.Runtime.4.3.0\lib\net462\System.Runtime.dll</HintPath>
+    <Reference Include="System.Runtime, Version=4.1.1.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.4.3.1\lib\net462\System.Runtime.dll</HintPath>
       <Private>True</Private>
       <Private>True</Private>
     </Reference>
@@ -266,7 +266,6 @@
   <ItemGroup>
     <Content Include="publish\setup.exe" />
     <None Include="Resources\beta.png" />
-    <None Include="Resources\cadre.bmp" />
     <None Include="Resources\cadre.png" />
     <None Include="Resources\femelle-D_512.png" />
     <None Include="Resources\femelle-G_512.png" />
@@ -281,10 +280,10 @@
     <None Include="Resources\flecheDroite_22_20.png" />
     <None Include="Resources\flecheGauche_22_20.png" />
     <None Include="Resources\male_G_512.png" />
-    <None Include="Resources\male-D_48png.png" />
-    <None Include="Resources\male-D_48.png" />
-    <None Include="Resources\male-D_64.png" />
-    <None Include="Resources\male-D_512.png" />
+    <None Include="Resources\male_D-48png.png" />
+    <None Include="Resources\male_D-48.png" />
+    <None Include="Resources\male_D_64.png" />
+    <None Include="Resources\male_D_512.png" />
     <None Include="Resources\fiche1.png" />
     <Content Include="Resources\recherche.jpg" />
     <None Include="Resources\TA.ico" />

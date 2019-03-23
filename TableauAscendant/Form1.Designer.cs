@@ -1090,7 +1090,7 @@ namespace WindowsFormsApp1
             this.RectangleSosa4,
             this.RectangleSosa3,
             this.RectangleSosa2});
-            this.ShapeContainer1.Size = new System.Drawing.Size(1084, 671);
+            this.ShapeContainer1.Size = new System.Drawing.Size(1084, 676);
             this.ShapeContainer1.TabIndex = 99;
             this.ShapeContainer1.TabStop = false;
             // 
@@ -2214,6 +2214,7 @@ namespace WindowsFormsApp1
             this.SosaConjoint1PatronymeTextBox.Size = new System.Drawing.Size(226, 13);
             this.SosaConjoint1PatronymeTextBox.TabIndex = 10;
             this.SosaConjoint1PatronymeTextBox.Visible = false;
+            this.SosaConjoint1PatronymeTextBox.TextChanged += new System.EventHandler(this.SosaConjoint1PatronymeTextBox_TextChanged);
             // 
             // SosaConjoint1Label
             // 
@@ -2415,12 +2416,13 @@ namespace WindowsFormsApp1
             this.SosaConjoint1PrenomTextBox.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.SosaConjoint1PrenomTextBox.CausesValidation = false;
             this.SosaConjoint1PrenomTextBox.Cursor = System.Windows.Forms.Cursors.No;
-            this.SosaConjoint1PrenomTextBox.Location = new System.Drawing.Point(110, 497);
+            this.SosaConjoint1PrenomTextBox.Location = new System.Drawing.Point(110, 496);
             this.SosaConjoint1PrenomTextBox.Name = "SosaConjoint1PrenomTextBox";
             this.SosaConjoint1PrenomTextBox.ReadOnly = true;
             this.SosaConjoint1PrenomTextBox.Size = new System.Drawing.Size(226, 13);
             this.SosaConjoint1PrenomTextBox.TabIndex = 193;
             this.SosaConjoint1PrenomTextBox.Visible = false;
+            this.SosaConjoint1PrenomTextBox.TextChanged += new System.EventHandler(this.SosaConjoint1PrenomTextBox_TextChanged);
             // 
             // Conjoint1Lbl
             // 
@@ -2440,7 +2442,7 @@ namespace WindowsFormsApp1
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(204)))), ((int)(((byte)(255)))));
             this.BackgroundImage = global::TableauAscendant.Properties.Resources.beta;
-            this.ClientSize = new System.Drawing.Size(1084, 671);
+            this.ClientSize = new System.Drawing.Size(1084, 676);
             this.Controls.Add(this.Conjoint1Lbl);
             this.Controls.Add(this.SosaConjoint1PrenomTextBox);
             this.Controls.Add(this.Sosa4NeTextBox);
@@ -2579,8 +2581,8 @@ namespace WindowsFormsApp1
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.MenuMs;
             this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(1100, 710);
-            this.MinimumSize = new System.Drawing.Size(1100, 710);
+            this.MaximumSize = new System.Drawing.Size(1100, 715);
+            this.MinimumSize = new System.Drawing.Size(1100, 715);
             this.Name = "TableauAscendant";
             this.Text = "Tableau ascendant";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.TableauAscendant_FormClosing);

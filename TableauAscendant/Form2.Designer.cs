@@ -34,17 +34,16 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form2));
             this.label1 = new System.Windows.Forms.Label();
             this.VersionLb = new System.Windows.Forms.Label();
-            this.DAPAMTb = new System.Windows.Forms.TextBox();
             this.PambrunLLb = new System.Windows.Forms.LinkLabel();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.Label18 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
-            this.DAPAMRs = new Microsoft.VisualBasic.PowerPacks.RectangleShape();
-            this.shapeContainer1 = new Microsoft.VisualBasic.PowerPacks.ShapeContainer();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.logoDAPAM = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.logoDAPAM)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -66,20 +65,6 @@
             this.VersionLb.Size = new System.Drawing.Size(0, 16);
             this.VersionLb.TabIndex = 1;
             this.VersionLb.Click += new System.EventHandler(this.VersionLb_Click);
-            // 
-            // DAPAMTb
-            // 
-            this.DAPAMTb.BackColor = System.Drawing.Color.Silver;
-            this.DAPAMTb.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.DAPAMTb.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.DAPAMTb.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.DAPAMTb.Location = new System.Drawing.Point(113, 325);
-            this.DAPAMTb.Margin = new System.Windows.Forms.Padding(0);
-            this.DAPAMTb.Name = "DAPAMTb";
-            this.DAPAMTb.Size = new System.Drawing.Size(57, 19);
-            this.DAPAMTb.TabIndex = 111;
-            this.DAPAMTb.TabStop = false;
-            this.DAPAMTb.Text = "DAPAM";
             // 
             // PambrunLLb
             // 
@@ -146,26 +131,6 @@
             this.label6.TabIndex = 118;
             this.label6.Text = "Licence :   GNU Public Licence v3 ";
             // 
-            // DAPAMRs
-            // 
-            this.DAPAMRs.BorderColor = System.Drawing.Color.Black;
-            this.DAPAMRs.BorderWidth = 3;
-            this.DAPAMRs.CornerRadius = 7;
-            this.DAPAMRs.Location = new System.Drawing.Point(107, 322);
-            this.DAPAMRs.Name = "DAPAMRs";
-            this.DAPAMRs.Size = new System.Drawing.Size(67, 24);
-            // 
-            // shapeContainer1
-            // 
-            this.shapeContainer1.Location = new System.Drawing.Point(0, 0);
-            this.shapeContainer1.Margin = new System.Windows.Forms.Padding(0);
-            this.shapeContainer1.Name = "shapeContainer1";
-            this.shapeContainer1.Shapes.AddRange(new Microsoft.VisualBasic.PowerPacks.Shape[] {
-            this.DAPAMRs});
-            this.shapeContainer1.Size = new System.Drawing.Size(284, 361);
-            this.shapeContainer1.TabIndex = 119;
-            this.shapeContainer1.TabStop = false;
-            // 
             // pictureBox1
             // 
             this.pictureBox1.Image = global::TableauAscendant.Properties.Resources.TA128;
@@ -175,6 +140,16 @@
             this.pictureBox1.TabIndex = 120;
             this.pictureBox1.TabStop = false;
             // 
+            // logoDAPAM
+            // 
+            this.logoDAPAM.BackgroundImage = global::TableauAscendant.Properties.Resources.dapamv5_32png;
+            this.logoDAPAM.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.logoDAPAM.Location = new System.Drawing.Point(91, 315);
+            this.logoDAPAM.Name = "logoDAPAM";
+            this.logoDAPAM.Size = new System.Drawing.Size(100, 34);
+            this.logoDAPAM.TabIndex = 122;
+            this.logoDAPAM.TabStop = false;
+            // 
             // Form2
             // 
             this.AccessibleDescription = "Form_2_";
@@ -183,6 +158,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Silver;
             this.ClientSize = new System.Drawing.Size(284, 361);
+            this.Controls.Add(this.logoDAPAM);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.Label18);
@@ -190,10 +166,8 @@
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.PambrunLLb);
-            this.Controls.Add(this.DAPAMTb);
             this.Controls.Add(this.VersionLb);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.shapeContainer1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MaximumSize = new System.Drawing.Size(300, 400);
@@ -205,6 +179,7 @@
             this.TopMost = true;
             this.Load += new System.EventHandler(this.Form2_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.logoDAPAM)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -214,15 +189,13 @@
 
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label VersionLb;
-        private System.Windows.Forms.TextBox DAPAMTb;
         private System.Windows.Forms.LinkLabel PambrunLLb;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label Label18;
         private System.Windows.Forms.Label label6;
-        private Microsoft.VisualBasic.PowerPacks.RectangleShape DAPAMRs;
-        private Microsoft.VisualBasic.PowerPacks.ShapeContainer shapeContainer1;
         private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.PictureBox logoDAPAM;
     }
 }

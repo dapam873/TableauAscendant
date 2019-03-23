@@ -26,7 +26,12 @@ namespace WindowsFormsApp1
     /// 
     ///</Summary>
     public partial class TableauAscendant : Form
-    {   /// <summary>
+    {
+        /// <summary>
+        /// nom du fichier de log
+        /// </summary>
+        public Color couleurBloc;
+        /// <summary>
         /// nom du fichier de log
         /// </summary>
         public bool LOGACTIF = true;
@@ -174,6 +179,7 @@ namespace WindowsFormsApp1
         //Color arrierePlanBoite = Color.FromArgb(99, 255, 255);
         Color couleurChamp = Color.White;
         Color couleurTextTropLong = Color.Yellow;
+        Color couleurFond = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(204)))), ((int)(((byte)(255)))));
 
        GEDCOMClass GEDCOM = new GEDCOMClass();
 
@@ -181,6 +187,10 @@ namespace WindowsFormsApp1
 
         private void    AfficherData()
         {
+            SosaConjoint1PatronymeTextBox.BackColor = couleurBloc;
+            SosaConjoint1PrenomTextBox.BackColor = couleurBloc;
+
+
             if (ChoixSosaComboBox.Text == "")
             {
                 // enlève les cases
@@ -195,6 +205,9 @@ namespace WindowsFormsApp1
                 Sosa1MaTextBox.Visible = false;
                 Sosa1MaEndroitTextBox.Visible = false;
                 sosa1LigneVertical.Visible = true;
+
+                SosaConjoint1PatronymeTextBox.Visible = false;
+                SosaConjoint1PrenomTextBox.Visible = false;
                 RectangleSosaConjoint1.Visible = true;
                 Sosa1MaEtiquettetBox.Visible = true;
                 Sosa1LieuEtiquettetBox.Visible = true;
@@ -237,6 +250,7 @@ namespace WindowsFormsApp1
 
                 Sosa5Label.Visible = false;
                 Sosa5PatronymeTextBox.Visible = false;
+                Sosa5PrenomTextBox.Visible = false;
                 Sosa5NeTextBox.Visible = false;
                 Sosa5NeEndroitTextBox.Visible = false;
                 Sosa5DeTextBox.Visible = false;
@@ -280,7 +294,11 @@ namespace WindowsFormsApp1
                 Sosa1NeEndroitTextBox.Visible = true;
                 Sosa1DeTextBox.Visible = true;
                 Sosa1DeEndroitTextBox.Visible = true;
-                if ((sosaCourant > 1) &&  (sosaCourant % 2 == 0) )
+                Sosa1MaTextBox.BackColor = couleurChamp;
+                Sosa1MaEndroitTextBox.BackColor = couleurChamp;
+
+
+                if ((sosaCourant == 1) ||  (sosaCourant % 2 == 0) )
                 {
                     Sosa1MaTextBox.Visible = true;
                     Sosa1MaEndroitTextBox.Visible = true;
@@ -303,6 +321,19 @@ namespace WindowsFormsApp1
                     Sosa1LieuEtiquettetBox.Visible = false;
                     
                 }
+                if (sosaCourant == 1)
+                {
+                    SosaConjoint1PatronymeTextBox.BackColor = couleurChamp;
+                    SosaConjoint1PatronymeTextBox.Enabled = true;
+                    SosaConjoint1PrenomTextBox.BackColor = couleurChamp;
+                    SosaConjoint1PrenomTextBox.Enabled = true;
+                    Sosa1MaTextBox.BackColor = couleurChamp;
+                    Sosa1MaTextBox.Enabled = true;
+                    Sosa1MaEndroitTextBox.BackColor = couleurChamp;
+                    Sosa1MaEndroitTextBox.Enabled = true;
+                }
+
+
                 Note1.Visible = true;
                 Note2.Visible = true;
                 NoteDuHautLb.Visible = true;
@@ -919,9 +950,9 @@ namespace WindowsFormsApp1
                     ligne.WriteLine("Ver   =3.0");
                     for (index = 0; index < 512; index++)
                     {
-                        if ((liste[index, PATRONYME] != "" || liste[index, PRENOM] != "" || liste[index, NELE] != "" || liste[index, NELIEU] != "" || liste[index, DELE] != ""
-                             || liste[index, DELIEU] != "" || liste[index, MALE] != "" || liste[index, MALIEU] != "" ||
-                             liste[index, NOTE1] != "" || liste[index, NOTE2] != "") && liste[index, SOSA] != "0")
+                        if (liste[index, PATRONYME] != "" || liste[index, PRENOM] != "" || liste[index, NELE] != "" || liste[index, NELIEU] != "" 
+                             || liste[index, DELE] != "" || liste[index, DELIEU] != "" || liste[index, MALE] != "" || liste[index, MALIEU] != "" ||
+                             liste[index, NOTE1] != "" || liste[index, NOTE2] != "") 
                         {
                             ligne.WriteLine("[sosa*]");
                             ligne.WriteLine("No    =" + liste[index, SOSA]);
@@ -1585,7 +1616,7 @@ namespace WindowsFormsApp1
             return false;
         }
         /**************************************************************************************************************
-            enregistre la grille dans ficier
+            enregistre la grille dans fichier pour le développement.
         **************************************************************************************************************/
         private void    EnregisterGrille()
         {
@@ -1704,7 +1735,11 @@ namespace WindowsFormsApp1
         }
         private void    FlecheDroite(XGraphics gfx, XFont font, double x, double y,  double hauteur, int sosa)
         {
-            XImage img = global::TableauAscendant.Properties.Resources.flecheDroite;
+
+            //XImage img = global::TableauAscendant.Properties.Resources.flecheDroite;
+            XImage img = XImage.FromFile("FlecheDroite.png");
+
+
             y = y + (hauteur / 2 - 16);
             if (sosa == 0 || (sosa > 7 && sosa < 128)) {
                 gfx.DrawImage(img, x, y, 32, 32);
@@ -1720,7 +1755,9 @@ namespace WindowsFormsApp1
         private void    FlecheGauche(XGraphics gfx, XFont font, double x, double y, double hauteur, int sosa)
         {
             decimal sosaD = sosa;
-            XImage img = global::TableauAscendant.Properties.Resources.flecheGauche;
+
+            //           XImage img = global::TableauAscendant.Properties.Resources.flecheGauche;
+            XImage img = XImage.FromFile("FlecheGauche.png");
             y = y + (hauteur / 2 - 16);
             if (sosa == 0)
             {
@@ -1740,7 +1777,6 @@ namespace WindowsFormsApp1
         }
         private string  DessinerPage(ref PdfDocument document, ref XGraphics gfx, int sosa, bool fleche, bool tous)
         {
-            //int inch = 72 // 72 pointCreatePage
             XUnit pouce = XUnit.FromInch(1);
             XPen pen = new XPen(XColor.FromArgb(0, 0, 0),2);
             XPen penG = new XPen(XColor.FromArgb(100, 100, 100), 1);
@@ -1751,14 +1787,12 @@ namespace WindowsFormsApp1
             XFont font8B = new XFont("Arial", 8, XFontStyle.Bold);
             XBrush gris = new XSolidBrush(XColor.FromArgb(255, 255, 255));
             XBrush CouleurBloc = new XSolidBrush(XColor.FromArgb(RectangleSosa1.FillColor.R, RectangleSosa1.FillColor.G, RectangleSosa1.FillColor.B));
-
             XTextFormatter tf = new XTextFormatter(gfx);
             double xx = pouce * .5;
             double yy = pouce * .5;
             string str;
             string numeroTableau = "";
             int f; // pour for
-            //int numeroPage = 0;
             double y = 0;
             /**************************************************************************/
             //  Pour le développement                                                 */   
@@ -1784,7 +1818,6 @@ namespace WindowsFormsApp1
             double Col8 = Col7 + EspaceEntreBoite;  // Boite coté gauche sosa 8
             double Col9 = Col8 + largeurBoite;      // Boite coté droite sosa 8
             double Col10 = Col9 + 5;                // Flèche Droite
-
             
             double positionLieu = .16 * pouce; // position Lieu par rapport date mariage = .16 * pouce; // par rapport date mariage
             // position des ligne au 1/4 pouce
@@ -1978,9 +2011,7 @@ namespace WindowsFormsApp1
             // dessine boite
             {
                 gfx.DrawRoundedRectangle(pen, CouleurBloc, Col2, positionBoite[1, 1], largeurBoite, hauteurBoite, 10, 10); // Boite sosa 1
-                if(sosa != 1) {
-                    gfx.DrawRoundedRectangle(pen, CouleurBloc, Col2, positionBoite[1, 1] + hauteurLigne* 16, largeurBoite, hauteurBoiteMini, 10, 10); //  Boite sosa 1 conjoint
-                }
+                gfx.DrawRoundedRectangle(pen, CouleurBloc, Col2, positionBoite[1, 1] + hauteurLigne* 16, largeurBoite, hauteurBoiteMini, 10, 10); //  Boite sosa 1 conjoint
                 gfx.DrawRoundedRectangle(pen, CouleurBloc, Col4, positionBoite[2, 1], largeurBoite, hauteurBoite, 10, 10); // Boite sosa 2
                 gfx.DrawRoundedRectangle(pen, CouleurBloc, Col4, positionBoite[3, 1], largeurBoite, hauteurBoite, 10, 10); // Boite sosa 3
                 gfx.DrawRoundedRectangle(pen, CouleurBloc, Col6, positionBoite[4, 1], largeurBoite, hauteurBoite, 10, 10); // Boite sosa 4
@@ -2014,9 +2045,7 @@ namespace WindowsFormsApp1
                     gfx.DrawLine(pen, Col7, positionBoite[6, 1] + hauteurBoite / 2, Col8 + 8, positionBoite[6, 1] + hauteurBoite / 2); // Horizontal 6
                     gfx.DrawLine(pen, Col7, positionBoite[7, 1] + hauteurBoite / 2, Col8 + 8, positionBoite[7, 1] + hauteurBoite / 2); // Horizontal 7
                 }
-                if(sosa != 1) {
-                    gfx.DrawLine(pen, Col2 + 8, positionBoite[1, 1] + hauteurBoite, Col2 + 8, positionBoite[1, 1] + hauteurBoite + hauteurLigne * 5); // vertical sosa 1 conjoint
-                }
+                gfx.DrawLine(pen, Col2 + 8, positionBoite[1, 1] + hauteurBoite, Col2 + 8, positionBoite[1, 1] + hauteurBoite + hauteurLigne * 5); // vertical sosa 1 conjoint
                 gfx.DrawLine(pen, Col4 + 8, positionBoite[2, 1] + hauteurBoite, Col4 + 8, positionBoite[3, 1]); // vertical 2 3
                 gfx.DrawLine(pen, Col6 + 8, positionBoite[4, 1] + hauteurBoite, Col6 + 8, positionBoite[5, 1]); // vertical 4 5
                 gfx.DrawLine(pen, Col6 + 8, positionBoite[6, 1] + hauteurBoite, Col6 + 8, positionBoite[7, 1]); // vertical 6 7
@@ -2029,40 +2058,34 @@ namespace WindowsFormsApp1
                     gfx.DrawLine(pen, Col8 + 8, positionBoite[14, 1] + hauteurBoiteMini, Col8 + 8, positionBoite[15, 1]); // vertical 14 15
                 }
             }
-            //
             tf.Alignment = XParagraphAlignment.Right;
             int RetraitSosa = 20;
             XRect rect = new XRect();
             
             // Dessiner les informations des boites
             // sosa conjoint
-
-            if (sosa > 1)
+            int sosaConjoint;
+            if (sosa == 1 || sosa % 2 == 0)
             {
-                int sosaConjoint;
-                if (sosa % 2 == 0)
-                {
-                    sosaConjoint = sosa + 1;
-                }
-                else
-                {
-                    sosaConjoint = sosa - 1;
-                }
-                rect = new XRect(positionBoite[1, 0] - RetraitSosa, positionBoite[1, 1] + hauteurLigne * 16, 15, 10);
-                if (sosa < 2)
-                {
-                    gfx.DrawLine(penG, positionBoite[1, 0] - RetraitSosa + 3, positionBoite[1, 1] + 10, positionBoite[1, 0] - RetraitSosa + 11, positionBoite[1, 1] + 10);
-                }
-                else
-                    tf.DrawString(sosaConjoint.ToString(), font8B, XBrushes.Black, rect, XStringFormats.TopLeft);
-
+                sosaConjoint = sosa + 1;
             }
-
-                // sosa 1 à 7
-                for (f = 1; f < 8; f++)
+            else
+            {
+                sosaConjoint = sosa - 1;
+            }
+            rect = new XRect(positionBoite[1, 0] - RetraitSosa, positionBoite[1, 1] + hauteurLigne * 16, 15, 10);
+            if (sosa < 1)
+            {
+                gfx.DrawLine(penG, positionBoite[1, 0] - RetraitSosa + 3, positionBoite[1, 1] + hauteurLigne * 16, positionBoite[1, 0] - RetraitSosa + 11, positionBoite[1, 1] + hauteurLigne * 16);
+            }
+            else {
+                tf.DrawString(sosaConjoint.ToString(), font8B, XBrushes.Black, rect, XStringFormats.TopLeft);
+            }
+            // sosa 1 à 7
+            for (f = 1; f < 8; f++)
             {
                 rect = new XRect(positionBoite[f, 0] - RetraitSosa, positionBoite[f, 1], 15, 10);
-                if ( sosa == 0 )
+                if ( sosa < 1 )
                 {
                     gfx.DrawLine(penG, positionBoite[f, 0] - RetraitSosa + 3, positionBoite[f, 1] + 10, positionBoite[f, 0] - RetraitSosa + 11, positionBoite[f, 1] + 10);
                 }
@@ -2070,7 +2093,6 @@ namespace WindowsFormsApp1
                 {
                     tf.DrawString(sosaBoite[f], font8B, XBrushes.Black, rect, XStringFormats.TopLeft);
                 }
-            
                 gfx.DrawString("N", font8B, XBrushes.Black, positionBoite[f, 0], positionBoite[f, 1] + hauteurLigne * 4);
                 gfx.DrawString("L", font8B, XBrushes.Black, positionBoite[f, 0], positionBoite[f, 1] + hauteurLigne * 6);
                 gfx.DrawString("D", font8B, XBrushes.Black, positionBoite[f, 0], positionBoite[f, 1] + hauteurLigne * 8);
@@ -2094,10 +2116,8 @@ namespace WindowsFormsApp1
                 }
             }
 
-            if (sosa != 1) {
-                gfx.DrawString("M", font8B, XBrushes.Black, Col2 + 10, positionBoite[1, 1] + (hauteurLigne * 13), XStringFormats.Default);  // sosa 1 conjoint
-                gfx.DrawString("L", font8B, XBrushes.Black, Col2 + 10, positionBoite[1, 1] + (hauteurLigne * 15), XStringFormats.Default);  // sosa 1 conjoint
-            }
+            gfx.DrawString("M", font8B, XBrushes.Black, Col2 + 10, positionBoite[1, 1] + (hauteurLigne * 13), XStringFormats.Default);  // sosa 1 conjoint
+            gfx.DrawString("L", font8B, XBrushes.Black, Col2 + 10, positionBoite[1, 1] + (hauteurLigne * 15), XStringFormats.Default);  // sosa 1 conjoint
             gfx.DrawString("M", font8B, XBrushes.Black, Col4 + 10, positionBoite[2, 1] + hauteurLigne * 20, XStringFormats.Default);      // sosa 02-03
             gfx.DrawString("L", font8B, XBrushes.Black, Col4 + 10, positionBoite[2, 1] + hauteurLigne * 22, XStringFormats.Default);      // sosa 02-03
             gfx.DrawString("M", font8B, XBrushes.Black, Col6 + 10, positionBoite[4, 1] + hauteurLigne * 13, XStringFormats.Default);      // sosa 04-05
@@ -2116,12 +2136,11 @@ namespace WindowsFormsApp1
                 gfx.DrawString("M", font8B, XBrushes.Black, Col8 + 10, positionBoite[14, 1] + hauteurLigne * 6, XStringFormats.Default);  // sosa 14-15
                 gfx.DrawString("L", font8B, XBrushes.Black, Col8 + 10, positionBoite[14, 1] + hauteurLigne * 8, XStringFormats.Default);  // sosa 14-15
             }
-            //}
 
             int xInfo = 7;
             if (sosa == 0)
             {
-                int largeurLigne = 135; // 
+                int largeurLigne = 135; 
                 for (f = 1; f < 8; f++)
                 {
                     gfx.DrawLine(penG, positionBoite[f, 0], positionBoite[f, 1] + hauteurLigne * 1, positionBoite[f, 0] + 142, positionBoite[f, 1] + hauteurLigne * 1);
@@ -2155,32 +2174,29 @@ namespace WindowsFormsApp1
                 //info des boites
                 int largeurLigne = 142; // 
                 {
-                    if (sosa != 1){
-                        int sosaConjoint;
-                        if (sosa%2 == 0 ) {
-                            sosaConjoint = sosa + 1;
-                        } else {
-                            sosaConjoint = sosa - 1;
-                        }
-                        string nom = AssemblerNom(liste[sosaConjoint, PRENOM], liste[sosaConjoint, PATRONYME]);
-                        if (nom == "" )
-                        {
-                            gfx.DrawLine(penG, positionBoite[1, 0], positionBoite[1, 1] + hauteurLigne * 19, Col2 + 142, positionBoite[1, 1] + hauteurLigne * 19);
-                        }
-                        string rt = RacoucirNom(nom, ref gfx);
-                        gfx.DrawString(rt, font8B, XBrushes.Black, Col2 + 2, positionBoite[1, 1] + hauteurLigne * 19, XStringFormats.Default);
-
+                    //int sosaConjoint;
+                    if (sosa%2 == 0 ) {
+                        sosaConjoint = sosa + 1;
+                    } else {
+                        sosaConjoint = sosa - 1;
                     }
+                    string nom = AssemblerNom(liste[sosaConjoint, PRENOM], liste[sosaConjoint, PATRONYME]);
+                    if (nom == "" )
+                    {
+                        gfx.DrawLine(penG, positionBoite[1, 0], positionBoite[1, 1] + hauteurLigne * 19, Col2 + 142, positionBoite[1, 1] + hauteurLigne * 19);
+                    }
+                    string rt = RacoucirNom(nom, ref gfx);
+                    gfx.DrawString(rt, font8B, XBrushes.Black, Col2 + 2, positionBoite[1, 1] + hauteurLigne * 18 + 2, XStringFormats.Default);
+
                     for (f = 1; f < 8; f++)
                     {
-
                         // Nom
-                        string nom = AssemblerNom(liste[sosaIndex[f], PRENOM], liste[sosaIndex[f], PATRONYME]);
+                        nom = AssemblerNom(liste[sosaIndex[f], PRENOM], liste[sosaIndex[f], PATRONYME]);
                         if (nom == "")
                         {
                             gfx.DrawLine(penG, positionBoite[f, 0], positionBoite[f, 1] + hauteurLigne * 2, positionBoite[f, 0] + 142, positionBoite[f, 1] + hauteurLigne * 2);
                         }
-                        string rt = RacoucirNom(nom, ref gfx);
+                        rt = RacoucirNom(nom, ref gfx);
                         gfx.DrawString(rt, font8B, XBrushes.Black, positionBoite[f, 0], positionBoite[f, 1] + hauteurLigne * 2, XStringFormats.Default);
                         // Né le 
                         if (liste[sosaIndex[f], NELE] == "")
@@ -2215,46 +2231,44 @@ namespace WindowsFormsApp1
                     {
                         if (sosaIndex[f] < 512)
                         {
-                            string nom = AssemblerNom(liste[sosaIndex[f], PRENOM], liste[sosaIndex[f], PATRONYME]);
+                            //string nom = AssemblerNom(liste[sosaIndex[f], PRENOM], liste[sosaIndex[f], PATRONYME]);
+                            nom = AssemblerNom(liste[sosaIndex[f], PRENOM], liste[sosaIndex[f], PATRONYME]);
                             if (nom == "")
                             {
                                 gfx.DrawLine(penG, positionBoite[f, 0] + 2, positionBoite[f, 1] + hauteurLigne * 3, positionBoite[f, 0] + 2 + 140, positionBoite[f, 1] + hauteurLigne * 3);
                             }
-                            string rt = RacoucirNom(nom, ref gfx);
+                            //string rt = RacoucirNom(nom, ref gfx);
+                            rt = RacoucirNom(nom, ref gfx);
                             gfx.DrawString(rt, font8B, XBrushes.Black, positionBoite[f, 0], positionBoite[f, 1] + hauteurLigne * 2 + 3, XStringFormats.Default);
                         }
                     }
                     int p = 18;
                     int l = 140;
 
-
-                    // mariage 1 sosa = 1
-                    if (sosa != 1 ) {
-                        if (sosa%2 == 0 ) {
+                    // mariage 1 
+                    if (sosa == 1 || sosa%2 == 0 ) {
                         
-                            if (liste[sosa, MALE] == "")
-                            {
-                                gfx.DrawLine(penG, Col2 + p, positionBoite[1, 1] + hauteurLigne* 13, Col2 + l, positionBoite[1, 1] + hauteurLigne * 13);
-                            }
-                            gfx.DrawString(liste[sosa, MALE], font8, XBrushes.Black, Col2 + p, positionBoite[1, 1] + hauteurLigne * 13, XStringFormats.Default);
-                            if (liste[sosa, MALIEU] == "")
-                            {
-                                gfx.DrawLine(penG, Col2 + p, positionBoite[1, 1] + hauteurLigne * 15, Col2 + l, positionBoite[1, 1] + hauteurLigne * 15);
-                            }
-                            gfx.DrawString(liste[sosa, MALIEU], font8, XBrushes.Black, Col2 + p, positionBoite[1, 1] + hauteurLigne * 15, XStringFormats.Default);
-                        } else {
-                            if (liste[sosa-1, MALE] == "") 
-                            {
-                                gfx.DrawLine(penG, Col2 + p, positionBoite[1, 1] + hauteurLigne * 13, Col2 + l, positionBoite[1, 1] + hauteurLigne * 13);
-                            }
-                            gfx.DrawString(liste[sosa-1, MALE], font8, XBrushes.Black, Col2 + p, positionBoite[1, 1] + hauteurLigne * 13, XStringFormats.Default);
-                            if (liste[sosa-1, MALIEU] == "")
-                            {
-                                gfx.DrawLine(penG, Col2 + p, positionBoite[1, 1] + hauteurLigne * 15, Col2 + l, positionBoite[1, 1] + hauteurLigne * 15);
-                            }
-                            gfx.DrawString(liste[sosa-1, MALIEU], font8, XBrushes.Black, Col2 + p, positionBoite[1, 1] + hauteurLigne * 15, XStringFormats.Default);
+                        if (liste[sosa, MALE] == "")
+                        {
+                            gfx.DrawLine(penG, Col2 + p, positionBoite[1, 1] + hauteurLigne* 13, Col2 + l, positionBoite[1, 1] + hauteurLigne * 13);
                         }
-
+                        gfx.DrawString(liste[sosa, MALE], font8, XBrushes.Black, Col2 + p, positionBoite[1, 1] + hauteurLigne * 13, XStringFormats.Default);
+                        if (liste[sosa, MALIEU] == "")
+                        {
+                            gfx.DrawLine(penG, Col2 + p, positionBoite[1, 1] + hauteurLigne * 15, Col2 + l, positionBoite[1, 1] + hauteurLigne * 15);
+                        }
+                        gfx.DrawString(liste[sosa, MALIEU], font8, XBrushes.Black, Col2 + p, positionBoite[1, 1] + hauteurLigne * 15, XStringFormats.Default);
+                    } else {
+                        if (liste[sosa-1, MALE] == "") 
+                        {
+                            gfx.DrawLine(penG, Col2 + p, positionBoite[1, 1] + hauteurLigne * 13, Col2 + l, positionBoite[1, 1] + hauteurLigne * 13);
+                        }
+                        gfx.DrawString(liste[sosa-1, MALE], font8, XBrushes.Black, Col2 + p, positionBoite[1, 1] + hauteurLigne * 13, XStringFormats.Default);
+                        if (liste[sosa-1, MALIEU] == "")
+                        {
+                            gfx.DrawLine(penG, Col2 + p, positionBoite[1, 1] + hauteurLigne * 15, Col2 + l, positionBoite[1, 1] + hauteurLigne * 15);
+                        }
+                        gfx.DrawString(liste[sosa-1, MALIEU], font8, XBrushes.Black, Col2 + p, positionBoite[1, 1] + hauteurLigne * 15, XStringFormats.Default);
                     }
 
                     // mariage 2 3
@@ -2421,7 +2435,7 @@ namespace WindowsFormsApp1
             // version à adfficher pour beta
             gfx.DrawString("Version " + Application.ProductVersion + "B", font8, XBrushes.Black, Col1, Ligne[80], XStringFormats.Default);
             // Logo
-            XImage img = global::TableauAscendant.Properties.Resources.dapamv5_32png;
+//            XImage img = global::TableauAscendant.Properties.Resources.dapamv5_32png;
             /*
             XPen penDapam = new XPen(XColor.FromArgb(0, 0, 0), 2);
             XFont fontDapam = new XFont("Arial", 14, XFontStyle.Bold);
@@ -2432,7 +2446,7 @@ namespace WindowsFormsApp1
             */
             return numeroTableau;
         }
-        private void ZXCV(string message, [CallerLineNumber] int lineNumber = 0, [CallerMemberName] string caller = null)
+        private void    ZXCV(string message, [CallerLineNumber] int lineNumber = 0, [CallerMemberName] string caller = null)
         {
             if (LOGACTIF) { 
                 string fichier;
@@ -2641,6 +2655,7 @@ namespace WindowsFormsApp1
                 }
 
             }
+
             return true;
         }
         private Boolean LongeurNomtOk(string nom)
@@ -2750,6 +2765,9 @@ namespace WindowsFormsApp1
         }
         private void    RafraichirData()
         {
+            
+            SosaConjoint1PatronymeTextBox.BackColor = couleurBloc;
+            SosaConjoint1PrenomTextBox.BackColor = couleurBloc;
             sosaCourant = Int32.Parse(ChoixSosaComboBox.Text);
             int index;
             // affiche les informations
@@ -2768,10 +2786,14 @@ namespace WindowsFormsApp1
             Sosa1DeEndroitTextBox.Text = liste[index, DELIEU];
             Sosa1MaTextBox.Text = liste[index, MALE];
             Sosa1MaEndroitTextBox.Text = liste[index, MALIEU];
-            if (index > 1)
-            {
+            //if (index > 1)
+            //{
                 int i = index % 2;
-                if (index % 2 == 0)
+            SosaConjoint1PatronymeTextBox.ReadOnly = true;
+            SosaConjoint1PrenomTextBox.ReadOnly = true;
+            SosaConjoint1PatronymeTextBox.Cursor = System.Windows.Forms.Cursors.No;
+            SosaConjoint1PrenomTextBox.Cursor = System.Windows.Forms.Cursors.No; 
+            if (index % 2 == 0)
                 {
                     SosaConjoint1PatronymeTextBox.Text = liste[index + 1, PATRONYME];
                     SosaConjoint1PrenomTextBox.Text = liste[index + 1, PRENOM];
@@ -2781,14 +2803,32 @@ namespace WindowsFormsApp1
                     SosaConjoint1Label.Text = (index + 1).ToString();
                     SosaConjoint1Label.Visible = true;
                 }
+                else if (index == 1)
+                {
+                    SosaConjoint1PatronymeTextBox.Text = liste[0, PATRONYME];
+                    SosaConjoint1PrenomTextBox.Text = liste[0, PRENOM];
+                    SosaConjoint1PatronymeTextBox.Visible = true;
+                    Conjoint1Lbl.Visible = true;
+                    SosaConjoint1PrenomTextBox.Visible = true;
+                    SosaConjoint1Label.Text = "";
+                    SosaConjoint1Label.Visible = true;
+                    SosaConjoint1PatronymeTextBox.Enabled = true;
+                    SosaConjoint1PrenomTextBox.Enabled = true;
+                    SosaConjoint1PatronymeTextBox.BackColor = Color.White;
+                    SosaConjoint1PrenomTextBox.BackColor = Color.White;
+                    SosaConjoint1PatronymeTextBox.ReadOnly = false;
+                    SosaConjoint1PrenomTextBox.ReadOnly = false;
+                SosaConjoint1PatronymeTextBox.Cursor = System.Windows.Forms.Cursors.IBeam;
+                SosaConjoint1PrenomTextBox.Cursor = System.Windows.Forms.Cursors.IBeam;
+            }
                 else
                 {
                     SosaConjoint1PatronymeTextBox.Visible = false;
                     SosaConjoint1PrenomTextBox.Visible = false;
                     SosaConjoint1Label.Visible = false;
-                    Conjoint1Lbl.Visible = false;
+                   Conjoint1Lbl.Visible = false;
                 }
-            }
+            //}
             Note1.Text = liste[index, NOTE1];
             Note2.Text = liste[index, NOTE2];
             GenerationAlb.Text = liste[index, GENERATION];
@@ -2893,6 +2933,11 @@ namespace WindowsFormsApp1
             if (sosaCourant > 0)
             {
                 index = sosaCourant;
+                if (sosaCourant == 1)
+                {
+                    liste[0, PATRONYME] = SosaConjoint1PatronymeTextBox.Text;
+                    liste[0, PRENOM] = SosaConjoint1PrenomTextBox.Text;
+                }
                 liste[index, SOSA] = index.ToString();
                 liste[index, PATRONYME] = Sosa1PatronymeTextBox.Text;
                 liste[index, PRENOM] = Sosa1PrenomTextBox.Text;
@@ -3220,8 +3265,8 @@ namespace WindowsFormsApp1
                                 byte g = Convert.ToByte(sr.ReadLine());
                                 byte b = Convert.ToByte(sr.ReadLine());
 
-                                Color c = Color.FromArgb(r, g, b);
-                                ChangerCouleurBloc(c);
+                                couleurBloc = Color.FromArgb(r, g, b);
+                                ChangerCouleurBloc(couleurBloc);
                             }
 
                         }
@@ -4508,9 +4553,10 @@ namespace WindowsFormsApp1
             XTextFormatter tm = new XTextFormatter(gfx);
 
             // cadre
-            XImage img = global::TableauAscendant.Properties.Resources.cadre;
+//          XImage img = global::TableauAscendant.Properties.Resources.cadre;
+            XImage img = XImage.FromFile("cadre.png");
             gfx.DrawImage(img, 0, 0);
-
+  
             string str = "Tableau asendant";
             XSize textLargeur = gfx.MeasureString(str, font32);
             gfx.DrawString(str, font32, XBrushes.Black, page.Width / 2 - textLargeur.Width / 2, POUCE * 4);
@@ -4883,7 +4929,8 @@ namespace WindowsFormsApp1
             MyDialog.AllowFullOpen = true;
             MyDialog.Color = RectangleSosa1.FillColor;
             if (MyDialog.ShowDialog() == DialogResult.OK)
-                ChangerCouleurBloc(MyDialog.Color);
+                couleurBloc = MyDialog.Color;
+                ChangerCouleurBloc(couleurBloc);
         }
         private void CreerPage4GénérationsToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -5105,15 +5152,21 @@ namespace WindowsFormsApp1
             XGraphics gfx = XGraphics.FromPdfPage(page);
 
             // cadre
-            XImage img = global::TableauAscendant.Properties.Resources.cadre;
+
+            //            XImage img = global::TableauAscendant.Properties.Resources.cadre;
+            XImage img = XImage.FromFile("cadre.png");
             gfx.DrawImage(img, 0, 0);
 
             // cameo droite
-            img = global::TableauAscendant.Properties.Resources.male_G_512;
+
+            //            img = global::TableauAscendant.Properties.Resources.male_G_512;
+            img = XImage.FromFile("male_G_512.png");
             gfx.DrawImage(img, margin + largeur - 48, 1.25 * pouce, 48, 64);
 
             // cameo gauche
-            img = global::TableauAscendant.Properties.Resources.male_D_512;
+
+            //            img = global::TableauAscendant.Properties.Resources.male_D_512;
+            img = XImage.FromFile("male_D_512.png");
             gfx.DrawImage(img, margin, 1.25 * pouce, 48, 64);
 
 
@@ -5275,15 +5328,21 @@ namespace WindowsFormsApp1
             XGraphics gfx = XGraphics.FromPdfPage(page);
 
             // cadre
-            XImage img = global::TableauAscendant.Properties.Resources.cadre;
+
+            // XImage img = global::TableauAscendant.Properties.Resources.cadre;
+            XImage img = XImage.FromFile("cadre.png");
             gfx.DrawImage(img, 0, 0);
 
             // cameo droite
-            img = global::TableauAscendant.Properties.Resources.femelle_G_512;
+
+            // img = global::TableauAscendant.Properties.Resources.femelle_G_512;
+            img = XImage.FromFile("femelle_G_512.png");
             gfx.DrawImage(img, margin + largeur - 48, 1.25 * pouce, 48, 64);
 
             // cameo gauche
-            img = global::TableauAscendant.Properties.Resources.femelle_D_512;
+
+            // img = global::TableauAscendant.Properties.Resources.femelle_D_512;
+            img = XImage.FromFile("femelle_D_512.png");
             gfx.DrawImage(img, margin, 1.25 * pouce, 48, 64);
 
 
@@ -5420,7 +5479,41 @@ namespace WindowsFormsApp1
             ChoixSosaComboBox.Text = Convert.ToString(a);
         }
 
-        
+        private void SosaConjoint1PatronymeTextBox_TextChanged(object sender, EventArgs e)
+        {
+            if (sosaCourant == 1)
+            {
+                liste[0, PATRONYME] = SosaConjoint1PatronymeTextBox.Text;
+                if (!LongeurNomtOk(liste[0, PATRONYME] + " " + liste[0, PRENOM]))
+                {
+                    SosaConjoint1PatronymeTextBox.BackColor = couleurTextTropLong;
+                    SosaConjoint1PatronymeTextBox.BackColor = couleurTextTropLong;
+                }
+                else
+                {
+                    SosaConjoint1PatronymeTextBox.BackColor = couleurChamp;
+                    SosaConjoint1PatronymeTextBox.BackColor = couleurChamp;
+                }
+            }
+        }
+
+        private void SosaConjoint1PrenomTextBox_TextChanged(object sender, EventArgs e)
+        {
+            if (sosaCourant == 1)
+            {
+                liste[0, PRENOM] = SosaConjoint1PrenomTextBox.Text;
+                if (!LongeurNomtOk(liste[0, PATRONYME] + " " + liste[0, PRENOM]))
+                {
+                    SosaConjoint1PrenomTextBox.BackColor = couleurTextTropLong;
+                    SosaConjoint1PrenomTextBox.BackColor = couleurTextTropLong;
+                }
+                else
+                {
+                    SosaConjoint1PrenomTextBox.BackColor = couleurChamp;
+                    SosaConjoint1PrenomTextBox.BackColor = couleurChamp;
+                }
+            }
+        }
     }
 
     internal class List<T1, T2>
