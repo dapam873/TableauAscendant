@@ -2079,7 +2079,9 @@ namespace WindowsFormsApp1
                 gfx.DrawLine(penG, positionBoite[1, 0] - RetraitSosa + 3, positionBoite[1, 1] + hauteurLigne * 16, positionBoite[1, 0] - RetraitSosa + 11, positionBoite[1, 1] + hauteurLigne * 16);
             }
             else {
-                tf.DrawString(sosaConjoint.ToString(), font8B, XBrushes.Black, rect, XStringFormats.TopLeft);
+                if (sosa > 1) {
+                    tf.DrawString(sosaConjoint.ToString(), font8B, XBrushes.Black, rect, XStringFormats.TopLeft);
+                }
             }
             // sosa 1 à 7
             for (f = 1; f < 8; f++)
