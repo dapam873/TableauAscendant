@@ -34,7 +34,7 @@ namespace WindowsFormsApp1
         /// <summary>
         /// nom du fichier de log
         /// </summary>
-        public bool LOGACTIF = true;
+        public bool LOGACTIF = false;
         /// <summary>
         /// position de la colonne SOSA dans le tableau grille
         /// </summary>
@@ -180,6 +180,8 @@ namespace WindowsFormsApp1
         Color couleurChamp = Color.White;
         Color couleurTextTropLong = Color.Yellow;
         Color couleurFond = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(204)))), ((int)(((byte)(255)))));
+
+        string programPath = Application.StartupPath + "\\";
 
        GEDCOMClass GEDCOM = new GEDCOMClass();
 
@@ -1737,7 +1739,7 @@ namespace WindowsFormsApp1
         {
 
             //XImage img = global::TableauAscendant.Properties.Resources.flecheDroite;
-            XImage img = XImage.FromFile("FlecheDroite.png");
+            XImage img = XImage.FromFile(programPath + "FlecheDroite.png");
 
 
             y = y + (hauteur / 2 - 16);
@@ -1757,7 +1759,7 @@ namespace WindowsFormsApp1
             decimal sosaD = sosa;
 
             //           XImage img = global::TableauAscendant.Properties.Resources.flecheGauche;
-            XImage img = XImage.FromFile("FlecheGauche.png");
+            XImage img = XImage.FromFile(programPath + "FlecheGauche.png");
             y = y + (hauteur / 2 - 16);
             if (sosa == 0)
             {
@@ -1942,28 +1944,28 @@ namespace WindowsFormsApp1
             double Rond = 10;
 
             // haut de page
-            str = "Tableau ascendant de ";
-            XSize textLargeur = gfx.MeasureString(str, fontT);
-            gfx.DrawString(str, fontT, XBrushes.Black, Col1, POUCE * .75);
-            textLargeur = gfx.MeasureString(str, fontT);
+            str = "Tableau ascendant colatéral de ";
+            //XSize textLargeur = gfx.MeasureString(str, fontT);
+            //gfx.DrawString(str, fontT, XBrushes.Black, Col1, POUCE * .75);
+            //textLargeur = gfx.MeasureString(str, fontT);
             if (AscendantDeTb.Text != "")
             {
-                str = AscendantDeTb.Text;
-                gfx.DrawString(str, fontT, XBrushes.Black, Col1 + textLargeur.Width + 5, POUCE * .75);
+                str = str + AscendantDeTb.Text;
+                //gfx.DrawString(str, fontT, XBrushes.Black, Col1 + textLargeur.Width + 5, POUCE * .75);
             }
             else
             {
-                str = "____________________________________";
-                gfx.DrawString(str, fontT, XBrushes.Black, Col1 + textLargeur.Width + 5, POUCE * .75);
+                str =str +  "____________________________________";
+                //gfx.DrawString(str, fontT, XBrushes.Black, Col1 + textLargeur.Width + 5, POUCE * .75);
             }
-            
+            gfx.DrawString(str, fontT, XBrushes.Black, Col1, POUCE * .75);
             // dessine génération
             {
                 //génération 1
                 XRect g = new XRect(Col2, 50, largeurBoite, 20);
                 gfx.DrawRoundedRectangle(pen, CouleurBloc, Col2, Ligne[10], largeurBoite, HauteurGeneration, Rond, Rond);
                 str = "Génération " + liste[sosa, GENERATION];
-                textLargeur = gfx.MeasureString(str, font8);
+                XSize textLargeur = gfx.MeasureString(str, font8);
                 if (liste[sosa, GENERATION] == "")
                 {
                     gfx.DrawLine(penG, Col2 + (largeurBoite / 2) + (textLargeur.Width / 2) +2, Ligne[10] + 12, Col2 + (largeurBoite / 2) + (textLargeur.Width / 2) + 20, Ligne[10] + 12);
@@ -2688,7 +2690,7 @@ namespace WindowsFormsApp1
                 return false;
             }
         }
-        private void    PDFEcrire(ref XGraphics gfx, string text, double X, double Y, double L)
+        private void    PDFEcrirex(ref XGraphics gfx, string text, double X, double Y, double L)
         {
 
             XSize textInfo = gfx.MeasureString(text, font8);
@@ -2711,7 +2713,7 @@ namespace WindowsFormsApp1
             }
             gfx.DrawString(text, font5, XBrushes.Black, X, Y);
          }
-        private void    PDFEcrireCentrer(ref XGraphics gfx, string text, double X, double Y, double XX)
+        private void    PDFEcrireCentrerX(ref XGraphics gfx, string text, double X, double Y, double XX)
         {
             double L = XX - X; // largeur
 
@@ -2735,6 +2737,12 @@ namespace WindowsFormsApp1
                 return;
             }
             gfx.DrawString(text, font5, XBrushes.Black, X + 5 + L / 2, Y);
+        }
+        private void    PDFEcrireCentrer(ref XGraphics gfx, string text, double X, double Y, double XX)
+        {
+            double L = XX - X; // largeur
+            XSize textInfo = gfx.MeasureString(text, font7);
+            gfx.DrawString(text, font7, XBrushes.Black, X + ((XX - X) / 2) - (textInfo.Width / 2), Y);
         }
         private string  RacoucirNom(string nom,  ref XGraphics gfx)
         {
@@ -2760,10 +2768,11 @@ namespace WindowsFormsApp1
             }
             do
             {
-                text = text.Substring(1);
-                textInfo = gfx.MeasureString("..." + text, font8);
+                //xxtext = text.Substring(1);
+                text = text.Remove(text.Length - 1);
+                textInfo = gfx.MeasureString(text + "...", font8);
             } while (textInfo.Width  > LARGEURTEXTEFICHE);
-            return "..." + text;
+            return  text + "...";
         }
         private void    RafraichirData()
         {
@@ -3491,7 +3500,7 @@ namespace WindowsFormsApp1
             Modifier = true;
             this.Text = NomPrograme + "   *" + FichierCourant;
         }
-        private void Sosa1MaTextBox_TextChanged(object sender, EventArgs e)
+        private void    Sosa1MaTextBox_TextChanged(object sender, EventArgs e)
         {
             liste[sosaCourant, MALE] = Sosa1MaTextBox.Text;
             bool rep = ValiderDate(Sosa1MaTextBox.Text);
@@ -3512,14 +3521,12 @@ namespace WindowsFormsApp1
                 Sosa1MaTextBox.BackColor = Color.Red;
             }
         }
-
-        private void Sosa1MaTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        private void    Sosa1MaTextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
             Modifier = true;
             this.Text = NomPrograme + "   *" + FichierCourant;
         }
-
-        private void Sosa1MaEndroitTextBox_TextChanged(object sender, EventArgs e)
+        private void    Sosa1MaEndroitTextBox_TextChanged(object sender, EventArgs e)
         {
             liste[sosaCourant, MALIEU] = Sosa1MaEndroitTextBox.Text;
             if (!LongeurTextOk(Sosa1MaEndroitTextBox.Text))
@@ -3531,8 +3538,7 @@ namespace WindowsFormsApp1
                 Sosa1MaEndroitTextBox.BackColor = couleurChamp;
             }
         }
-
-        private void Sosa1MaEndroitTextBox_KeyPress(object sender, KeyPressEventArgs e)
+        private void    Sosa1MaEndroitTextBox_KeyPress(object sender, KeyPressEventArgs e)
         {
             Modifier = true;
             this.Text = NomPrograme + "   *" + FichierCourant;
@@ -4038,7 +4044,6 @@ namespace WindowsFormsApp1
             Modifier = true;
             this.Text = NomPrograme + "   *" + FichierCourant;
         }
-
         private void    Sosa5NeTextBox_TextChanged(object sender, EventArgs e)
         {
             liste[sosaCourant * 4 + 1, NELE] = Sosa5NeTextBox.Text;
@@ -4556,7 +4561,7 @@ namespace WindowsFormsApp1
 
             // cadre
 //          XImage img = global::TableauAscendant.Properties.Resources.cadre;
-            XImage img = XImage.FromFile("cadre.png");
+            XImage img = XImage.FromFile(programPath + "cadre.png");
             gfx.DrawImage(img, 0, 0);
   
             string str = "Tableau asendant";
@@ -5128,6 +5133,7 @@ namespace WindowsFormsApp1
             XUnit pouce = XUnit.FromInch(1);
             XPen pen1 = new XPen(XColor.FromArgb(0, 0, 0), 1);
             XFont fontNom = new XFont("Arial", 10, XFontStyle.Bold);
+            XFont font10 = new XFont("Arial", 10, XFontStyle.Bold);
             XFont fontDate = new XFont("Arial", 8, XFontStyle.Regular);
             XFont fontB = new XFont("Arial", 8, XFontStyle.Bold);
             XFont font32 = new XFont("arial", 24, XFontStyle.Bold);
@@ -5143,7 +5149,8 @@ namespace WindowsFormsApp1
             double col5 = col4 + .75 * pouce;
             double hauteur = .51 * pouce;
             double hauteurLigne = 10;
-            double espace = .26 * pouce;
+            //zz double espace = .26 * pouce;
+            double espace = .35 * pouce;
             double padding = 5;
 
             PdfDocument document = new PdfDocument();
@@ -5156,57 +5163,56 @@ namespace WindowsFormsApp1
             // cadre
 
             //            XImage img = global::TableauAscendant.Properties.Resources.cadre;
-            XImage img = XImage.FromFile("cadre.png");
+            XImage img = XImage.FromFile(programPath + "cadre.png");
             gfx.DrawImage(img, 0, 0);
 
             // cameo droite
-
-            //            img = global::TableauAscendant.Properties.Resources.male_G_512;
-            img = XImage.FromFile("male_G_512.png");
+            img = XImage.FromFile(programPath + "femelle_G_512.png");
             gfx.DrawImage(img, margin + largeur - 48, 1.25 * pouce, 48, 64);
 
             // cameo gauche
-
-            //            img = global::TableauAscendant.Properties.Resources.male_D_512;
-            img = XImage.FromFile("male_D_512.png");
+            img = XImage.FromFile(programPath + "male_D_512.png");
             gfx.DrawImage(img, margin, 1.25 * pouce, 48, 64);
 
 
-            string str = "Titre d'ascendance de";
+            string str = "Titre d'ascendance";
             XSize textLargeur = gfx.MeasureString(str, font32);
             gfx.DrawString(str, font32, XBrushes.Black, page.Width / 2 - textLargeur.Width / 2, 1.1 * POUCE);
-            str = liste[1, PRENOM] + " " +  liste[1, PATRONYME];
+            str = "patrilinéaire de";
             textLargeur = gfx.MeasureString(str, font32);
             gfx.DrawString(str, font32, XBrushes.Black, page.Width / 2 - textLargeur.Width / 2, 1.5 * POUCE);
-            str = "patrilinéaire";
+            
+            str = liste[1, PRENOM] + " " +  liste[1, PATRONYME];
             textLargeur = gfx.MeasureString(str, font32);
             gfx.DrawString(str, font32, XBrushes.Black, page.Width / 2 - textLargeur.Width / 2, 1.9 * POUCE);
 
             double Y;
 
-            Y = 2.2 * pouce;
+            //zz Y = 2.2 * pouce;
+            Y = 1.4 * pouce;
             // entète
+            /*
             gfx.DrawRectangle(pen1, margin, Y, largeur, hauteur);
             gfx.DrawLine(pen1, col3, Y, col3, Y + hauteur);
             gfx.DrawLine(pen1, col4, Y, col4, Y + hauteur);
             //gfx.DrawLine(pen1, col5, Y, col5, Y + hauteur);
             // col 1 ligne 1 nom
-            gfx.DrawString("Non", fontNom, XBrushes.Black, col1 + padding, Y + hauteurLigne);
+            gfx.DrawString("Nom", fontNom, XBrushes.Black, col1 + padding, Y + hauteurLigne);
             // col 1 ligne 2 Date et lieu de naissance
-            gfx.DrawString("Date et lieu de naissance", font8, XBrushes.Black, col1 + padding, Y + hauteurLigne * 2);
+            gfx.DrawString("° Date et lieu de naissance", font7, XBrushes.Black, col1 + padding, Y + hauteurLigne * 2);
             // col 1 ligne 3 Date et lieu du décès
-            gfx.DrawString("Date et lieu du décès", font8, XBrushes.Black, col1 + padding, Y + hauteurLigne * 3);
+            gfx.DrawString("† Date et lieu du décès", font7, XBrushes.Black, col1 + padding, Y + hauteurLigne * 3);
             // col 3 ligne 1 Date du mariage
             PDFEcrireCentrer(ref gfx, "Date du mariage", col3, Y + hauteurLigne, col4);
             // col 3 ligne 2 Lieu du mariage
             PDFEcrireCentrer(ref gfx, "Lieu du mariage", col3, Y + hauteurLigne * 2, col4);
-            // col 3 ligne 1 Non de la conjointe
-            gfx.DrawString("Non de la conjointe", font8, XBrushes.Black, col4 + padding, Y + hauteurLigne);
+            // col 3 ligne 1 Nom de la conjointe
+            gfx.DrawString("Nom de la conjointe", font7, XBrushes.Black, col4 + padding, Y + hauteurLigne);
             // col 4 ligne 2 Nom des parents de la conjointe
-            gfx.DrawString("Nom des parents de la conjointe", font8, XBrushes.Black, col4 + padding, Y + hauteurLigne * 2);
+            gfx.DrawString("Nom des parents de la conjointe", font7, XBrushes.Black, col4 + padding, Y + hauteurLigne * 2);
             // col 4 ligne 3 Date et lieu du mariage des parents de la conjointe
             //PDFEcrire(ref gfx, "Date et lieu du mariage des parents de la conjointe", col4 + padding, Y + hauteurLigne * 3, 2.3 * pouce);
-
+            */
 
 
             int [] sosaListe = new int[] { 256, 128, 64, 32, 16, 8, 4, 2, 1 };
@@ -5223,7 +5229,7 @@ namespace WindowsFormsApp1
                 if (sosa == 2) str = "2e génération";
                 if (sosa == 1) str = "1ère génération";
                 textLargeur = gfx.MeasureString(str, fontB);
-                gfx.DrawString(str, fontB, XBrushes.Black, page.Width / 2 - textLargeur.Width / 2, Y - 4);
+                gfx.DrawString(str, font10, XBrushes.Black, page.Width / 2 - textLargeur.Width / 2, Y - 4);
                 gfx.DrawRectangle(pen1, margin, Y, largeur, hauteur);
                 gfx.DrawLine(pen1, col3, Y, col3, Y + hauteur);
                 gfx.DrawLine(pen1, col4, Y, col4, Y + hauteur);
@@ -5232,22 +5238,25 @@ namespace WindowsFormsApp1
                 gfx.DrawString(nom, fontNom, XBrushes.Black, col1 + padding, Y + hauteurLigne);
                 // col 1 ligne 2
                 if (liste[sosa, NELE] != "" || liste[sosa, NELIEU] != "")
-                    gfx.DrawString("°", fontDate, XBrushes.Black, col1 + padding + 1, Y + hauteurLigne * 2);
-                PDFEcrire(ref gfx, liste[sosa, NELE], col1 + padding + 6, Y + hauteurLigne * 2, .5 * pouce);
-                PDFEcrire(ref gfx, liste[sosa, NELIEU], col2, Y + hauteurLigne * 2, 1 * pouce);
+                    gfx.DrawString("° " + liste[sosa, NELE] + " " + liste[sosa, NELIEU], font7, XBrushes.Black, col1 + padding + 1, Y + hauteurLigne * 2);
+                //xxxPDFEcrire(ref gfx, liste[sosa, NELE], col1 + padding + 6, Y + hauteurLigne * 2, .5 * pouce);
+                //xxgfx.DrawString(liste[sosa, NELE], font7, XBrushes.Black, col1 + padding + 6, Y + hauteurLigne * 2);
+                //xxPDFEcrire(ref gfx, liste[sosa, NELIEU], col2, Y + hauteurLigne * 2, 1 * pouce);
+                //xxgfx.DrawString(liste[sosa, NELIEU], font7, XBrushes.Black, col2, Y + hauteurLigne * 2);
                 // col 1 ligne3
                 if (liste[sosa, DELE] != "" || liste[sosa, DELIEU] != "")
-                    gfx.DrawString("+", fontDate, XBrushes.Black, col1 + padding, Y + hauteurLigne * 3);
-                PDFEcrire(ref gfx, liste[sosa, DELE], col1 + padding + 6, Y + hauteurLigne * 3, .5 * pouce);
-                PDFEcrire(ref gfx, liste[sosa, DELIEU], col2, Y + hauteurLigne * 3, 1.5 * pouce);
-
+                    gfx.DrawString("† " + liste[sosa, DELE] + " " + liste[sosa, DELIEU], font7, XBrushes.Black, col1 + padding, Y + hauteurLigne * 3);
+                //xxPDFEcrire(ref gfx, liste[sosa, DELE], col1 + padding + 6, Y + hauteurLigne * 3, .5 * pouce);
+                //xxgfx.DrawString(liste[sosa, DELE], fontDate, XBrushes.Black, col1 + padding + 6, Y + hauteurLigne * 3);
+                //xxPDFEcrire(ref gfx, liste[sosa, DELIEU], col2, Y + hauteurLigne * 3, 1.5 * pouce);
+                //xxgfx.DrawString(liste[sosa, DELIEU], font7, XBrushes.Black, col2, Y + hauteurLigne * 3);
                 if (sosa > 1)
                 {
                     // col 3 ligne 1
                     if (liste[sosa, MALE] != "")
                     {
-                        gfx.DrawString("X ", fontDate, XBrushes.Black, col3 + .83 * pouce, Y + hauteurLigne);
-                        gfx.DrawString(liste[sosa, MALE], fontDate, XBrushes.Black, col3 + 6 + .83 * pouce, Y + hauteurLigne);
+                        //XXgfx.DrawString("X ", fontDate, XBrushes.Black, col3 + .83 * pouce, Y + hauteurLigne);
+                        gfx.DrawString("m " + liste[sosa, MALE], font7, XBrushes.Black, col3 + .83 * pouce, Y + hauteurLigne);
                     }
                     // col 3 ligne 2
                     PDFEcrireCentrer(ref gfx, liste[sosa, MALIEU], col3, Y + hauteurLigne * 2, col4);
@@ -5267,12 +5276,15 @@ namespace WindowsFormsApp1
                         string nomMere = AssemblerNom(liste[sosaParent + 1, PRENOM], liste[sosaParent + 1, PATRONYME]);
                         if (nomPere != "" && nomMere != "") {
                             nomParent = nomPere + " et " + nomMere;
-                            PDFEcrire(ref gfx, nomParent, col4 + padding, Y + hauteurLigne * 2, 2.3 * pouce);
+                            //xxPDFEcrire(ref gfx, nomParent, col4 + padding, Y + hauteurLigne * 2, 2.3 * pouce);
+                            gfx.DrawString(nomParent, font7, XBrushes.Black, col4 + padding, Y + hauteurLigne * 2);
                             if (liste[sosaParent, MALE] != "" || liste[sosaParent, MALIEU] != "")
                             {
-                                gfx.DrawString("X", fontDate, XBrushes.Black, col4 + padding + 1, Y + hauteurLigne * 3);
-                                PDFEcrire(ref gfx, liste[sosaParent, MALE], col4 + padding + 8, Y + hauteurLigne * 3, .5 * pouce);
-                                PDFEcrire(ref gfx, liste[sosaParent, MALIEU], col5, Y + hauteurLigne * 3, 1 * pouce);
+                                //XXXgfx.DrawString("m", fontDate, XBrushes.Black, col4 + padding + 1, Y + hauteurLigne * 3);
+                                //xxPDFEcrire(ref gfx, "m " + liste[sosaParent, MALE], col4 + padding + 8, Y + hauteurLigne * 3, .5 * pouce);
+                                gfx.DrawString("m " + liste[sosaParent, MALE] + " " + liste[sosaParent, MALIEU], font7, XBrushes.Black, col4 + padding, Y + hauteurLigne * 3);
+                                //xxPDFEcrire(ref gfx, liste[sosaParent, MALIEU], col5, Y + hauteurLigne * 3, 1 * pouce);
+                                //xxgfx.DrawString(liste[sosaParent, MALIEU], font7, XBrushes.Black, col5, Y + hauteurLigne * 3);
                             }
                         }
                     }
@@ -5303,6 +5315,7 @@ namespace WindowsFormsApp1
             XUnit pouce = XUnit.FromInch(1);
             XPen pen1 = new XPen(XColor.FromArgb(0, 0, 0), 1);
             XFont fontNom = new XFont("Arial", 10, XFontStyle.Bold);
+            XFont font10 = new XFont("Arial", 10, XFontStyle.Bold);
             XFont fontDate = new XFont("Arial", 8, XFontStyle.Regular);
             XFont fontB = new XFont("Arial", 8, XFontStyle.Bold);
             XFont font32 = new XFont("arial", 24, XFontStyle.Bold);
@@ -5319,7 +5332,8 @@ namespace WindowsFormsApp1
             double col5 = col4 + .75 * pouce;
             double hauteur = .51 * pouce;
             double hauteurLigne = 10;
-            double espace = .26 * pouce;
+            //double espace = .25 * pouce; //zz
+            double espace = .35 * pouce;
             double padding = 5;
 
             PdfDocument document = new PdfDocument();
@@ -5330,59 +5344,55 @@ namespace WindowsFormsApp1
             XGraphics gfx = XGraphics.FromPdfPage(page);
 
             // cadre
-
-            // XImage img = global::TableauAscendant.Properties.Resources.cadre;
-            XImage img = XImage.FromFile("cadre.png");
+            XImage img = XImage.FromFile(programPath + "cadre.png");
             gfx.DrawImage(img, 0, 0);
 
             // cameo droite
-
-            // img = global::TableauAscendant.Properties.Resources.femelle_G_512;
-            img = XImage.FromFile("femelle_G_512.png");
+            img = XImage.FromFile(programPath + "male_G_512.png");
             gfx.DrawImage(img, margin + largeur - 48, 1.25 * pouce, 48, 64);
 
             // cameo gauche
-
-            // img = global::TableauAscendant.Properties.Resources.femelle_D_512;
-            img = XImage.FromFile("femelle_D_512.png");
+            img = XImage.FromFile(programPath + "femelle_D_512.png");
             gfx.DrawImage(img, margin, 1.25 * pouce, 48, 64);
 
 
-            string str = "Titre d'ascendance de";
+            string str = "Titre d'ascendance";
             XSize textLargeur = gfx.MeasureString(str, font32);
             gfx.DrawString(str, font32, XBrushes.Black, page.Width / 2 - textLargeur.Width / 2, 1.1 * POUCE);
-            str = liste[1, PRENOM] + " " +  liste[1, PATRONYME];
+            str = "matrilinéaire de";
             textLargeur = gfx.MeasureString(str, font32);
             gfx.DrawString(str, font32, XBrushes.Black, page.Width / 2 - textLargeur.Width / 2, 1.5 * POUCE);
-            str = "matrilinéaire";
+            str = liste[1, PRENOM] + " " + liste[1, PATRONYME];
             textLargeur = gfx.MeasureString(str, font32);
             gfx.DrawString(str, font32, XBrushes.Black, page.Width / 2 - textLargeur.Width / 2, 1.9 * POUCE);
 
             double Y;
 
-            Y = 2.2 * pouce;
+            // Y = 2.2 * pouce; //zz
+            Y = 1.4 * pouce;
             // entète
+            /*
             gfx.DrawRectangle(pen1, margin, Y, largeur, hauteur);
             gfx.DrawLine(pen1, col3, Y, col3, Y + hauteur);
             gfx.DrawLine(pen1, col4, Y, col4, Y + hauteur);
-
             // col 1 ligne 1 nom
-            gfx.DrawString("Non", fontNom, XBrushes.Black, col1 + padding, Y + hauteurLigne);
+            gfx.DrawString("Nom", fontNom, XBrushes.Black, col1 + padding, Y + hauteurLigne);
             // col 1 ligne 2 ° Date et lieu de naissance
-            gfx.DrawString("° Date et lieu de naissance", font8, XBrushes.Black, col1 + padding, Y + hauteurLigne * 2);
+            gfx.DrawString("° Date et lieu de naissance", font7, XBrushes.Black, col1 + padding, Y + hauteurLigne * 2);
             // col 1 ligne 3 + Date et lieu du décès
-            gfx.DrawString("+ Date et lieu du décès", font8, XBrushes.Black, col1 + padding, Y + hauteurLigne * 3);
-            // col 3 ligne 1 X Date du mariage
-            PDFEcrireCentrer(ref gfx, "X Date du mariage", col3, Y + hauteurLigne, col4);
+            gfx.DrawString("† Date et lieu du décès", font7, XBrushes.Black, col1 + padding, Y + hauteurLigne * 3);
+            // col 3 ligne 1 m Date du mariage
+            PDFEcrireCentrer(ref gfx, "Date du mariage", col3, Y + hauteurLigne, col4);
             // col 3 ligne 2 Lieu du mariage
             PDFEcrireCentrer(ref gfx, "Lieu du mariage", col3, Y + hauteurLigne * 2, col4);
-            // col 3 ligne 1 Non du conjoint
-            gfx.DrawString("Non du conjoint", font8, XBrushes.Black, col4 + padding, Y + hauteurLigne);
+            // col 3 ligne 1 Nom du conjoint
+            gfx.DrawString("Nom du conjoint", font7, XBrushes.Black, col4 + padding, Y + hauteurLigne);
             // col 4 ligne 2 Nom des parents du conjoint
-            gfx.DrawString("Nom des parents du conjoint", font8, XBrushes.Black, col4 + padding, Y + hauteurLigne * 2);
+            gfx.DrawString("Nom des parents du conjoint", font7, XBrushes.Black, col4 + padding, Y + hauteurLigne * 2);
             // col 4 ligne 3 Date et lieu du mariage des parents du conjoint
-            PDFEcrire(ref gfx, "Date et lieu du mariage des parents du conjoint", col4 + padding, Y + hauteurLigne * 3, 2.3 * pouce);
-
+            //xxPDFEcrire(ref gfx, "Date et lieu du mariage des parents du conjoint", col4 + padding, Y + hauteurLigne * 3, 2.3 * pouce);
+            gfx.DrawString("Date et lieu du mariage des parents du conjoint", font7, XBrushes.Black, col4 + padding, Y + hauteurLigne * 3);
+            */
             int[] sosaListe = new int[] { 511, 255, 127, 63, 31, 15, 7, 3, 1 };
             foreach (int sosa in sosaListe)
             {
@@ -5397,7 +5407,7 @@ namespace WindowsFormsApp1
                 if (sosa == 3) str = "2e génération";
                 if (sosa == 1) str = "1ère génération";
                 textLargeur = gfx.MeasureString(str, fontB);
-                gfx.DrawString(str, fontB, XBrushes.Black, page.Width / 2 - textLargeur.Width / 2, Y - 4);
+                gfx.DrawString(str, font10, XBrushes.Black, page.Width / 2 - textLargeur.Width / 2, Y - 4);
                 gfx.DrawRectangle(pen1, margin, Y, largeur, hauteur);
                 gfx.DrawLine(pen1, col3, Y, col3, Y + hauteur);
                 gfx.DrawLine(pen1, col4, Y, col4, Y + hauteur);
@@ -5406,22 +5416,28 @@ namespace WindowsFormsApp1
                 gfx.DrawString(nom, fontNom, XBrushes.Black, col1 + padding, Y + hauteurLigne);
                 // col 1 ligne 2
                 if (liste[sosa, NELE] != "" || liste[sosa, NELIEU] != "")
-                    gfx.DrawString("°", fontDate, XBrushes.Black, col1 + padding + 1, Y + hauteurLigne * 2);
-                PDFEcrire(ref gfx, liste[sosa, NELE], col1 + padding + 6, Y + hauteurLigne * 2, .5 * pouce);
-                PDFEcrire(ref gfx, liste[sosa, NELIEU], col2, Y + hauteurLigne * 2, 1 * pouce);
+                    gfx.DrawString("° " + liste[sosa, NELE] + " " + liste[sosa, NELIEU], font7, XBrushes.Black, col1 + padding + 1, Y + hauteurLigne * 2);
+                //xxPDFEcrire(ref gfx, liste[sosa, NELE], col1 + padding + 6, Y + hauteurLigne * 2, .5 * pouce);
+                //xgfx.DrawString(liste[sosa, NELE], font7, XBrushes.Black, col1 + padding + 6, Y + hauteurLigne * 2);
+                //xxPDFEcrire(ref gfx, liste[sosa, NELIEU], col2, Y + hauteurLigne * 2, 1 * pouce);
+                //xxgfx.DrawString(liste[sosa, NELIEU], font7, XBrushes.Black, col2 , Y + hauteurLigne * 2);
+
+
                 // col 1 ligne3
                 if (liste[sosa, DELE] != "" || liste[sosa, DELIEU] != "")
-                    gfx.DrawString("+", fontDate, XBrushes.Black, col1 + padding, Y + hauteurLigne * 3);
-                PDFEcrire(ref gfx, liste[sosa, DELE], col1 + padding + 6, Y + hauteurLigne * 3, .5 * pouce);
-                PDFEcrire(ref gfx, liste[sosa, DELIEU], col2, Y + hauteurLigne * 3, 1.5 * pouce);
-                
+                    gfx.DrawString("† " + liste[sosa, DELE] + " " + liste[sosa, DELIEU], font7, XBrushes.Black, col1 + padding, Y + hauteurLigne * 3);
+                //xxPDFEcrire(ref gfx, liste[sosa, DELE], col1 + padding + 6, Y + hauteurLigne * 3, .5 * pouce);
+                //xxgfx.DrawString(liste[sosa, DELE] + " " + liste[sosaParent, MALIEU], font7, XBrushes.Black, col1 + padding + 6, Y + hauteurLigne * 3);
+                //xxPDFEcrire(ref gfx, liste[sosa, DELIEU], col2, Y + hauteurLigne * 3, 1.5 * pouce);
+                //xxgfx.DrawString(liste[sosa, DELIEU], font7, XBrushes.Black, col2, Y + hauteurLigne * 3);
+
                 // col 3 ligne 1
                 if (sosa > 1)
                 {
                     if (liste[sosa-1, MALE] != "")
                     {
-                        gfx.DrawString("X ", fontDate, XBrushes.Black, col3 + .83 * pouce, Y + hauteurLigne);
-                        gfx.DrawString(liste[sosa-1, MALE], fontDate, XBrushes.Black, col3 + 6 + .83 * pouce, Y + hauteurLigne);
+                        //XXXgfx.DrawString("mm ", fontDate, XBrushes.Black, col3 + .83 * pouce, Y + hauteurLigne);
+                        gfx.DrawString("m " + liste[sosa-1, MALE], fontDate, XBrushes.Black, col3 + .83 * pouce, Y + hauteurLigne);
                     }
                     // col 3 ligne 2
                     PDFEcrireCentrer(ref gfx, liste[sosa-1, MALIEU], col3, Y + hauteurLigne * 2, col4);
@@ -5442,12 +5458,15 @@ namespace WindowsFormsApp1
                         if (nomPere != "" && nomMere != "")
                         {
                             nomParent = nomPere + " et " + nomMere;
-                            PDFEcrire(ref gfx, nomParent, col4 + padding, Y + hauteurLigne * 2, 2.3 * pouce);
+                            //xxPDFEcrire(ref gfx, nomParent, col4 + padding, Y + hauteurLigne * 2, 2.3 * pouce);
+                            gfx.DrawString(nomParent, font7, XBrushes.Black, col4 + padding, Y + hauteurLigne* 2);
                             if (liste[sosaParent, MALE] != "" || liste[sosaParent, MALIEU] != "")
                             {
-                                gfx.DrawString("X", fontDate, XBrushes.Black, col4 + padding + 1, Y + hauteurLigne * 3);
-                                PDFEcrire(ref gfx, liste[sosaParent, MALE], col4 + padding + 8, Y + hauteurLigne * 3, .5 * pouce);
-                                PDFEcrire(ref gfx, liste[sosaParent, MALIEU], col5, Y + hauteurLigne * 3, 1 * pouce);
+                                //XXgfx.DrawString("mm ", fontDate, XBrushes.Black, col4 + padding + 1, Y + hauteurLigne * 3);
+                                //xxPDFEcrire(ref gfx, "m " + liste[sosaParent, MALE], col4 + padding + 8, Y + hauteurLigne * 3, .5 * pouce);
+                                gfx.DrawString("m " + liste[sosaParent, MALE] + " " + liste[sosaParent, MALIEU], font7, XBrushes.Black, col4 + padding, Y + hauteurLigne * 3);
+                                //xxPDFEcrire(ref gfx, liste[sosaParent, MALIEU], col5, Y + hauteurLigne * 3, 1 * pouce);
+                                //xxgfx.DrawString(liste[sosaParent, MALIEU], font7, XBrushes.Black, col5, Y + hauteurLigne * 3);
                             }
                         }
                     }
