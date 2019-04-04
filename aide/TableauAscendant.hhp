@@ -1,0 +1,47 @@
+[OPTIONS]
+Compatibility=1.1 or later
+Compiled file=..\TableauAscendant\bin\Tous\TableauAscendant.chm
+Contents file=TableauAscendant.hhc
+Default Window=main
+Default topic=introduction.htm
+Display compile progress=No
+Full text search stop list file=StopList.stp
+Full-text search=Yes
+Index file=Index.hhk
+Language=0xc0c Français (Canada)
+
+[WINDOWS]
+main="Aide TableauAscendant","TableauAscendant.hhc",,"introduction.htm","introduction.htm",,,,,0x62420,175,0x3006,[100,100,1050,800],0x840000,,,,,,0
+
+
+[FILES]
+introduction.htm
+menu.htm
+nouveau.htm
+importer.htm
+enregistrer.htm
+enregistrer_sous.htm
+ouvrir.htm
+quiter.htm
+effacer_tout.htm
+page_4_generation.htm
+page_courante.htm
+page_matri.htm
+page_patri.htm
+tous_les_pages.htm
+couleur.htm
+dossier_PDF.htm
+SOSA.htm
+nom.htm
+prenom.htm
+date.htm
+lieu.htm
+mariage.htm
+vide.htm
+preparerPar.htm
+tableauDe.htm
+rapport.htm
+editer.htm
+
+[INFOTYPES]
+

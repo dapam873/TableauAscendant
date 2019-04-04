@@ -1,0 +1,18 @@
+.centre {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+}
+.titre {font-weight:bold;font-size:400%;}
+a {text-decoration: none;color:#000}
+body{background-color:#66CCFF}
+img { border: 0px solid #00F; }
+p.tab1 {margin-left:25px;text-align:justify}
+p.tab2 {margin-left:50px;text-align:justify}
+p.tab3 {margin-left:75px;text-align:justify}
+p.tab4 {margin-left:100px;text-align:justify}
+p.tab5 {margin-left:125px;text-align:justify}
+p.tab6 {margin-left:150px;text-align:justify}
+table.date {border-collapse: collapse;border:1px solid;}
+td.date {border:1px solid; padding:5px}

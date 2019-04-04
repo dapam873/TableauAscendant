@@ -15,6 +15,21 @@ namespace TableauAscendant
 {
     class GEDCOMClass
     {
+        /// <summary>
+        /// nom du fichier de log
+        /// </summary>
+        public bool LOGACTIF = false;
+        /// <summary>
+        /// nom du fichier de log
+        /// </summary>
+        public string FICHIERLOG = "01TA-szUejmCjMh.log";
+        /// <summary>
+        /// nom du fichier de log
+        /// </summary>
+        public string DossierPDF = "C:/Users/dapam/Documents/TableauAscendant/";
+
+
+        
         private string[] dataGEDCOM;
 
         public class ListeIndividu : IEquatable<ListeIndividu>
@@ -887,6 +902,30 @@ namespace TableauAscendant
         static void M(string message, [CallerLineNumber] int lineNumber = 0, [CallerMemberName] string caller = null)
         {
             Console.WriteLine(lineNumber + " " + caller + " " + message);
+        }
+        private void ZXCV(string message, [CallerLineNumber] int lineNumber = 0, [CallerMemberName] string caller = null)
+        {
+            if (LOGACTIF && Environment.UserName == "dapam")
+            {
+                string fichier;
+                try
+                {
+                    if (Directory.Exists(DossierPDF))
+                    {
+                        fichier = DossierPDF + "\\" + FICHIERLOG;
+                    }
+                    else
+                    {
+                        fichier = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\" + FICHIERLOG;
+                    }
+
+                    using (StreamWriter ligne = File.AppendText(fichier))
+                    {
+                        ligne.WriteLine(lineNumber + " " + caller + " " + message);
+                    }
+                }
+                catch { }
+            }
         }
     }
 }

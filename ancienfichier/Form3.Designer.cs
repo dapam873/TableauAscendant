@@ -533,7 +533,7 @@
             this.lineShape3,
             this.lineShape2,
             this.lineShape1});
-            this.shapeContainer1.Size = new System.Drawing.Size(862, 444);
+            this.shapeContainer1.Size = new System.Drawing.Size(862, 1126);
             this.shapeContainer1.TabIndex = 50;
             this.shapeContainer1.TabStop = false;
             // 
@@ -615,7 +615,7 @@
             // menuRapportPatriDesc_lb
             // 
             this.menuRapportPatriDesc_lb.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.menuRapportPatriDesc_lb.Location = new System.Drawing.Point(318, -1123);
+            this.menuRapportPatriDesc_lb.Location = new System.Drawing.Point(318, 1100);
             this.menuRapportPatriDesc_lb.Name = "menuRapportPatriDesc_lb";
             this.menuRapportPatriDesc_lb.Size = new System.Drawing.Size(489, 26);
             this.menuRapportPatriDesc_lb.TabIndex = 57;
@@ -654,7 +654,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(204)))), ((int)(((byte)(255)))));
-            this.ClientSize = new System.Drawing.Size(849, 461);
+            this.ClientSize = new System.Drawing.Size(849, 1061);
             this.Controls.Add(this.menuRapportMatriDesc_lb);
             this.Controls.Add(this.menuRapportMatri_lb);
             this.Controls.Add(this.menuRapportPatriDesc_lb);
@@ -713,8 +713,8 @@
             this.Controls.Add(this.shapeContainer1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(865, 500);
-            this.MinimumSize = new System.Drawing.Size(865, 500);
+            this.MaximumSize = new System.Drawing.Size(865, 1500);
+            this.MinimumSize = new System.Drawing.Size(865, 1038);
             this.Name = "AideFm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Aide";

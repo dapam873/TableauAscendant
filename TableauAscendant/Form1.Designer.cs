@@ -143,9 +143,10 @@ namespace WindowsFormsApp1
             this.FichierToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.NouveauToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.OuvrirToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.OuvrirFichierGEDCOMToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.EnregisterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.EnregistrerSousToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.OuvrirFichierGEDCOMToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exporterUnFichierGEDCOMToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.QuitterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.EditerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.EffacerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -162,7 +163,7 @@ namespace WindowsFormsApp1
             this.aideToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.AproposToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.PreparerPar = new System.Windows.Forms.TextBox();
-            this.label13 = new System.Windows.Forms.Label();
+            this.AparLbl = new System.Windows.Forms.Label();
             this.LeLb = new System.Windows.Forms.Label();
             this.DateLb = new System.Windows.Forms.Label();
             this.GoSosa4Btn = new System.Windows.Forms.Button();
@@ -183,7 +184,7 @@ namespace WindowsFormsApp1
             this.label30 = new System.Windows.Forms.Label();
             this.label23 = new System.Windows.Forms.Label();
             this.AscendantDeTb = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
+            this.AtableauLbl = new System.Windows.Forms.Label();
             this.Generation2lb = new System.Windows.Forms.Label();
             this.GenerationBlb = new System.Windows.Forms.Label();
             this.GenerationClb = new System.Windows.Forms.Label();
@@ -225,6 +226,7 @@ namespace WindowsFormsApp1
             this.Sosa4NeTextBox = new System.Windows.Forms.TextBox();
             this.SosaConjoint1PrenomTextBox = new System.Windows.Forms.TextBox();
             this.Conjoint1Lbl = new System.Windows.Forms.Label();
+            this.AcolateralLbl = new System.Windows.Forms.Label();
             this.MenuMs.SuspendLayout();
             this.ChoixPersonne.SuspendLayout();
             this.SuspendLayout();
@@ -247,7 +249,7 @@ namespace WindowsFormsApp1
             this.Sosa5PatronymeTextBox.Location = new System.Drawing.Point(787, 237);
             this.Sosa5PatronymeTextBox.Name = "Sosa5PatronymeTextBox";
             this.Sosa5PatronymeTextBox.Size = new System.Drawing.Size(226, 20);
-            this.Sosa5PatronymeTextBox.TabIndex = 33;
+            this.Sosa5PatronymeTextBox.TabIndex = 34;
             this.Sosa5PatronymeTextBox.Visible = false;
             this.Sosa5PatronymeTextBox.TextChanged += new System.EventHandler(this.Sosa5PatronymeTextBox_TextChanged);
             this.Sosa5PatronymeTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Sosa5PatronymeTextBox_KeyPress);
@@ -298,7 +300,7 @@ namespace WindowsFormsApp1
             this.Sosa5NeTextBox.Location = new System.Drawing.Point(787, 277);
             this.Sosa5NeTextBox.Name = "Sosa5NeTextBox";
             this.Sosa5NeTextBox.Size = new System.Drawing.Size(226, 20);
-            this.Sosa5NeTextBox.TabIndex = 35;
+            this.Sosa5NeTextBox.TabIndex = 36;
             this.Sosa5NeTextBox.Visible = false;
             this.Sosa5NeTextBox.TextChanged += new System.EventHandler(this.Sosa5NeTextBox_TextChanged);
             this.Sosa5NeTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Sosa5NeTextBox_KeyPress);
@@ -309,7 +311,7 @@ namespace WindowsFormsApp1
             this.Sosa5NeEndroitTextBox.Location = new System.Drawing.Point(787, 297);
             this.Sosa5NeEndroitTextBox.Name = "Sosa5NeEndroitTextBox";
             this.Sosa5NeEndroitTextBox.Size = new System.Drawing.Size(226, 20);
-            this.Sosa5NeEndroitTextBox.TabIndex = 36;
+            this.Sosa5NeEndroitTextBox.TabIndex = 37;
             this.Sosa5NeEndroitTextBox.Visible = false;
             this.Sosa5NeEndroitTextBox.TextChanged += new System.EventHandler(this.Sosa5NeEndroitTextBox_TextChanged);
             // 
@@ -319,7 +321,7 @@ namespace WindowsFormsApp1
             this.Sosa5DeTextBox.Location = new System.Drawing.Point(787, 317);
             this.Sosa5DeTextBox.Name = "Sosa5DeTextBox";
             this.Sosa5DeTextBox.Size = new System.Drawing.Size(226, 20);
-            this.Sosa5DeTextBox.TabIndex = 37;
+            this.Sosa5DeTextBox.TabIndex = 38;
             this.Sosa5DeTextBox.Visible = false;
             this.Sosa5DeTextBox.TextChanged += new System.EventHandler(this.Sosa5DeTextBox_TextChanged);
             // 
@@ -329,7 +331,7 @@ namespace WindowsFormsApp1
             this.Sosa5DeEndroitTextBox.Location = new System.Drawing.Point(787, 337);
             this.Sosa5DeEndroitTextBox.Name = "Sosa5DeEndroitTextBox";
             this.Sosa5DeEndroitTextBox.Size = new System.Drawing.Size(226, 20);
-            this.Sosa5DeEndroitTextBox.TabIndex = 38;
+            this.Sosa5DeEndroitTextBox.TabIndex = 39;
             this.Sosa5DeEndroitTextBox.Visible = false;
             this.Sosa5DeEndroitTextBox.TextChanged += new System.EventHandler(this.Sosa5DeEndroitTextBox_TextChanged);
             this.Sosa5DeEndroitTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Sosa5DeEndroitTextBox_KeyPress);
@@ -340,7 +342,7 @@ namespace WindowsFormsApp1
             this.Sosa4DeEndroitTextBox.Location = new System.Drawing.Point(787, 163);
             this.Sosa4DeEndroitTextBox.Name = "Sosa4DeEndroitTextBox";
             this.Sosa4DeEndroitTextBox.Size = new System.Drawing.Size(226, 20);
-            this.Sosa4DeEndroitTextBox.TabIndex = 30;
+            this.Sosa4DeEndroitTextBox.TabIndex = 31;
             this.Sosa4DeEndroitTextBox.Visible = false;
             this.Sosa4DeEndroitTextBox.TextChanged += new System.EventHandler(this.Sosa4DeEndroitTextBox_TextChanged);
             this.Sosa4DeEndroitTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Sosa4DeEndroitTextBox_KeyPress);
@@ -351,7 +353,7 @@ namespace WindowsFormsApp1
             this.Sosa4DeTextBox.Location = new System.Drawing.Point(787, 143);
             this.Sosa4DeTextBox.Name = "Sosa4DeTextBox";
             this.Sosa4DeTextBox.Size = new System.Drawing.Size(226, 20);
-            this.Sosa4DeTextBox.TabIndex = 29;
+            this.Sosa4DeTextBox.TabIndex = 30;
             this.Sosa4DeTextBox.Visible = false;
             this.Sosa4DeTextBox.TextChanged += new System.EventHandler(this.Sosa4DeTextBox_TextChanged);
             this.Sosa4DeTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Sosa4DeTextBox_KeyPress);
@@ -362,7 +364,7 @@ namespace WindowsFormsApp1
             this.Sosa4NeEndroitTextBox.Location = new System.Drawing.Point(787, 123);
             this.Sosa4NeEndroitTextBox.Name = "Sosa4NeEndroitTextBox";
             this.Sosa4NeEndroitTextBox.Size = new System.Drawing.Size(226, 20);
-            this.Sosa4NeEndroitTextBox.TabIndex = 28;
+            this.Sosa4NeEndroitTextBox.TabIndex = 29;
             this.Sosa4NeEndroitTextBox.Visible = false;
             this.Sosa4NeEndroitTextBox.TextChanged += new System.EventHandler(this.Sosa4NeEndroitTextBox_TextChanged);
             this.Sosa4NeEndroitTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Sosa4NeEndroitTextBox_KeyPress);
@@ -418,7 +420,7 @@ namespace WindowsFormsApp1
             this.Sosa4PatronymeTextBox.Location = new System.Drawing.Point(787, 63);
             this.Sosa4PatronymeTextBox.Name = "Sosa4PatronymeTextBox";
             this.Sosa4PatronymeTextBox.Size = new System.Drawing.Size(226, 20);
-            this.Sosa4PatronymeTextBox.TabIndex = 25;
+            this.Sosa4PatronymeTextBox.TabIndex = 26;
             this.Sosa4PatronymeTextBox.Visible = false;
             this.Sosa4PatronymeTextBox.TextChanged += new System.EventHandler(this.Sosa4PatronymeTextBox_TextChanged);
             this.Sosa4PatronymeTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Sosa4PatronymeTextBox_KeyPress);
@@ -440,7 +442,7 @@ namespace WindowsFormsApp1
             this.Sosa45MaLEndroitTextBox.Location = new System.Drawing.Point(787, 211);
             this.Sosa45MaLEndroitTextBox.Name = "Sosa45MaLEndroitTextBox";
             this.Sosa45MaLEndroitTextBox.Size = new System.Drawing.Size(226, 20);
-            this.Sosa45MaLEndroitTextBox.TabIndex = 32;
+            this.Sosa45MaLEndroitTextBox.TabIndex = 33;
             this.Sosa45MaLEndroitTextBox.Visible = false;
             this.Sosa45MaLEndroitTextBox.TextChanged += new System.EventHandler(this.Sosa45MaEndroitTextBox_TextChanged);
             // 
@@ -450,7 +452,7 @@ namespace WindowsFormsApp1
             this.Sosa45MaTextBox.Location = new System.Drawing.Point(787, 189);
             this.Sosa45MaTextBox.Name = "Sosa45MaTextBox";
             this.Sosa45MaTextBox.Size = new System.Drawing.Size(226, 20);
-            this.Sosa45MaTextBox.TabIndex = 31;
+            this.Sosa45MaTextBox.TabIndex = 32;
             this.Sosa45MaTextBox.Visible = false;
             this.Sosa45MaTextBox.TextChanged += new System.EventHandler(this.Sosa45MaTextBox_TextChanged);
             this.Sosa45MaTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Sosa45MaTextBox_KeyPress);
@@ -479,7 +481,7 @@ namespace WindowsFormsApp1
             this.Sosa67MaEndroitTextBox.Location = new System.Drawing.Point(787, 517);
             this.Sosa67MaEndroitTextBox.Name = "Sosa67MaEndroitTextBox";
             this.Sosa67MaEndroitTextBox.Size = new System.Drawing.Size(226, 20);
-            this.Sosa67MaEndroitTextBox.TabIndex = 46;
+            this.Sosa67MaEndroitTextBox.TabIndex = 47;
             this.Sosa67MaEndroitTextBox.Visible = false;
             this.Sosa67MaEndroitTextBox.TextChanged += new System.EventHandler(this.Sosa67MaEndroitTextBox_TextChanged);
             this.Sosa67MaEndroitTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Sosa67MAEndroitTextBox_KeyPress);
@@ -490,7 +492,7 @@ namespace WindowsFormsApp1
             this.Sosa67MaTextBox.Location = new System.Drawing.Point(787, 496);
             this.Sosa67MaTextBox.Name = "Sosa67MaTextBox";
             this.Sosa67MaTextBox.Size = new System.Drawing.Size(226, 20);
-            this.Sosa67MaTextBox.TabIndex = 45;
+            this.Sosa67MaTextBox.TabIndex = 46;
             this.Sosa67MaTextBox.Visible = false;
             this.Sosa67MaTextBox.TextChanged += new System.EventHandler(this.Sosa67MaTextBox_TextChanged);
             this.Sosa67MaTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Sosa67MaTextBox_KeyPress);
@@ -519,7 +521,7 @@ namespace WindowsFormsApp1
             this.Sosa6DeEndroitTextBox.Location = new System.Drawing.Point(787, 471);
             this.Sosa6DeEndroitTextBox.Name = "Sosa6DeEndroitTextBox";
             this.Sosa6DeEndroitTextBox.Size = new System.Drawing.Size(226, 20);
-            this.Sosa6DeEndroitTextBox.TabIndex = 44;
+            this.Sosa6DeEndroitTextBox.TabIndex = 45;
             this.Sosa6DeEndroitTextBox.Visible = false;
             this.Sosa6DeEndroitTextBox.TextChanged += new System.EventHandler(this.Sosa6DeEndroitTextBox_TextChanged);
             this.Sosa6DeEndroitTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Sosa6DeEndroitTextBox_KeyPress);
@@ -530,7 +532,7 @@ namespace WindowsFormsApp1
             this.Sosa6DeTextBox.Location = new System.Drawing.Point(787, 451);
             this.Sosa6DeTextBox.Name = "Sosa6DeTextBox";
             this.Sosa6DeTextBox.Size = new System.Drawing.Size(226, 20);
-            this.Sosa6DeTextBox.TabIndex = 43;
+            this.Sosa6DeTextBox.TabIndex = 44;
             this.Sosa6DeTextBox.Visible = false;
             this.Sosa6DeTextBox.TextChanged += new System.EventHandler(this.Sosa6DeTextBox_TextChanged);
             this.Sosa6DeTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Sosa6DeTextBox_KeyPress);
@@ -541,7 +543,7 @@ namespace WindowsFormsApp1
             this.Sosa6NeEndroitTextBox.Location = new System.Drawing.Point(787, 431);
             this.Sosa6NeEndroitTextBox.Name = "Sosa6NeEndroitTextBox";
             this.Sosa6NeEndroitTextBox.Size = new System.Drawing.Size(226, 20);
-            this.Sosa6NeEndroitTextBox.TabIndex = 42;
+            this.Sosa6NeEndroitTextBox.TabIndex = 43;
             this.Sosa6NeEndroitTextBox.Visible = false;
             this.Sosa6NeEndroitTextBox.TextChanged += new System.EventHandler(this.Sosa6NeEndroitTextBox_TextChanged);
             // 
@@ -551,7 +553,7 @@ namespace WindowsFormsApp1
             this.Sosa6NeTextBox.Location = new System.Drawing.Point(787, 411);
             this.Sosa6NeTextBox.Name = "Sosa6NeTextBox";
             this.Sosa6NeTextBox.Size = new System.Drawing.Size(226, 20);
-            this.Sosa6NeTextBox.TabIndex = 41;
+            this.Sosa6NeTextBox.TabIndex = 42;
             this.Sosa6NeTextBox.Visible = false;
             this.Sosa6NeTextBox.TextChanged += new System.EventHandler(this.Sosa6NeTextBox_TextChanged);
             this.Sosa6NeTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Sosa6NeTextBox_KeyPress);
@@ -603,7 +605,7 @@ namespace WindowsFormsApp1
             this.Sosa6PatronymeTextBox.Location = new System.Drawing.Point(787, 371);
             this.Sosa6PatronymeTextBox.Name = "Sosa6PatronymeTextBox";
             this.Sosa6PatronymeTextBox.Size = new System.Drawing.Size(226, 20);
-            this.Sosa6PatronymeTextBox.TabIndex = 39;
+            this.Sosa6PatronymeTextBox.TabIndex = 40;
             this.Sosa6PatronymeTextBox.Visible = false;
             this.Sosa6PatronymeTextBox.TextChanged += new System.EventHandler(this.Sosa6PatronymeTextBox_TextChanged);
             this.Sosa6PatronymeTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Sosa6PatronymeTextBox_KeyPress);
@@ -625,7 +627,7 @@ namespace WindowsFormsApp1
             this.Sosa7DeEndroitTextBox.Location = new System.Drawing.Point(787, 643);
             this.Sosa7DeEndroitTextBox.Name = "Sosa7DeEndroitTextBox";
             this.Sosa7DeEndroitTextBox.Size = new System.Drawing.Size(226, 20);
-            this.Sosa7DeEndroitTextBox.TabIndex = 52;
+            this.Sosa7DeEndroitTextBox.TabIndex = 53;
             this.Sosa7DeEndroitTextBox.Visible = false;
             this.Sosa7DeEndroitTextBox.TextChanged += new System.EventHandler(this.Sosa7DeEndroitTextBox_TextChanged);
             this.Sosa7DeEndroitTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Sosa7DeEndroitTextBox_KeyPress);
@@ -636,7 +638,7 @@ namespace WindowsFormsApp1
             this.Sosa7DeTextBox.Location = new System.Drawing.Point(787, 623);
             this.Sosa7DeTextBox.Name = "Sosa7DeTextBox";
             this.Sosa7DeTextBox.Size = new System.Drawing.Size(226, 20);
-            this.Sosa7DeTextBox.TabIndex = 51;
+            this.Sosa7DeTextBox.TabIndex = 52;
             this.Sosa7DeTextBox.Visible = false;
             this.Sosa7DeTextBox.TextChanged += new System.EventHandler(this.Sosa7DeTextBox_TextChanged);
             this.Sosa7DeTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Sosa7DeTextBox_KeyPress);
@@ -647,7 +649,7 @@ namespace WindowsFormsApp1
             this.Sosa7NeEndroitTextBox.Location = new System.Drawing.Point(787, 603);
             this.Sosa7NeEndroitTextBox.Name = "Sosa7NeEndroitTextBox";
             this.Sosa7NeEndroitTextBox.Size = new System.Drawing.Size(226, 20);
-            this.Sosa7NeEndroitTextBox.TabIndex = 50;
+            this.Sosa7NeEndroitTextBox.TabIndex = 51;
             this.Sosa7NeEndroitTextBox.Visible = false;
             this.Sosa7NeEndroitTextBox.TextChanged += new System.EventHandler(this.Sosa7NeEndroitTextBox_TextChanged);
             this.Sosa7NeEndroitTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Sosa7NeEndroitTextBox_KeyPress);
@@ -658,7 +660,7 @@ namespace WindowsFormsApp1
             this.Sosa7NeTextBox.Location = new System.Drawing.Point(787, 583);
             this.Sosa7NeTextBox.Name = "Sosa7NeTextBox";
             this.Sosa7NeTextBox.Size = new System.Drawing.Size(226, 20);
-            this.Sosa7NeTextBox.TabIndex = 49;
+            this.Sosa7NeTextBox.TabIndex = 50;
             this.Sosa7NeTextBox.Visible = false;
             this.Sosa7NeTextBox.TextChanged += new System.EventHandler(this.Sosa7NeTextBox_TextChanged);
             this.Sosa7NeTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Sosa7NeTextBox_KeyPress);
@@ -710,7 +712,7 @@ namespace WindowsFormsApp1
             this.Sosa7PatronymeTextBox.Location = new System.Drawing.Point(787, 543);
             this.Sosa7PatronymeTextBox.Name = "Sosa7PatronymeTextBox";
             this.Sosa7PatronymeTextBox.Size = new System.Drawing.Size(226, 20);
-            this.Sosa7PatronymeTextBox.TabIndex = 47;
+            this.Sosa7PatronymeTextBox.TabIndex = 48;
             this.Sosa7PatronymeTextBox.Visible = false;
             this.Sosa7PatronymeTextBox.TextChanged += new System.EventHandler(this.Sosa7PatronymeTextBox_TextChanged);
             this.Sosa7PatronymeTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Sosa7PatronymeTextBox_KeyPress);
@@ -732,7 +734,7 @@ namespace WindowsFormsApp1
             this.Sosa23MaEndroitTextBox.Location = new System.Drawing.Point(467, 365);
             this.Sosa23MaEndroitTextBox.Name = "Sosa23MaEndroitTextBox";
             this.Sosa23MaEndroitTextBox.Size = new System.Drawing.Size(226, 20);
-            this.Sosa23MaEndroitTextBox.TabIndex = 18;
+            this.Sosa23MaEndroitTextBox.TabIndex = 19;
             this.Sosa23MaEndroitTextBox.Visible = false;
             this.Sosa23MaEndroitTextBox.TextChanged += new System.EventHandler(this.Sosa23MaEndroitTextBox_TextChanged);
             // 
@@ -760,7 +762,7 @@ namespace WindowsFormsApp1
             this.Sosa2DeEndroitTextBox.Location = new System.Drawing.Point(468, 253);
             this.Sosa2DeEndroitTextBox.Name = "Sosa2DeEndroitTextBox";
             this.Sosa2DeEndroitTextBox.Size = new System.Drawing.Size(226, 20);
-            this.Sosa2DeEndroitTextBox.TabIndex = 16;
+            this.Sosa2DeEndroitTextBox.TabIndex = 17;
             this.Sosa2DeEndroitTextBox.Visible = false;
             this.Sosa2DeEndroitTextBox.TextChanged += new System.EventHandler(this.Sosa2DeEndroitTextBox_TextChanged);
             this.Sosa2DeEndroitTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Sosa2DeEndroitTextBox_KeyPress);
@@ -771,7 +773,7 @@ namespace WindowsFormsApp1
             this.Sosa2DeTextBox.Location = new System.Drawing.Point(468, 233);
             this.Sosa2DeTextBox.Name = "Sosa2DeTextBox";
             this.Sosa2DeTextBox.Size = new System.Drawing.Size(226, 20);
-            this.Sosa2DeTextBox.TabIndex = 15;
+            this.Sosa2DeTextBox.TabIndex = 16;
             this.Sosa2DeTextBox.Visible = false;
             this.Sosa2DeTextBox.TextChanged += new System.EventHandler(this.Sosa2DeTextBox_TextChanged);
             this.Sosa2DeTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Sosa2DeTextBox_KeyPress);
@@ -782,7 +784,7 @@ namespace WindowsFormsApp1
             this.Sosa2NeEndroitTextBox.Location = new System.Drawing.Point(468, 213);
             this.Sosa2NeEndroitTextBox.Name = "Sosa2NeEndroitTextBox";
             this.Sosa2NeEndroitTextBox.Size = new System.Drawing.Size(226, 20);
-            this.Sosa2NeEndroitTextBox.TabIndex = 14;
+            this.Sosa2NeEndroitTextBox.TabIndex = 15;
             this.Sosa2NeEndroitTextBox.Visible = false;
             this.Sosa2NeEndroitTextBox.TextChanged += new System.EventHandler(this.Sosa2NeEndroitTextBox_TextChanged);
             this.Sosa2NeEndroitTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Sosa2NeEndroitTextBox_KeyPress);
@@ -793,7 +795,7 @@ namespace WindowsFormsApp1
             this.Sosa2NeTextBox.Location = new System.Drawing.Point(468, 193);
             this.Sosa2NeTextBox.Name = "Sosa2NeTextBox";
             this.Sosa2NeTextBox.Size = new System.Drawing.Size(226, 20);
-            this.Sosa2NeTextBox.TabIndex = 13;
+            this.Sosa2NeTextBox.TabIndex = 14;
             this.Sosa2NeTextBox.Visible = false;
             this.Sosa2NeTextBox.TextChanged += new System.EventHandler(this.Sosa2NeTextBox_TextChanged);
             this.Sosa2NeTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Sosa2NeTextBox_KeyPress);
@@ -845,7 +847,7 @@ namespace WindowsFormsApp1
             this.Sosa2PatronymeTextBox.Location = new System.Drawing.Point(468, 153);
             this.Sosa2PatronymeTextBox.Name = "Sosa2PatronymeTextBox";
             this.Sosa2PatronymeTextBox.Size = new System.Drawing.Size(226, 20);
-            this.Sosa2PatronymeTextBox.TabIndex = 11;
+            this.Sosa2PatronymeTextBox.TabIndex = 12;
             this.Sosa2PatronymeTextBox.Visible = false;
             this.Sosa2PatronymeTextBox.TextChanged += new System.EventHandler(this.Sosa2PatronymeTextBox_TextChanged);
             this.Sosa2PatronymeTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Sosa2PatronymeTextBox_KeyPress);
@@ -867,7 +869,7 @@ namespace WindowsFormsApp1
             this.Sosa3DeEndroitTextBox.Location = new System.Drawing.Point(468, 556);
             this.Sosa3DeEndroitTextBox.Name = "Sosa3DeEndroitTextBox";
             this.Sosa3DeEndroitTextBox.Size = new System.Drawing.Size(226, 20);
-            this.Sosa3DeEndroitTextBox.TabIndex = 24;
+            this.Sosa3DeEndroitTextBox.TabIndex = 25;
             this.Sosa3DeEndroitTextBox.Visible = false;
             this.Sosa3DeEndroitTextBox.TextChanged += new System.EventHandler(this.Sosa3DeEndroitTextBox_TextChanged);
             this.Sosa3DeEndroitTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Sosa3DeEndroitTextBox_KeyPress);
@@ -878,7 +880,7 @@ namespace WindowsFormsApp1
             this.Sosa3DeTextBox.Location = new System.Drawing.Point(468, 536);
             this.Sosa3DeTextBox.Name = "Sosa3DeTextBox";
             this.Sosa3DeTextBox.Size = new System.Drawing.Size(226, 20);
-            this.Sosa3DeTextBox.TabIndex = 23;
+            this.Sosa3DeTextBox.TabIndex = 24;
             this.Sosa3DeTextBox.Visible = false;
             this.Sosa3DeTextBox.TextChanged += new System.EventHandler(this.Sosa3DeTextBox_TextChanged);
             this.Sosa3DeTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Sosa3DeTextBox_KeyPress);
@@ -889,7 +891,7 @@ namespace WindowsFormsApp1
             this.Sosa3NeEndroitTextBox.Location = new System.Drawing.Point(468, 516);
             this.Sosa3NeEndroitTextBox.Name = "Sosa3NeEndroitTextBox";
             this.Sosa3NeEndroitTextBox.Size = new System.Drawing.Size(226, 20);
-            this.Sosa3NeEndroitTextBox.TabIndex = 22;
+            this.Sosa3NeEndroitTextBox.TabIndex = 23;
             this.Sosa3NeEndroitTextBox.Visible = false;
             this.Sosa3NeEndroitTextBox.TextChanged += new System.EventHandler(this.Sosa3NeEndroitTextBox_TextChanged);
             this.Sosa3NeEndroitTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Sosa3NeEndroitTextBox_KeyPress);
@@ -900,7 +902,7 @@ namespace WindowsFormsApp1
             this.Sosa3NeTextBox.Location = new System.Drawing.Point(468, 496);
             this.Sosa3NeTextBox.Name = "Sosa3NeTextBox";
             this.Sosa3NeTextBox.Size = new System.Drawing.Size(226, 20);
-            this.Sosa3NeTextBox.TabIndex = 21;
+            this.Sosa3NeTextBox.TabIndex = 22;
             this.Sosa3NeTextBox.Visible = false;
             this.Sosa3NeTextBox.TextChanged += new System.EventHandler(this.Sosa3NeTextBox_TextChanged);
             this.Sosa3NeTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Sosa3NeTextBox_KeyPress);
@@ -952,7 +954,7 @@ namespace WindowsFormsApp1
             this.Sosa3PatronymeTextBox.Location = new System.Drawing.Point(468, 456);
             this.Sosa3PatronymeTextBox.Name = "Sosa3PatronymeTextBox";
             this.Sosa3PatronymeTextBox.Size = new System.Drawing.Size(226, 20);
-            this.Sosa3PatronymeTextBox.TabIndex = 19;
+            this.Sosa3PatronymeTextBox.TabIndex = 20;
             this.Sosa3PatronymeTextBox.Visible = false;
             this.Sosa3PatronymeTextBox.TextChanged += new System.EventHandler(this.Sosa3PatronymeTextBox_TextChanged);
             this.Sosa3PatronymeTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Sosa3PatronymeTextBox_KeyPress);
@@ -1400,7 +1402,7 @@ namespace WindowsFormsApp1
             this.Sosa23MaTextBox.Location = new System.Drawing.Point(467, 344);
             this.Sosa23MaTextBox.Name = "Sosa23MaTextBox";
             this.Sosa23MaTextBox.Size = new System.Drawing.Size(226, 20);
-            this.Sosa23MaTextBox.TabIndex = 17;
+            this.Sosa23MaTextBox.TabIndex = 18;
             this.Sosa23MaTextBox.Visible = false;
             this.Sosa23MaTextBox.TextChanged += new System.EventHandler(this.Sosa23MaTextBox_TextChanged);
             this.Sosa23MaTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Sosa23MaTextBox_KeyPress);
@@ -1514,9 +1516,10 @@ namespace WindowsFormsApp1
             this.FichierToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.NouveauToolStripMenuItem,
             this.OuvrirToolStripMenuItem,
-            this.OuvrirFichierGEDCOMToolStripMenuItem,
             this.EnregisterToolStripMenuItem,
             this.EnregistrerSousToolStripMenuItem,
+            this.OuvrirFichierGEDCOMToolStripMenuItem,
+            this.exporterUnFichierGEDCOMToolStripMenuItem,
             this.QuitterToolStripMenuItem});
             this.FichierToolStripMenuItem.Name = "FichierToolStripMenuItem";
             this.FichierToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.F)));
@@ -1539,20 +1542,12 @@ namespace WindowsFormsApp1
             this.OuvrirToolStripMenuItem.Text = "Ouvrir";
             this.OuvrirToolStripMenuItem.Click += new System.EventHandler(this.OuvrirToolStripMenuItem_Click);
             // 
-            // OuvrirFichierGEDCOMToolStripMenuItem
-            // 
-            this.OuvrirFichierGEDCOMToolStripMenuItem.Name = "OuvrirFichierGEDCOMToolStripMenuItem";
-            this.OuvrirFichierGEDCOMToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.G)));
-            this.OuvrirFichierGEDCOMToolStripMenuItem.Size = new System.Drawing.Size(264, 22);
-            this.OuvrirFichierGEDCOMToolStripMenuItem.Text = "Importer un fichier &GEDCOM";
-            this.OuvrirFichierGEDCOMToolStripMenuItem.Click += new System.EventHandler(this.OuvrirFichierGEDCOMToolStripMenuItem_Click);
-            // 
             // EnregisterToolStripMenuItem
             // 
             this.EnregisterToolStripMenuItem.Name = "EnregisterToolStripMenuItem";
             this.EnregisterToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
             this.EnregisterToolStripMenuItem.Size = new System.Drawing.Size(264, 22);
-            this.EnregisterToolStripMenuItem.Text = "&Enregister";
+            this.EnregisterToolStripMenuItem.Text = "&Enregistrer";
             this.EnregisterToolStripMenuItem.Click += new System.EventHandler(this.EnregisterToolStripMenuItem_Click);
             // 
             // EnregistrerSousToolStripMenuItem
@@ -1563,6 +1558,22 @@ namespace WindowsFormsApp1
             this.EnregistrerSousToolStripMenuItem.Size = new System.Drawing.Size(264, 22);
             this.EnregistrerSousToolStripMenuItem.Text = "Enregistrer &sous ...";
             this.EnregistrerSousToolStripMenuItem.Click += new System.EventHandler(this.EnregistrerSousToolStripMenuItem_Click);
+            // 
+            // OuvrirFichierGEDCOMToolStripMenuItem
+            // 
+            this.OuvrirFichierGEDCOMToolStripMenuItem.Name = "OuvrirFichierGEDCOMToolStripMenuItem";
+            this.OuvrirFichierGEDCOMToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.G)));
+            this.OuvrirFichierGEDCOMToolStripMenuItem.Size = new System.Drawing.Size(264, 22);
+            this.OuvrirFichierGEDCOMToolStripMenuItem.Text = "Importer un fichier &GEDCOM";
+            this.OuvrirFichierGEDCOMToolStripMenuItem.Click += new System.EventHandler(this.OuvrirFichierGEDCOMToolStripMenuItem_Click);
+            // 
+            // exporterUnFichierGEDCOMToolStripMenuItem
+            // 
+            this.exporterUnFichierGEDCOMToolStripMenuItem.Name = "exporterUnFichierGEDCOMToolStripMenuItem";
+            this.exporterUnFichierGEDCOMToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.O)));
+            this.exporterUnFichierGEDCOMToolStripMenuItem.Size = new System.Drawing.Size(264, 22);
+            this.exporterUnFichierGEDCOMToolStripMenuItem.Text = "Exporter un fichier GEDC&OM";
+            this.exporterUnFichierGEDCOMToolStripMenuItem.Click += new System.EventHandler(this.exporterUnFichierGEDCOMToolStripMenuItem_Click);
             // 
             // QuitterToolStripMenuItem
             // 
@@ -1584,9 +1595,10 @@ namespace WindowsFormsApp1
             // EffacerToolStripMenuItem
             // 
             this.EffacerToolStripMenuItem.Name = "EffacerToolStripMenuItem";
-            this.EffacerToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.F)));
-            this.EffacerToolStripMenuItem.Size = new System.Drawing.Size(173, 22);
-            this.EffacerToolStripMenuItem.Text = "E&ffacer Tout";
+            this.EffacerToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.E)));
+            this.EffacerToolStripMenuItem.Size = new System.Drawing.Size(201, 22);
+            this.EffacerToolStripMenuItem.Text = "Effacer Tout";
             this.EffacerToolStripMenuItem.Click += new System.EventHandler(this.EffacerToolStripMenuItem_Click);
             // 
             // PDFToolStripMenuItem
@@ -1608,7 +1620,7 @@ namespace WindowsFormsApp1
             this.CreerPage4GénérationsToolStripMenuItem.Name = "CreerPage4GénérationsToolStripMenuItem";
             this.CreerPage4GénérationsToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.D4)));
             this.CreerPage4GénérationsToolStripMenuItem.Size = new System.Drawing.Size(307, 22);
-            this.CreerPage4GénérationsToolStripMenuItem.Text = "Créer page 4 générations";
+            this.CreerPage4GénérationsToolStripMenuItem.Text = "Créer page 4 générations en PDF";
             this.CreerPage4GénérationsToolStripMenuItem.Click += new System.EventHandler(this.CreerPage4GénérationsToolStripMenuItem_Click);
             // 
             // CreerPageCouranteToolStripMenuItem
@@ -1705,19 +1717,19 @@ namespace WindowsFormsApp1
             this.PreparerPar.TabIndex = 54;
             this.PreparerPar.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.PreparerPar_KeyPress);
             // 
-            // label13
+            // AparLbl
             // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(52, 94);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(65, 13);
-            this.label13.TabIndex = 113;
-            this.label13.Text = "Préparer par";
+            this.AparLbl.AutoSize = true;
+            this.AparLbl.Location = new System.Drawing.Point(52, 94);
+            this.AparLbl.Name = "AparLbl";
+            this.AparLbl.Size = new System.Drawing.Size(65, 13);
+            this.AparLbl.TabIndex = 113;
+            this.AparLbl.Text = "Préparer par";
             // 
             // LeLb
             // 
             this.LeLb.AutoSize = true;
-            this.LeLb.Location = new System.Drawing.Point(105, 113);
+            this.LeLb.Location = new System.Drawing.Point(102, 113);
             this.LeLb.Name = "LeLb";
             this.LeLb.Size = new System.Drawing.Size(15, 13);
             this.LeLb.TabIndex = 114;
@@ -1879,7 +1891,7 @@ namespace WindowsFormsApp1
             this.AnnulerBtn.Name = "AnnulerBtn";
             this.AnnulerBtn.Size = new System.Drawing.Size(71, 31);
             this.AnnulerBtn.TabIndex = 66;
-            this.AnnulerBtn.Text = "Annuler";
+            this.AnnulerBtn.Text = "A&nnuler";
             this.AnnulerBtn.UseVisualStyleBackColor = true;
             this.AnnulerBtn.Click += new System.EventHandler(this.AnnulerBtn_Click);
             // 
@@ -1894,6 +1906,8 @@ namespace WindowsFormsApp1
             this.ChoixLV.TabIndex = 65;
             this.ChoixLV.UseCompatibleStateImageBehavior = false;
             this.ChoixLV.SelectedIndexChanged += new System.EventHandler(this.ChoixLV_SelectedIndexChanged);
+            this.ChoixLV.DoubleClick += new System.EventHandler(this.ChoixLV_DoubleClick);
+            this.ChoixLV.KeyUp += new System.Windows.Forms.KeyEventHandler(this.ChoixLV_KeyUp);
             // 
             // ContinuerBtn
             // 
@@ -1901,7 +1915,7 @@ namespace WindowsFormsApp1
             this.ContinuerBtn.Name = "ContinuerBtn";
             this.ContinuerBtn.Size = new System.Drawing.Size(71, 31);
             this.ContinuerBtn.TabIndex = 67;
-            this.ContinuerBtn.Text = "Continuer";
+            this.ContinuerBtn.Text = "C&ontinuer";
             this.ContinuerBtn.UseVisualStyleBackColor = true;
             this.ContinuerBtn.Visible = false;
             this.ContinuerBtn.Click += new System.EventHandler(this.ContinuerBtn_Click);
@@ -1912,7 +1926,7 @@ namespace WindowsFormsApp1
             this.Recherche.Name = "Recherche";
             this.Recherche.Size = new System.Drawing.Size(71, 31);
             this.Recherche.TabIndex = 64;
-            this.Recherche.Text = "Recherche";
+            this.Recherche.Text = "Rec&herche";
             this.Recherche.UseVisualStyleBackColor = true;
             this.Recherche.Click += new System.EventHandler(this.Recherche_Click);
             // 
@@ -1971,14 +1985,14 @@ namespace WindowsFormsApp1
             this.AscendantDeTb.TabIndex = 53;
             this.AscendantDeTb.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.AscendantDeTb_KeyPress);
             // 
-            // label2
+            // AtableauLbl
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(4, 71);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(114, 13);
-            this.label2.TabIndex = 147;
-            this.label2.Text = "Tableau ascendant de";
+            this.AtableauLbl.AutoSize = true;
+            this.AtableauLbl.Location = new System.Drawing.Point(20, 64);
+            this.AtableauLbl.Name = "AtableauLbl";
+            this.AtableauLbl.Size = new System.Drawing.Size(99, 13);
+            this.AtableauLbl.TabIndex = 147;
+            this.AtableauLbl.Text = "Tableau ascendant";
             // 
             // Generation2lb
             // 
@@ -2296,7 +2310,7 @@ namespace WindowsFormsApp1
             this.Sosa5PrenomTextBox.Location = new System.Drawing.Point(787, 257);
             this.Sosa5PrenomTextBox.Name = "Sosa5PrenomTextBox";
             this.Sosa5PrenomTextBox.Size = new System.Drawing.Size(226, 20);
-            this.Sosa5PrenomTextBox.TabIndex = 34;
+            this.Sosa5PrenomTextBox.TabIndex = 35;
             this.Sosa5PrenomTextBox.Visible = false;
             this.Sosa5PrenomTextBox.TextChanged += new System.EventHandler(this.Sosa5PrenomTextBox_TextChanged);
             this.Sosa5PrenomTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Sosa5PrenomTextBox_KeyPress);
@@ -2318,7 +2332,7 @@ namespace WindowsFormsApp1
             this.Sosa6PrenomTextBox.Location = new System.Drawing.Point(787, 391);
             this.Sosa6PrenomTextBox.Name = "Sosa6PrenomTextBox";
             this.Sosa6PrenomTextBox.Size = new System.Drawing.Size(226, 20);
-            this.Sosa6PrenomTextBox.TabIndex = 40;
+            this.Sosa6PrenomTextBox.TabIndex = 41;
             this.Sosa6PrenomTextBox.Visible = false;
             this.Sosa6PrenomTextBox.TextChanged += new System.EventHandler(this.Sosa6PrenomTextBox_TextChanged);
             this.Sosa6PrenomTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Sosa6PrenomTextBox_KeyPress);
@@ -2340,7 +2354,7 @@ namespace WindowsFormsApp1
             this.Sosa7PrenomTextBox.Location = new System.Drawing.Point(787, 563);
             this.Sosa7PrenomTextBox.Name = "Sosa7PrenomTextBox";
             this.Sosa7PrenomTextBox.Size = new System.Drawing.Size(226, 20);
-            this.Sosa7PrenomTextBox.TabIndex = 48;
+            this.Sosa7PrenomTextBox.TabIndex = 49;
             this.Sosa7PrenomTextBox.Visible = false;
             this.Sosa7PrenomTextBox.TextChanged += new System.EventHandler(this.Sosa7PrenomTextBox_TextChanged);
             this.Sosa7PrenomTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Sosa7PrenomTextBox_KeyPress);
@@ -2362,7 +2376,7 @@ namespace WindowsFormsApp1
             this.Sosa2PrenomTextBox.Location = new System.Drawing.Point(468, 173);
             this.Sosa2PrenomTextBox.Name = "Sosa2PrenomTextBox";
             this.Sosa2PrenomTextBox.Size = new System.Drawing.Size(226, 20);
-            this.Sosa2PrenomTextBox.TabIndex = 12;
+            this.Sosa2PrenomTextBox.TabIndex = 13;
             this.Sosa2PrenomTextBox.Visible = false;
             this.Sosa2PrenomTextBox.TextChanged += new System.EventHandler(this.Sosa2PrenomTextBox_TextChanged);
             this.Sosa2PrenomTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Sosa2PrenomTextBox_KeyPress);
@@ -2384,7 +2398,7 @@ namespace WindowsFormsApp1
             this.Sosa3PrenomTextBox.Location = new System.Drawing.Point(468, 476);
             this.Sosa3PrenomTextBox.Name = "Sosa3PrenomTextBox";
             this.Sosa3PrenomTextBox.Size = new System.Drawing.Size(226, 20);
-            this.Sosa3PrenomTextBox.TabIndex = 20;
+            this.Sosa3PrenomTextBox.TabIndex = 21;
             this.Sosa3PrenomTextBox.Visible = false;
             this.Sosa3PrenomTextBox.TextChanged += new System.EventHandler(this.Sosa3PrenomTextBox_TextChanged);
             this.Sosa3PrenomTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Sosa3PrenomTextBox_KeyPress);
@@ -2396,7 +2410,7 @@ namespace WindowsFormsApp1
             this.Sosa4PrenomTextBox.Location = new System.Drawing.Point(787, 83);
             this.Sosa4PrenomTextBox.Name = "Sosa4PrenomTextBox";
             this.Sosa4PrenomTextBox.Size = new System.Drawing.Size(226, 20);
-            this.Sosa4PrenomTextBox.TabIndex = 26;
+            this.Sosa4PrenomTextBox.TabIndex = 27;
             this.Sosa4PrenomTextBox.Visible = false;
             this.Sosa4PrenomTextBox.TextChanged += new System.EventHandler(this.Sosa4PrenomTextBox_TextChanged);
             this.Sosa4PrenomTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Sosa4PrenomTextBox_KeyPress);
@@ -2407,7 +2421,7 @@ namespace WindowsFormsApp1
             this.Sosa4NeTextBox.Location = new System.Drawing.Point(787, 103);
             this.Sosa4NeTextBox.Name = "Sosa4NeTextBox";
             this.Sosa4NeTextBox.Size = new System.Drawing.Size(226, 20);
-            this.Sosa4NeTextBox.TabIndex = 27;
+            this.Sosa4NeTextBox.TabIndex = 28;
             this.Sosa4NeTextBox.Visible = false;
             // 
             // SosaConjoint1PrenomTextBox
@@ -2420,7 +2434,7 @@ namespace WindowsFormsApp1
             this.SosaConjoint1PrenomTextBox.Name = "SosaConjoint1PrenomTextBox";
             this.SosaConjoint1PrenomTextBox.ReadOnly = true;
             this.SosaConjoint1PrenomTextBox.Size = new System.Drawing.Size(226, 13);
-            this.SosaConjoint1PrenomTextBox.TabIndex = 193;
+            this.SosaConjoint1PrenomTextBox.TabIndex = 11;
             this.SosaConjoint1PrenomTextBox.Visible = false;
             this.SosaConjoint1PrenomTextBox.TextChanged += new System.EventHandler(this.SosaConjoint1PrenomTextBox_TextChanged);
             // 
@@ -2435,6 +2449,15 @@ namespace WindowsFormsApp1
             this.Conjoint1Lbl.Text = "Prénom";
             this.Conjoint1Lbl.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
+            // AcolateralLbl
+            // 
+            this.AcolateralLbl.AutoSize = true;
+            this.AcolateralLbl.Location = new System.Drawing.Point(56, 75);
+            this.AcolateralLbl.Name = "AcolateralLbl";
+            this.AcolateralLbl.Size = new System.Drawing.Size(62, 13);
+            this.AcolateralLbl.TabIndex = 195;
+            this.AcolateralLbl.Text = "colatéral de";
+            // 
             // TableauAscendant
             // 
             this.AccessibleRole = System.Windows.Forms.AccessibleRole.None;
@@ -2443,6 +2466,7 @@ namespace WindowsFormsApp1
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(102)))), ((int)(((byte)(204)))), ((int)(((byte)(255)))));
             this.BackgroundImage = global::TableauAscendant.Properties.Resources.beta;
             this.ClientSize = new System.Drawing.Size(1084, 676);
+            this.Controls.Add(this.ChoixPersonne);
             this.Controls.Add(this.Conjoint1Lbl);
             this.Controls.Add(this.SosaConjoint1PrenomTextBox);
             this.Controls.Add(this.Sosa4NeTextBox);
@@ -2473,7 +2497,6 @@ namespace WindowsFormsApp1
             this.Controls.Add(this.RechercheSosaButton);
             this.Controls.Add(this.RechercheSosaTextBox);
             this.Controls.Add(this.NoteDuBasLb);
-            this.Controls.Add(this.ChoixPersonne);
             this.Controls.Add(this.Note1);
             this.Controls.Add(this.Note2);
             this.Controls.Add(this.GoSosa4Btn);
@@ -2489,7 +2512,7 @@ namespace WindowsFormsApp1
             this.Controls.Add(this.Generation2lb);
             this.Controls.Add(this.DateLb);
             this.Controls.Add(this.LeLb);
-            this.Controls.Add(this.label13);
+            this.Controls.Add(this.AparLbl);
             this.Controls.Add(this.PreparerPar);
             this.Controls.Add(this.ChoixSosaComboBox);
             this.Controls.Add(this.Sosa1DeEndroitTextBox);
@@ -2574,8 +2597,9 @@ namespace WindowsFormsApp1
             this.Controls.Add(this.Sosa5Label);
             this.Controls.Add(this.MenuMs);
             this.Controls.Add(this.AscendantDeTb);
-            this.Controls.Add(this.label2);
+            this.Controls.Add(this.AtableauLbl);
             this.Controls.Add(this.NoteDuHautLb);
+            this.Controls.Add(this.AcolateralLbl);
             this.Controls.Add(this.ShapeContainer1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -2715,7 +2739,7 @@ namespace WindowsFormsApp1
         private System.Windows.Forms.ToolStripMenuItem paramètresToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem DossierPDFToolStripMenuItem;
         private System.Windows.Forms.TextBox PreparerPar;
-        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Label AparLbl;
         private System.Windows.Forms.Label LeLb;
         private System.Windows.Forms.Label DateLb;
         private System.Windows.Forms.ToolStripMenuItem AideToolStripMenuItem;
@@ -2731,7 +2755,6 @@ namespace WindowsFormsApp1
         private System.Windows.Forms.Panel ChoixPersonne;
         private System.Windows.Forms.Button ContinuerBtn;
         private System.Windows.Forms.Button Recherche;
-        private System.Windows.Forms.Label label35;
         private System.Windows.Forms.TextBox PrenomRecherche;
         private System.Windows.Forms.TextBox PatronymeRecherche;
         private System.Windows.Forms.Label label30;
@@ -2739,7 +2762,7 @@ namespace WindowsFormsApp1
         private System.Windows.Forms.ListView ChoixLV;
         private System.Windows.Forms.Button AnnulerBtn;
         private System.Windows.Forms.TextBox AscendantDeTb;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label AtableauLbl;
         private Microsoft.VisualBasic.PowerPacks.RectangleShape RectangleGénérationA;
         private Microsoft.VisualBasic.PowerPacks.RectangleShape RectangleGénérationB;
         private Microsoft.VisualBasic.PowerPacks.RectangleShape RectangleGénérationC;
@@ -2793,6 +2816,9 @@ namespace WindowsFormsApp1
         private System.Windows.Forms.TextBox Sosa4NeTextBox;
         private System.Windows.Forms.TextBox SosaConjoint1PrenomTextBox;
         private System.Windows.Forms.Label Conjoint1Lbl;
+        private System.Windows.Forms.Label label35;
+        private System.Windows.Forms.Label AcolateralLbl;
+        private System.Windows.Forms.ToolStripMenuItem exporterUnFichierGEDCOMToolStripMenuItem;
     }
 }
 

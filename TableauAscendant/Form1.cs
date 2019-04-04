@@ -96,7 +96,7 @@ namespace WindowsFormsApp1
         /// </summary>
         public const int IDFAMILLEENFANT =  14;
         /// <summary>
-        /// position de la colonne NOTE1 dans le tableau grille
+        /// position de la colonne IDFAMILLEPARENT dans le tableau grille
         /// </summary>
         public const int NOTE1 =            15;
         /// <summary>
@@ -127,14 +127,10 @@ namespace WindowsFormsApp1
         /// nom du fichier de la grille
         /// </summary>
         public string FICHIERGRILLE = "01TA-grille.txt";
-
-
-
         /// <summary>
         /// liste qui contient toutes les informations pour généré les tableaux
         /// </summary>
         public string[,] liste = new string[512,17];
-        
         /// <summary>
         /// Vrai si la grille à été modifier
         /// </summary>
@@ -143,20 +139,18 @@ namespace WindowsFormsApp1
         /// liste de recherche
         /// </summary>
         public int[] rechercheListe = new int[512]; // 512 lignes
-
         /// <summary>
         /// Nom du fichier courant
         /// </summary>
         public string FichierCourant ="";
         /// <summary>
-        /// nom du fichier GEDCOM
+        /// nom du fichier GEDCOM à lire
         /// </summary>
-        public string FichierGEDCOM = "";
+        public string FichierGEDCOMaLire = "";
         /// <summary>
         /// 
         /// </summary>
         public string argument = "";
-
 
         // pdf
 
@@ -651,14 +645,14 @@ namespace WindowsFormsApp1
                     return "estimé " + d[1];
                 }
 
-                d[0] = ConvertirMois(d[0]);
+                d[0] = ConvertirMoisEnChiffre(d[0]);
                 return d[1] + "-" + d[0];
             }
             if (l == 3 )
             {
                 if (d[0].ToUpper() == "ABT")
                 {
-                    return "autour " + d[2] + ConvertirMois(d[1]);
+                    return "autour " + d[2] + ConvertirMoisEnChiffre(d[1]);
                 }
                 if (d[1].ToUpper() == "ABT")
                 {
@@ -668,7 +662,7 @@ namespace WindowsFormsApp1
                 {
                     return "autour + " + d[2] + "-" + d[1];
                 }
-                d[1] = ConvertirMois(d[1]);
+                d[1] = ConvertirMoisEnChiffre(d[1]);
                 return d[2] + "-" + d[1] + "-" + d[0].PadLeft(2,zero);
 
             }
@@ -707,7 +701,84 @@ namespace WindowsFormsApp1
 
             return "";
         }
-        private string  ConvertirMois(string mois)
+        private string  ConvertirDateAGEDCOM(string date)
+        {
+            // 1951-10-04 à 4 OCT 1951
+            if (date == "" || date == null)
+            {
+                return "";
+            }
+            date = date.ToLower();
+            date = date.Replace("et", "AND").Replace("entre", "BET").Replace("vers", "ABT").Replace("après", "AFT").Replace("avant", "BEF").Replace("autour", "ABT".Replace("estimé", "EST"));
+            if (date.Contains("AND") || date.Contains("BET") || date.Contains("ABT") || date.Contains("AFT") || date.Contains("BEF") || date.Contains("ABT") || date.Contains("EST"))
+            {
+                return date;
+            }
+            char[] s = { '-' };
+            string[] d = date.Split(s);
+            string m = "Erreur";
+            int l = d.Length;
+            if (l == 1 || l == 2)
+            {
+                return date;
+            }
+            if (l == 3)
+            {
+                if (d[1] == "01")
+                {
+                    m = "JAN";
+                }
+                if (d[1] == "02")
+                {
+                    m = "FEB";
+                }
+                if (d[1] == "03")
+                {
+                    m = "MAR";
+                }
+                if (d[1] == "04")
+                {
+                    m = "APR";
+                }
+                if (d[1] == "05")
+                {
+                    m = "MAY";
+                }
+                if (d[1] == "06")
+                {
+                    m = "JUN";
+                }
+                if (d[1] == "07")
+                {
+                    m = "JUL";
+                }
+                if (d[1] == "08")
+                {
+                    m = "AUG";
+                }
+                if (d[1] == "09")
+                {
+                    m = "SEP";
+                }
+                if (d[1] == "10")
+                {
+                    m = "OCT";
+                }
+                if (d[1] == "11")
+                {
+                    m = "NOV";
+                }
+                if (d[1] == "12")
+                {
+                    m = "DEC";
+                }
+
+                return d[2] + " " + m + " " + d[0];
+                
+            }
+            return date;
+        }
+        private string  ConvertirMoisEnChiffre(string mois)
         {
 
             string m = mois.ToUpper();
@@ -761,6 +832,58 @@ namespace WindowsFormsApp1
             }
             return m;
 
+        }
+        private string  ConvertirMoisEnString3(string mois)
+        {
+            if (mois == "01")
+            {
+                mois = "JAM";
+            }
+            if (mois == "02")
+            {
+                mois = "FEB";
+            }
+            if (mois == "03")
+            {
+                mois = "MAR";
+            }
+            if (mois == "04")
+            {
+                mois = "APR";
+            }
+            if (mois == "05")
+            {
+                mois = "MAY";
+            }
+            if (mois == "06")
+            {
+                mois = "JUN";
+            }
+            if (mois == "07")
+            {
+                mois = "JUL";
+            }
+            if (mois == "08")
+            {
+                mois = "AUG";
+            }
+            if (mois == "09")
+            {
+                mois = "SEP";
+            }
+            if (mois == "10")
+            {
+                mois = "OCT";
+            }
+            if (mois == "11")
+            {
+                mois = "NOV";
+            }
+            if (mois == "12")
+            {
+                mois = "DEC";
+            }
+            return mois;
         }
         private void    Classer(int Colonne)
         {
@@ -999,6 +1122,131 @@ namespace WindowsFormsApp1
                                  MessageBoxIcon.Warning);
                 return false;
             }
+        }
+        private bool    EnregisterGEDCOM(string fichier)
+        {
+            try
+            {
+                if (File.Exists(fichier))
+                {
+                    File.Delete(fichier);
+                }
+                //Création du fichier Texte
+                using (StreamWriter ligne = File.CreateText(fichier))
+                {
+                    ligne.WriteLine("0 HEAD");
+                    ligne.WriteLine("1 SOUR TableauAscendant");
+                    ligne.WriteLine("2 VERS " + Application.ProductVersion + "B");
+                    ligne.WriteLine("2 NAME TableauAscendant");
+                    string m = ConvertirMoisEnString3(DateTime.Now.ToString("MM"));
+                    ligne.WriteLine("1 DATE " + DateTime.Now.ToString("dd") + " " + m + " " + DateTime.Now.ToString("yyyy"));
+                    ligne.WriteLine("2 TIME " + DateTime.Now.ToString("HH:mm:ss"));
+                    ligne.WriteLine("1 COPR (c) " + DateTime.Now.ToString("yyyy"));
+                    ligne.WriteLine("1 GEDC");
+                    ligne.WriteLine("2 VERS 5.5.1");
+                    ligne.WriteLine("2 FORM LINEAGE-LINKED");
+                    ligne.WriteLine("1 CHAR UTF-8");
+                    ligne.WriteLine("1 LANG French");
+                    ligne.WriteLine("0 @SUBM@ SUBM");
+                    ligne.WriteLine("1 NAME");
+                    ligne.WriteLine("1 ADDR");
+
+                    for (int f = 0; f < 512; f++)
+                    {
+                        string individu = f.ToString("0000");
+                        //Enregistre individue
+                        if (liste[f, PRENOM] != "" || liste[f, PATRONYME] != "")
+                        {
+                            ligne.WriteLine("0 @I" + individu + "@ INDI");
+                            ligne.WriteLine("1 NAME " + liste[f, PRENOM] + " /" + liste[f, PATRONYME] + "/");
+                            ligne.WriteLine("2 GIVN " + liste[f, PRENOM]);
+                            ligne.WriteLine("2 SURN " + liste[f, PATRONYME]);
+                            if (liste[f, NELE] != "" || liste[f, NELIEU] != "")
+                            {
+                                ligne.WriteLine("1 BIRT");
+                                if (liste[f, NELE] != "")
+                                {
+                                    ligne.WriteLine("2 DATE "+ ConvertirDateAGEDCOM(liste[f, NELE]));
+                                }
+                                if (liste[f, NELIEU] != "")
+                                {
+                                    ligne.WriteLine("2 PLAC " + liste[f, NELIEU]);
+                                }
+                            }
+                           
+                            if (f > 1 && f < 256)
+                            {
+                                int fa = f * 2;
+                                string famille = fa.ToString("0000");
+                                ligne.WriteLine("1 FAMC @F" + famille + "@");
+                                if (f % 2 == 0)
+                                {
+                                    
+                                    ligne.WriteLine("1 FAMS @F" + individu + "@");
+                                } else
+                                {
+                                    int c = f - 1;
+                                    string conjoint = c.ToString("0000");
+                                    ligne.WriteLine("1 FAMS @F" + conjoint + "@");
+                                }
+                            }
+                            if (f == 0)
+                            {
+                                ligne.WriteLine("1 FAMS @F0001@");
+                            }
+                            if (f == 1)
+                            {
+                                ligne.WriteLine("1 FAMC @F0002@");
+                                ligne.WriteLine("1 FAMS @F0001@");
+                            }
+                        }
+                    }
+                    //Enregistre famille
+                        //SOSA 1
+                    if (liste[1, PRENOM] != "" || liste[1, PATRONYME] != "")
+                    {
+                        ligne.WriteLine("0 @F0001@ FAM");
+                        ligne.WriteLine("1 HUSB @I0001@");
+                        ligne.WriteLine("1 WIFE @I0000@");
+                        ligne.WriteLine("1 MARR");
+                        ligne.WriteLine("2 DATE " + ConvertirDateAGEDCOM(liste[1, MALE]));
+                        ligne.WriteLine("2 PLAC " + liste[1, MALIEU]);
+
+                    }
+                    //SOSA pair
+                    for (int f = 2; f < 256; f += 2)
+                    {
+                        if (liste[f, PRENOM] != "" || liste[f, PATRONYME] != "")
+                        {
+                            string famille = f.ToString("0000");
+                            ligne.WriteLine("0 @F" + famille + "@ FAM");
+                            ligne.WriteLine("1 HUSB @I" + famille + "@");
+                            int sosaConjoint = f + 1;
+                            string conjoint = sosaConjoint.ToString("0000");
+                            ligne.WriteLine("1 WIFE @I" + conjoint + "@");
+                            ligne.WriteLine("1 MARR");
+                            ligne.WriteLine("2 DATE " + ConvertirDateAGEDCOM(liste[f, MALE]));
+                            ligne.WriteLine("2 PLAC " + liste[f, MALIEU]);
+                            // enfant
+                            int e = f / 2;
+                            string enfant = e.ToString("0000");
+                            ligne.WriteLine("1 CHIL " + "@I" + enfant + "@");
+                        }
+                    }
+                    ligne.WriteLine("0 TRLR");
+
+                    ligne.Close();
+                }
+            }
+            catch (Exception m)
+            {
+                SystemSounds.Beep.Play();
+                MessageBox.Show("Ne peut pas enregister la configuration.\r\n\r\n" + m.Message, "Problème ?",
+                                 MessageBoxButtons.OK,
+                                 MessageBoxIcon.Warning);
+                return false;
+            }
+            return true;
         }
         private void    EffacerData()
         {
@@ -1641,12 +1889,14 @@ namespace WindowsFormsApp1
                     for (int f = 0; f < 512; f++)
                     {
                         ligne.WriteLine(
-                            "SOSA " + liste[f, SOSA] + " " + 
-                            "PAGE " + liste[f, PAGE] + " " + 
-                            liste[f, PATRONYME] +  " " + 
-                            liste[f, PRENOM] + " " +
-                            "MALE " + liste[f, MALE]  +" " +
-                            "MALIEU " + liste[f, MALIEU ] + " " 
+                            "|" + SOSA + " SOSA=" + liste[f, SOSA] + " " +
+                            "|" + PAGE + " PAGE=" + liste[f, PAGE] + " " +
+                            "|" + PATRONYME + " PATRONYME=" + liste[f, PATRONYME] +  " " +
+                            "|" + PRENOM + " PRENOM=" + liste[f, PRENOM] + " " +
+                            "|" + MALE + " MALE=" + liste[f, MALE]  +" " +
+                            "|" + MALIEU + " MALIEU=" + liste[f, MALIEU ] + " " +
+                            "|" + IDg + " IDg=" + liste[f, MALIEU] + " " +
+                            "|" + IDFAMILLEENFANT + " IDFAMILLEENFANT=" + liste[f, IDFAMILLEENFANT] + " " 
                             );
                     }
             } catch {}
@@ -2436,10 +2686,10 @@ namespace WindowsFormsApp1
                 gfx.DrawString("Préparé par " + PreparerPar.Text + " le " + DateLb.Text, font8, XBrushes.Black, Col1, Ligne[79], XStringFormats.Default);
             }
 
-            // version à adfficher pour beta
-            gfx.DrawString("Version " + Application.ProductVersion + "B", font8, XBrushes.Black, Col1, Ligne[80], XStringFormats.Default);
+            // version à afficher pour beta
+            gfx.DrawString("Version " + Application.ProductVersion + "B", font8, XBrushes.Black, Col1, Ligne[80] + 2, XStringFormats.Default);
             // Logo
-//            XImage img = global::TableauAscendant.Properties.Resources.dapamv5_32png;
+            // XImage img = global::TableauAscendant.Properties.Resources.dapamv5_32png;
             /*
             XPen penDapam = new XPen(XColor.FromArgb(0, 0, 0), 2);
             XFont fontDapam = new XFont("Arial", 14, XFontStyle.Bold);
@@ -2452,7 +2702,7 @@ namespace WindowsFormsApp1
         }
         private void    ZXCV(string message, [CallerLineNumber] int lineNumber = 0, [CallerMemberName] string caller = null)
         {
-            if (LOGACTIF) { 
+            if (LOGACTIF && Environment.UserName == "dapam") { 
                 string fichier;
             try
             {
@@ -2657,9 +2907,7 @@ namespace WindowsFormsApp1
                                      MessageBoxIcon.Warning);
                     return false;
                 }
-
             }
-
             return true;
         }
         private Boolean LongeurNomtOk(string nom)
@@ -3034,8 +3282,8 @@ namespace WindowsFormsApp1
         private string  StrDate(string date)
         {
             date = date.ToLower();
-            date = date.Replace("and", "et").Replace("bet", "entre").Replace("abt", "vers").Replace("aft", "après").Replace("bef", "avant").Replace("abt", "autour");
-            if (date.Contains("et") || date.Contains("entre") || date.Contains("vers") || date.Contains("après") || date.Contains("avant")  || date.Contains("autour"))
+            date = date.Replace("and", "et").Replace("bet", "entre").Replace("abt", "vers").Replace("aft", "après").Replace("bef", "avant").Replace("abt", "autour").Replace("est", "estimé");
+            if (date.Contains("et") || date.Contains("entre") || date.Contains("vers") || date.Contains("après") || date.Contains("avant")  || date.Contains("autour") || date.Contains("estimé"))
             {
                 return date;
             }
@@ -3198,7 +3446,7 @@ namespace WindowsFormsApp1
                 return true;
             }
             date = date.ToLower();
-            if (date.Contains("et")  || date.Contains("entre") || date.Contains("vers") || date.Contains("après") || date.Contains("avant") || date.Contains("autour"))
+            if (date.Contains("et")  || date.Contains("entre") || date.Contains("vers") || date.Contains("après") || date.Contains("avant") || date.Contains("autour") || date.Contains("estimé"))
             {
                 return true;
             }
@@ -4424,7 +4672,7 @@ namespace WindowsFormsApp1
             Modifier = true;
             this.Text = NomPrograme + "   *" + FichierCourant;
         }
-        private void EnregisterToolStripMenuItem_Click(object sender, EventArgs e)
+        private void    EnregisterToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if(FichierCourant =="")
             {
@@ -4435,11 +4683,11 @@ namespace WindowsFormsApp1
             }
             
         }
-        private void MenuMs_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        private void    MenuMs_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
 
         }
-        private void OuvrirToolStripMenuItem_Click(object sender, EventArgs e)
+        private void    OuvrirToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (DataModifier())
             {
@@ -4463,11 +4711,11 @@ namespace WindowsFormsApp1
                 }
             }
         }
-        private void EnregistrerSousToolStripMenuItem_Click(object sender, EventArgs e)
+        private void    EnregistrerSousToolStripMenuItem_Click(object sender, EventArgs e)
         {
             EnregistrerDataSous();
         }
-        private void NouveauToolStripMenuItem_Click(object sender, EventArgs e)
+        private void    NouveauToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (DataModifier())
             {
@@ -4478,7 +4726,7 @@ namespace WindowsFormsApp1
                 this.Text = NomPrograme;
             }
         }
-        private void CreerPageCouranteToolStripMenuItem_Click(object sender, EventArgs e)
+        private void    CreerPageCouranteToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (DossierPDF == "")
             {
@@ -4539,7 +4787,7 @@ namespace WindowsFormsApp1
                                  MessageBoxIcon.Warning);
             }
         }
-        private void CreerToutesLesPagesToolStripMenuItem_Click(object sender, EventArgs e)
+        private void    CreerToutesLesPagesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (DossierPDF == "")
             {
@@ -4564,7 +4812,7 @@ namespace WindowsFormsApp1
             XImage img = XImage.FromFile(programPath + "cadre.png");
             gfx.DrawImage(img, 0, 0);
   
-            string str = "Tableau asendant";
+            string str = "Tableau asendant colatéral";
             XSize textLargeur = gfx.MeasureString(str, font32);
             gfx.DrawString(str, font32, XBrushes.Black, page.Width / 2 - textLargeur.Width / 2, POUCE * 4);
             str = "de";
@@ -4776,8 +5024,7 @@ namespace WindowsFormsApp1
         }
         private void AideToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            Form l = new AideFm();
-            l.Show();
+            Help.ShowHelp(this, programPath + "TableauAscendant.chm");
         }
         private void VersionToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
@@ -4847,7 +5094,7 @@ namespace WindowsFormsApp1
         }
         private void OuvrirFichierGEDCOMToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FichierGEDCOM = "";
+            FichierGEDCOMaLire = "";
             DataModifier();
             EffacerData();
             OpenFileDialog LireDialog = new OpenFileDialog
@@ -4858,15 +5105,14 @@ namespace WindowsFormsApp1
             LireDialog.ShowDialog();
             if (LireDialog.FileName != "")
             {
-                FichierGEDCOM  = LireDialog.FileName;
-                //LireData();
+                FichierGEDCOMaLire = LireDialog.FileName;
             }
-            NomFichierGedcomLb.Text = Path.GetFileName(FichierGEDCOM);
+            NomFichierGedcomLb.Text = Path.GetFileName(FichierGEDCOMaLire);
 
-            if (FichierGEDCOM != "")
+            if (FichierGEDCOMaLire != "")
             {
                 GEDCOM.EffacerDataGEDCOM();
-                GEDCOM.LireGEDCOM(FichierGEDCOM);
+                GEDCOM.LireGEDCOM(FichierGEDCOMaLire);
                 GEDCOM.Individu();
                 GEDCOM.Famille();
 
@@ -5499,7 +5745,6 @@ namespace WindowsFormsApp1
             //int b = System.Convert.ToInt32(a);
             ChoixSosaComboBox.Text = Convert.ToString(a);
         }
-
         private void SosaConjoint1PatronymeTextBox_TextChanged(object sender, EventArgs e)
         {
             if (sosaCourant == 1)
@@ -5517,7 +5762,6 @@ namespace WindowsFormsApp1
                 }
             }
         }
-
         private void SosaConjoint1PrenomTextBox_TextChanged(object sender, EventArgs e)
         {
             if (sosaCourant == 1)
@@ -5535,8 +5779,39 @@ namespace WindowsFormsApp1
                 }
             }
         }
-    }
+        private void exporterUnFichierGEDCOMToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog EnregisterDialog = new SaveFileDialog
+            {
+                Filter = "Fichier|*.ged",
+                Title = "Exporter fichier GEDCOM"
+            };
+            DialogResult dr = new DialogResult();
+            dr = EnregisterDialog.ShowDialog();
+            if (dr == DialogResult.Cancel)
+            {
+                return;
+            }
+            if (EnregisterDialog.FileName != "")
+            {
+                EnregisterGEDCOM(EnregisterDialog.FileName);
+                return;
 
+            }
+            return;
+        }
+        private void ChoixLV_DoubleClick(object sender, EventArgs e)
+        {
+            Continuer();
+        }
+        private void ChoixLV_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                Continuer();
+            }
+        }
+    }
     internal class List<T1, T2>
     {
     }
