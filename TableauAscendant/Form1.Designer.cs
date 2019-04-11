@@ -146,7 +146,7 @@ namespace WindowsFormsApp1
             this.EnregisterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.EnregistrerSousToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.OuvrirFichierGEDCOMToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.exporterUnFichierGEDCOMToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ExporterUnFichierGEDCOMToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.QuitterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.EditerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.EffacerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -1519,7 +1519,7 @@ namespace WindowsFormsApp1
             this.EnregisterToolStripMenuItem,
             this.EnregistrerSousToolStripMenuItem,
             this.OuvrirFichierGEDCOMToolStripMenuItem,
-            this.exporterUnFichierGEDCOMToolStripMenuItem,
+            this.ExporterUnFichierGEDCOMToolStripMenuItem,
             this.QuitterToolStripMenuItem});
             this.FichierToolStripMenuItem.Name = "FichierToolStripMenuItem";
             this.FichierToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.F)));
@@ -1567,13 +1567,13 @@ namespace WindowsFormsApp1
             this.OuvrirFichierGEDCOMToolStripMenuItem.Text = "Importer un fichier &GEDCOM";
             this.OuvrirFichierGEDCOMToolStripMenuItem.Click += new System.EventHandler(this.OuvrirFichierGEDCOMToolStripMenuItem_Click);
             // 
-            // exporterUnFichierGEDCOMToolStripMenuItem
+            // ExporterUnFichierGEDCOMToolStripMenuItem
             // 
-            this.exporterUnFichierGEDCOMToolStripMenuItem.Name = "exporterUnFichierGEDCOMToolStripMenuItem";
-            this.exporterUnFichierGEDCOMToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.O)));
-            this.exporterUnFichierGEDCOMToolStripMenuItem.Size = new System.Drawing.Size(264, 22);
-            this.exporterUnFichierGEDCOMToolStripMenuItem.Text = "Exporter un fichier GEDC&OM";
-            this.exporterUnFichierGEDCOMToolStripMenuItem.Click += new System.EventHandler(this.exporterUnFichierGEDCOMToolStripMenuItem_Click);
+            this.ExporterUnFichierGEDCOMToolStripMenuItem.Name = "ExporterUnFichierGEDCOMToolStripMenuItem";
+            this.ExporterUnFichierGEDCOMToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.O)));
+            this.ExporterUnFichierGEDCOMToolStripMenuItem.Size = new System.Drawing.Size(264, 22);
+            this.ExporterUnFichierGEDCOMToolStripMenuItem.Text = "Exporter un fichier GEDC&OM";
+            this.ExporterUnFichierGEDCOMToolStripMenuItem.Click += new System.EventHandler(this.ExporterUnFichierGEDCOMToolStripMenuItem_Click);
             // 
             // QuitterToolStripMenuItem
             // 
@@ -2818,7 +2818,7 @@ namespace WindowsFormsApp1
         private System.Windows.Forms.Label Conjoint1Lbl;
         private System.Windows.Forms.Label label35;
         private System.Windows.Forms.Label AcolateralLbl;
-        private System.Windows.Forms.ToolStripMenuItem exporterUnFichierGEDCOMToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem ExporterUnFichierGEDCOMToolStripMenuItem;
     }
 }
 

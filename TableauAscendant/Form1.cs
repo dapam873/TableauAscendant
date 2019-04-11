@@ -911,7 +911,6 @@ namespace WindowsFormsApp1
                                  MessageBoxIcon.Warning);
                 return;
             }
-            //int ID = Int32.Parse(id);
             liste[1, IDg] = ID;
             liste[1, PATRONYME] = GEDCOM.AvoirPatronyme(ID);
             liste[1, PRENOM] = GEDCOM.AvoirPrenom(ID);
@@ -922,15 +921,27 @@ namespace WindowsFormsApp1
             string sex = GEDCOM.AvoirSex(ID);
             string IDFamilleEpoux = GEDCOM.AvoirFamilleEpoux(ID);
             string[] IDListeFamilleEpoux = IDFamilleEpoux.Split(' ');
-            string IDConjoint ="";
-            if (sex == "M")
+            string IDConjoint = "";
+            if (ID == GEDCOM.AvoirEpoux(IDListeFamilleEpoux[0]))
             {
                 IDConjoint = GEDCOM.AvoirEpouse(IDListeFamilleEpoux[0]);
-            }
-            if (sex == "F")
+
+            } else
             {
                 IDConjoint = GEDCOM.AvoirEpoux(IDListeFamilleEpoux[0]);
             }
+            /*
+                        if (sex == "M")
+                        {
+                            IDConjoint = GEDCOM.AvoirEpouse(IDListeFamilleEpoux[0]);
+                            ZXCV("M IDConjoint=" + IDConjoint);
+                        }
+                        if (sex == "F")
+                        {
+                            IDConjoint = GEDCOM.AvoirEpoux(IDListeFamilleEpoux[0]);
+                            ZXCV("F IDConjoint=" + IDConjoint);
+                        }
+            */
             liste[1, MALE] = ConvertirDate(GEDCOM.AvoirDateMariage(IDListeFamilleEpoux[0]));
             liste[1, MALIEU] = GEDCOM.AvoirEndroitMariage(IDListeFamilleEpoux[0]);
             liste[1, IDg] = ID.ToString();
@@ -1019,6 +1030,7 @@ namespace WindowsFormsApp1
             PrenomRecherche.Text = "";
             RafraichirData();
             AfficherData();
+            EnregisterGrille();
         }
         private bool    DataModifier()
         {
@@ -1072,7 +1084,7 @@ namespace WindowsFormsApp1
                 using (StreamWriter ligne = File.CreateText(FichierCourant))
                 {
                     ligne.WriteLine("[ver**]");
-                    ligne.WriteLine("Ver   =3.0");
+                    ligne.WriteLine("Ver   =" + Application.ProductVersion + "B");
                     for (index = 0; index < 512; index++)
                     {
                         if (liste[index, PATRONYME] != "" || liste[index, PRENOM] != "" || liste[index, NELE] != "" || liste[index, NELIEU] != "" 
@@ -1154,7 +1166,7 @@ namespace WindowsFormsApp1
                     for (int f = 0; f < 512; f++)
                     {
                         string individu = f.ToString("0000");
-                        //Enregistre individue
+                        //Enregistre individu
                         if (liste[f, PRENOM] != "" || liste[f, PATRONYME] != "")
                         {
                             ligne.WriteLine("0 @I" + individu + "@ INDI");
@@ -1181,7 +1193,6 @@ namespace WindowsFormsApp1
                                 ligne.WriteLine("1 FAMC @F" + famille + "@");
                                 if (f % 2 == 0)
                                 {
-                                    
                                     ligne.WriteLine("1 FAMS @F" + individu + "@");
                                 } else
                                 {
@@ -1207,11 +1218,13 @@ namespace WindowsFormsApp1
                     {
                         ligne.WriteLine("0 @F0001@ FAM");
                         ligne.WriteLine("1 HUSB @I0001@");
-                        ligne.WriteLine("1 WIFE @I0000@");
-                        ligne.WriteLine("1 MARR");
-                        ligne.WriteLine("2 DATE " + ConvertirDateAGEDCOM(liste[1, MALE]));
-                        ligne.WriteLine("2 PLAC " + liste[1, MALIEU]);
-
+                        if (liste[0, PRENOM] != "" || liste[0, PATRONYME] != "")
+                            ligne.WriteLine("1 WIFE @I0000@");
+                        if (liste[1, MALE] != "" || liste[1, MALIEU] != "") {
+                            ligne.WriteLine("1 MARR");
+                            ligne.WriteLine("2 DATE " + ConvertirDateAGEDCOM(liste[1, MALE]));
+                            ligne.WriteLine("2 PLAC " + liste[1, MALIEU]);
+                        }
                     }
                     //SOSA pair
                     for (int f = 2; f < 256; f += 2)
@@ -1220,13 +1233,23 @@ namespace WindowsFormsApp1
                         {
                             string famille = f.ToString("0000");
                             ligne.WriteLine("0 @F" + famille + "@ FAM");
-                            ligne.WriteLine("1 HUSB @I" + famille + "@");
+                            if (liste[f, PRENOM] != "" || liste[f, PATRONYME] != "")
+                            {
+                                ligne.WriteLine("1 HUSB @I" + famille + "@");
+                            }
+
                             int sosaConjoint = f + 1;
                             string conjoint = sosaConjoint.ToString("0000");
-                            ligne.WriteLine("1 WIFE @I" + conjoint + "@");
-                            ligne.WriteLine("1 MARR");
-                            ligne.WriteLine("2 DATE " + ConvertirDateAGEDCOM(liste[f, MALE]));
-                            ligne.WriteLine("2 PLAC " + liste[f, MALIEU]);
+                            if (liste[f + 1, PRENOM] != "" || liste[f + 1, PATRONYME] != "")
+                            {
+                                ligne.WriteLine("1 WIFE @I" + conjoint + "@");
+                            }
+                            if (liste[f, MALE] != "" || liste[f, MALIEU] != "") {
+                                ligne.WriteLine("1 MARR");
+                                ligne.WriteLine("2 DATE " + ConvertirDateAGEDCOM(liste[f, MALE]));
+                                ligne.WriteLine("2 PLAC " + liste[f, MALIEU]);
+                            }
+
                             // enfant
                             int e = f / 2;
                             string enfant = e.ToString("0000");
@@ -1882,23 +1905,24 @@ namespace WindowsFormsApp1
                     fichier = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\" + FICHIERGRILLE;
                 }
 
-                
-                using (StreamWriter ligne = File.CreateText(fichier))
-                    //ligne.WriteLine("SOSA" + " " + "PAGE");
 
+                using (StreamWriter ligne = File.CreateText(fichier))
+                {
+                    ligne.WriteLine("  " + "Version " + Application.ProductVersion + "B");
                     for (int f = 0; f < 512; f++)
                     {
                         ligne.WriteLine(
                             "|" + SOSA + " SOSA=" + liste[f, SOSA] + " " +
                             "|" + PAGE + " PAGE=" + liste[f, PAGE] + " " +
-                            "|" + PATRONYME + " PATRONYME=" + liste[f, PATRONYME] +  " " +
+                            "|" + PATRONYME + " PATRONYME=" + liste[f, PATRONYME] + " " +
                             "|" + PRENOM + " PRENOM=" + liste[f, PRENOM] + " " +
-                            "|" + MALE + " MALE=" + liste[f, MALE]  +" " +
-                            "|" + MALIEU + " MALIEU=" + liste[f, MALIEU ] + " " +
-                            "|" + IDg + " IDg=" + liste[f, MALIEU] + " " +
-                            "|" + IDFAMILLEENFANT + " IDFAMILLEENFANT=" + liste[f, IDFAMILLEENFANT] + " " 
+                            "|" + MALE + " MALE=" + liste[f, MALE] + " " +
+                            "|" + MALIEU + " MALIEU=" + liste[f, MALIEU] + " " +
+                            "|" + IDg + " IDg=" + liste[f, IDg] + " " +
+                            "|" + IDFAMILLEENFANT + " IDFAMILLEENFANT FAMS=" + liste[f, IDFAMILLEENFANT] + " "
                             );
                     }
+                }
             } catch {}
         }
         /**************************************************************************************************************/
@@ -1932,7 +1956,7 @@ namespace WindowsFormsApp1
             rect = new XRect(xx + 100, y, 170, 10);
             et.DrawString("Patronyme", font8, XBrushes.Black, rect, XStringFormats.TopLeft);
             rect = new XRect(xx + 219, y, 50, 10);
-            et.DrawString("Tableau", font8, XBrushes.Red, rect, XStringFormats.TopLeft);
+            et.DrawString("Tableau", font8, XBrushes.Black, rect, XStringFormats.TopLeft);
         }
         private void    FichierTest()
         {
@@ -1947,7 +1971,7 @@ namespace WindowsFormsApp1
                 using (StreamWriter ligne = File.CreateText(FichierTest))
                 {
                     ligne.WriteLine("[ver**]");
-                    ligne.WriteLine("Ver   =3.0");
+                    ligne.WriteLine("Ver   =" + Application.ProductVersion + "B");
                     for (int index = 0; index < 512; index++)
                     {
                         ligne.WriteLine("[sosa*]");
@@ -2892,6 +2916,7 @@ namespace WindowsFormsApp1
                                     }
                                 }
                             }
+                             EnregisterGrille();
                         }
                     }
                     ChoixSosaComboBox.Text = "1";
@@ -5779,7 +5804,7 @@ namespace WindowsFormsApp1
                 }
             }
         }
-        private void exporterUnFichierGEDCOMToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ExporterUnFichierGEDCOMToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SaveFileDialog EnregisterDialog = new SaveFileDialog
             {
