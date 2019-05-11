@@ -14,6 +14,11 @@ namespace TableauAscendant
     public partial class Form2 : Form
     {
         /// <summary>
+        /// Version BETA
+        /// </summary>
+        public string BETA = "B";
+        
+        /// <summary>
         /// inconnu
         /// </summary>
         public Form2()
@@ -23,7 +28,7 @@ namespace TableauAscendant
 
         private void Form2_Load(object sender, EventArgs e)
         {
-            VersionLb.Text= "Version " + Application.ProductVersion + "B";
+            VersionLb.Text= "Version " + Application.ProductVersion + BETA;
         }
 
         private void PambrunLLb_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

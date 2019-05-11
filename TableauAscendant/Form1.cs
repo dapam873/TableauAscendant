@@ -28,6 +28,10 @@ namespace WindowsFormsApp1
     public partial class TableauAscendant : Form
     {
         /// <summary>
+        /// Version BETA
+        /// </summary>
+        public string BETA = "B"; 
+        /// <summary>
         /// nom du fichier de log
         /// </summary>
         public Color couleurBloc;
@@ -528,7 +532,16 @@ namespace WindowsFormsApp1
             RectangleSosa5.FillColor = rgb;
             RectangleSosa6.FillColor = rgb;
             RectangleSosa7.FillColor = rgb;
-          
+
+            Prenom1Lbl.BackColor = rgb;
+            Prenom2Lbl.BackColor = rgb;
+            Prenom3Lbl.BackColor = rgb;
+            Prenom4Lbl.BackColor = rgb;
+            Prenom5Lbl.BackColor = rgb;
+            Prenom6Lbl.BackColor = rgb;
+            Prenom7Lbl.BackColor = rgb;
+
+
             Nele1Lbl.BackColor = rgb;
             Nele2Lbl.BackColor = rgb;
             Nele3Lbl.BackColor = rgb;
@@ -1030,7 +1043,6 @@ namespace WindowsFormsApp1
             PrenomRecherche.Text = "";
             RafraichirData();
             AfficherData();
-            EnregisterGrille();
         }
         private bool    DataModifier()
         {
@@ -1084,7 +1096,7 @@ namespace WindowsFormsApp1
                 using (StreamWriter ligne = File.CreateText(FichierCourant))
                 {
                     ligne.WriteLine("[ver**]");
-                    ligne.WriteLine("Ver   =" + Application.ProductVersion + "B");
+                    ligne.WriteLine("Ver   =" + Application.ProductVersion + BETA);
                     for (index = 0; index < 512; index++)
                     {
                         if (liste[index, PATRONYME] != "" || liste[index, PRENOM] != "" || liste[index, NELE] != "" || liste[index, NELIEU] != "" 
@@ -1148,7 +1160,7 @@ namespace WindowsFormsApp1
                 {
                     ligne.WriteLine("0 HEAD");
                     ligne.WriteLine("1 SOUR TableauAscendant");
-                    ligne.WriteLine("2 VERS " + Application.ProductVersion + "B");
+                    ligne.WriteLine("2 VERS " + Application.ProductVersion + BETA);
                     ligne.WriteLine("2 NAME TableauAscendant");
                     string m = ConvertirMoisEnString3(DateTime.Now.ToString("MM"));
                     ligne.WriteLine("1 DATE " + DateTime.Now.ToString("dd") + " " + m + " " + DateTime.Now.ToString("yyyy"));
@@ -1186,7 +1198,7 @@ namespace WindowsFormsApp1
                                 }
                             }
                            
-                            if (f > 1 && f < 256)
+                            if (f > 1 && f < 512)
                             {
                                 int fa = f * 2;
                                 string famille = fa.ToString("0000");
@@ -1227,7 +1239,7 @@ namespace WindowsFormsApp1
                         }
                     }
                     //SOSA pair
-                    for (int f = 2; f < 256; f += 2)
+                    for (int f = 2; f < 512; f += 2)
                     {
                         if (liste[f, PRENOM] != "" || liste[f, PATRONYME] != "")
                         {
@@ -1908,7 +1920,7 @@ namespace WindowsFormsApp1
 
                 using (StreamWriter ligne = File.CreateText(fichier))
                 {
-                    ligne.WriteLine("  " + "Version " + Application.ProductVersion + "B");
+                    ligne.WriteLine("  " + "Version " + Application.ProductVersion + BETA);
                     for (int f = 0; f < 512; f++)
                     {
                         ligne.WriteLine(
@@ -1971,7 +1983,7 @@ namespace WindowsFormsApp1
                 using (StreamWriter ligne = File.CreateText(FichierTest))
                 {
                     ligne.WriteLine("[ver**]");
-                    ligne.WriteLine("Ver   =" + Application.ProductVersion + "B");
+                    ligne.WriteLine("Ver   =" + Application.ProductVersion + BETA);
                     for (int index = 0; index < 512; index++)
                     {
                         ligne.WriteLine("[sosa*]");
@@ -2418,14 +2430,19 @@ namespace WindowsFormsApp1
             int xInfo = 7;
             if (sosa == 0)
             {
-                int largeurLigne = 135; 
+                int largeurLigne = 135;
+                gfx.DrawLine(penG, positionBoite[1, 0], positionBoite[1, 1] + hauteurLigne * 19, Col2 + 142, positionBoite[1, 1] + hauteurLigne * 19);
                 for (f = 1; f < 8; f++)
                 {
-                    gfx.DrawLine(penG, positionBoite[f, 0], positionBoite[f, 1] + hauteurLigne * 1, positionBoite[f, 0] + 142, positionBoite[f, 1] + hauteurLigne * 1);
+                    gfx.DrawLine(penG, positionBoite[f, 0], positionBoite[f, 1] + hauteurLigne * 2.1, positionBoite[f, 0] + 142, positionBoite[f, 1] + hauteurLigne * 2.1);
                     gfx.DrawLine(penG, positionBoite[f, 0] + xInfo, positionBoite[f, 1] + hauteurLigne * 4, positionBoite[f, 0] + xInfo + largeurLigne, positionBoite[f, 1] + hauteurLigne * 4);
                     gfx.DrawLine(penG, positionBoite[f, 0] + xInfo, positionBoite[f, 1] + hauteurLigne * 6, positionBoite[f, 0] + xInfo + largeurLigne, positionBoite[f, 1] + hauteurLigne * 6);
                     gfx.DrawLine(penG, positionBoite[f, 0] + xInfo, positionBoite[f, 1] + hauteurLigne * 8, positionBoite[f, 0] + xInfo + largeurLigne, positionBoite[f, 1] + hauteurLigne * 8);
                     gfx.DrawLine(penG, positionBoite[f, 0] + xInfo, positionBoite[f, 1] + hauteurLigne * 10, positionBoite[f, 0] + xInfo + largeurLigne, positionBoite[f, 1] + hauteurLigne * 10);
+                }
+                for (f = 8; f < 16; f++)
+                {
+                    gfx.DrawLine(penG, positionBoite[f, 0] + 2, positionBoite[f, 1] + hauteurLigne * 3, positionBoite[f, 0] + 2 + 140, positionBoite[f, 1] + hauteurLigne * 3);
                 }
                 int p = 18;
                 int l = 140;
@@ -2450,7 +2467,7 @@ namespace WindowsFormsApp1
             else
             {
                 //info des boites
-                int largeurLigne = 142; // 
+                int largeurLigne = 142; // 142
                 {
                     //int sosaConjoint;
                     if (sosa%2 == 0 ) {
@@ -2472,7 +2489,7 @@ namespace WindowsFormsApp1
                         nom = AssemblerNom(liste[sosaIndex[f], PRENOM], liste[sosaIndex[f], PATRONYME]);
                         if (nom == "")
                         {
-                            gfx.DrawLine(penG, positionBoite[f, 0], positionBoite[f, 1] + hauteurLigne * 2, positionBoite[f, 0] + 142, positionBoite[f, 1] + hauteurLigne * 2);
+                            gfx.DrawLine(penG, positionBoite[f, 0], positionBoite[f, 1] + hauteurLigne * 2.2, positionBoite[f, 0] + 142, positionBoite[f, 1] + hauteurLigne * 2.2);
                         }
                         rt = RacoucirNom(nom, ref gfx);
                         gfx.DrawString(rt, font8B, XBrushes.Black, positionBoite[f, 0], positionBoite[f, 1] + hauteurLigne * 2, XStringFormats.Default);
@@ -2711,7 +2728,7 @@ namespace WindowsFormsApp1
             }
 
             // version à afficher pour beta
-            gfx.DrawString("Version " + Application.ProductVersion + "B", font8, XBrushes.Black, Col1, Ligne[80] + 2, XStringFormats.Default);
+            gfx.DrawString("Version " + Application.ProductVersion + BETA, font8, XBrushes.Black, Col1, Ligne[80] + 2, XStringFormats.Default);
             // Logo
             // XImage img = global::TableauAscendant.Properties.Resources.dapamv5_32png;
             /*
@@ -2916,7 +2933,6 @@ namespace WindowsFormsApp1
                                     }
                                 }
                             }
-                             EnregisterGrille();
                         }
                     }
                     ChoixSosaComboBox.Text = "1";
@@ -3608,7 +3624,7 @@ namespace WindowsFormsApp1
                         {
                             ligne.WriteLine("************************************************");
                             ligne.WriteLine("  Log de TableauAscendant");
-                            ligne.WriteLine("  " + "Version " + Application.ProductVersion + "B");
+                            ligne.WriteLine("  " + "Version " + Application.ProductVersion + BETA);
                             ligne.WriteLine("  " + DateTime.Now);
                             RegistryKey registryKey = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows NT\CurrentVersion");
                             string ProductName = registryKey.GetValue("ProductName").ToString(); //Windows Home
@@ -5286,6 +5302,7 @@ namespace WindowsFormsApp1
                 FlecheDroiteRechercheButton.Visible = false;
 
                 if (liste[rechercheListe[0], SOSA] == liste[sosa, PAGE]) RectangleSosa1.BorderColor = Color.White;
+                if (Int32.Parse(liste[sosa, SOSA]) == Int32.Parse(liste[sosa, PAGE]) ) RectangleSosa1.BorderColor = Color.White;
                 if (Int32.Parse(liste[sosa, SOSA]) == Int32.Parse(liste[sosa, PAGE]) * 2) RectangleSosa2.BorderColor = Color.White;
                 if (Int32.Parse(liste[sosa, SOSA]) == Int32.Parse(liste[sosa, PAGE]) * 2 + 1) RectangleSosa3.BorderColor = Color.White;
                 if (Int32.Parse(liste[sosa, SOSA]) == Int32.Parse(liste[sosa, PAGE]) * 4) RectangleSosa4.BorderColor = Color.White;
@@ -5323,6 +5340,7 @@ namespace WindowsFormsApp1
                 if (trouver == 0) return;
                 ChoixSosaComboBox.Text = liste[rechercheListe[0], PAGE];
                 if (liste[rechercheListe[0], SOSA] == liste[rechercheListe[0], PAGE]) RectangleSosa1.BorderColor = Color.White;
+                if (Int32.Parse(liste[rechercheListe[0], SOSA]) == Int32.Parse(liste[rechercheListe[0], PAGE]) ) RectangleSosa1.BorderColor = Color.White;
                 if (Int32.Parse(liste[rechercheListe[0], SOSA]) == Int32.Parse(liste[rechercheListe[0], PAGE]) * 2) RectangleSosa2.BorderColor = Color.White;
                 if (Int32.Parse(liste[rechercheListe[0], SOSA]) == Int32.Parse(liste[rechercheListe[0], PAGE]) * 2 + 1) RectangleSosa3.BorderColor = Color.White;
                 if (Int32.Parse(liste[rechercheListe[0], SOSA]) == Int32.Parse(liste[rechercheListe[0], PAGE]) * 4) RectangleSosa4.BorderColor = Color.White;
